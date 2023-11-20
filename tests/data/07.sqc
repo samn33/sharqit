@@ -1,0 +1,30 @@
+S 0
+T 2
+H 1
+H 0
+CX 0 1
+S 2
+T 2
+H 0
+CX 1 0
+H 0
+S 0
+S 2
+CX 0 1
+CX 2 0
+S 0
+T 0
+S 0
+S 2
+CX 2 0
+H 2
+H 1
+H 1
+H 2
+T 2
+H 1
+T 1
+T 1
+T 1
+T 1
+T 1

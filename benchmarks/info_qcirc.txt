@@ -1,0 +1,3 @@
+Yunseong Nam, Neil J Ross, Yuan Su, Andrew M Childs, and Dmitri Maslov.
+optimizer: Benchmark quantum circuits before and after optimization.
+https://github.com/njross/optimizer.

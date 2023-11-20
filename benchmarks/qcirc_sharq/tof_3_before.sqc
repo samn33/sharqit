@@ -1,0 +1,45 @@
+H 4
+CX 1 4
+T+ 4
+CX 0 4
+T 4
+CX 1 4
+T+ 4
+CX 0 4
+T 1
+T 4
+CX 0 1
+T 0
+T+ 1
+CX 0 1
+H 4
+H 3
+CX 4 3
+T+ 3
+CX 2 3
+T 3
+CX 4 3
+T+ 3
+CX 2 3
+T 4
+T 3
+CX 2 4
+T 2
+T+ 4
+CX 2 4
+H 3
+H 4
+CX 1 4
+T+ 4
+CX 0 4
+T 4
+CX 1 4
+T+ 4
+CX 0 4
+T 1
+T 4
+CX 0 1
+T 0
+T+ 1
+CX 0 1
+H 4

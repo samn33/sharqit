@@ -1,0 +1,100 @@
+H 0
+CX 0 1
+H 2
+S 1
+S 0
+H 0
+CX 1 2
+T 0
+CX 1 2
+T 2
+CX 2 0
+T 2
+T 1
+H 0
+H 1
+T 0
+S 1
+H 2
+CX 0 1
+H 1
+H 1
+T 1
+H 1
+H 1
+CX 2 0
+H 1
+X 2
+CX 0 2
+T 2
+S 2
+H 2
+H 2
+S 0
+CX 0 2
+S 1
+CX 0 2
+S 2
+X 1
+H 0
+H 2
+T 0
+X 2
+T 2
+H 0
+H 1
+CX 0 1
+H 2
+H 1
+T 0
+H 2
+CX 0 1
+X 1
+H 1
+T 0
+S 1
+T 2
+CX 2 0
+H 1
+T 1
+CX 1 0
+CX 2 0
+S 0
+H 0
+H 0
+CX 2 0
+T 2
+CX 1 0
+X 0
+S 0
+S 0
+H 0
+CX 1 0
+H 0
+CX 2 1
+S 0
+S 1
+S 0
+CX 2 0
+CX 2 1
+S 1
+S 0
+S 1
+H 1
+CX 1 0
+X 2
+S 0
+T 2
+T 1
+H 1
+H 2
+T 2
+S 2
+S 0
+S 2
+CX 1 0
+S 2
+H 1
+S 0
+T 0
+CX 2 1

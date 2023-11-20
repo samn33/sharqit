@@ -1,0 +1,65 @@
+graph graph_name {
+  graph [
+    charset = "UTF-8";
+    labelloc = "t",
+    labeljust = "c",
+    bgcolor = white,
+    fontcolor = black,
+    fontsize = 14,
+    style = "filled",
+    rankdir = LR,
+    splines = spline,
+    ];
+  node [
+    colorscheme = "rdylgn11",
+    style = "filled",
+    fontsize = 12,
+    fontname = "Migu 1M",
+    fixedsize = true,
+    ];
+  edge [
+    arrowhead = normal,
+    ];
+
+  node_0 [label = "q_0", shape = box, width = 0.5, height = 0.3, color = white, fillcolor = white, fontcolor = black];
+  node_1 [label = "q_1", shape = box, width = 0.5, height = 0.3, color = white, fillcolor = white, fontcolor = black];
+  node_2 [label = "q_2", shape = box, width = 0.5, height = 0.3, color = white, fillcolor = white, fontcolor = black];
+  node_3 [label = "", shape = box, width = 0.5, height = 0.3, color = white, fillcolor = white, fontcolor = black];
+  node_4 [label = "", shape = box, width = 0.5, height = 0.3, color = white, fillcolor = white, fontcolor = black];
+  node_5 [label = "", shape = box, width = 0.5, height = 0.3, color = white, fillcolor = white, fontcolor = black];
+  node_6 [label = "X", shape = box, width = 0.5, height = 0.3, color = black, fillcolor = white, fontcolor = black];
+  node_7 [label = "Z", shape = box, width = 0.5, height = 0.3, color = black, fillcolor = white, fontcolor = black];
+  node_8 [label = "S", shape = box, width = 0.5, height = 0.3, color = black, fillcolor = white, fontcolor = black];
+  node_9 [label = "S+", shape = box, width = 0.5, height = 0.3, color = black, fillcolor = white, fontcolor = black];
+  node_10 [label = "T", shape = box, width = 0.5, height = 0.3, color = black, fillcolor = white, fontcolor = black];
+  node_11 [label = "T+", shape = box, width = 0.5, height = 0.3, color = black, fillcolor = white, fontcolor = black];
+  node_12 [label = "RZ(π/4)", shape = box, width = 0.8, height = 0.3, color = black, fillcolor = white, fontcolor = black];
+  node_13 [label = "RZ(3π/4)", shape = box, width = 0.8, height = 0.3, color = black, fillcolor = white, fontcolor = black];
+  node_14 [label = "", shape = circle, width = 0.1, height = 0.1, color = black, fillcolor = black, fontcolor = black];
+  node_15 [label = "+", shape = circle, width = 0.2, height = 0.2, color = black, fillcolor = white, fontcolor = black];
+  node_16 [label = "H", shape = box, width = 0.5, height = 0.3, color = black, fillcolor = white, fontcolor = black];
+
+  node_0 -- node_1 [style = solid, color = white];
+  node_1 -- node_2 [style = solid, color = white];
+  node_3 -- node_4 [style = solid, color = white];
+  node_4 -- node_5 [style = solid, color = white];
+  node_0 -- node_6 [style = solid, color = black];
+  node_6 -- node_7 [style = solid, color = black];
+  node_1 -- node_8 [style = solid, color = black];
+  node_2 -- node_9 [style = solid, color = black];
+  node_8 -- node_10 [style = solid, color = black];
+  node_9 -- node_11 [style = solid, color = black];
+  node_7 -- node_12 [style = solid, color = black];
+  node_10 -- node_13 [style = solid, color = black];
+  node_12 -- node_14 [style = solid, color = black];
+  node_11 -- node_15 [style = solid, color = black];
+  node_14 -- node_15 [style = solid, color = black];
+  node_13 -- node_16 [style = solid, color = black];
+  node_14 -- node_3 [style = solid, color = black];
+  node_16 -- node_4 [style = solid, color = black];
+  node_15 -- node_5 [style = solid, color = black];
+
+  {rank = min; node_0; node_1; node_2; }
+  {rank = max; node_3; node_4; node_5; }
+  {rank = same; node_14; node_15 }
+}

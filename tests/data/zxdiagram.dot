@@ -1,0 +1,65 @@
+graph graph_name {
+  graph [
+    charset = "UTF-8";
+    labelloc = "t",
+    labeljust = "c",
+    bgcolor = white,
+    fontcolor = black,
+    fontsize = 14,
+    style = "filled",
+    rankdir = LR,
+    splines = spline,
+    ];
+  node [
+    colorscheme = "rdylgn11",
+    shape = ellipse, 
+    style = "filled",
+    fontsize = 10,
+    fontcolor = 6,
+    fontname = "Migu 1M",
+    fixedsize = true,
+    height = 0.2,
+    ];
+  edge [
+    arrowhead = normal,
+    ];
+
+  node_0 [label = "in_0", width = 0.5, height = 0.2, color = white, fillcolor = white, fontcolor = black];
+  node_1 [label = "in_1", width = 0.5, height = 0.2, color = white, fillcolor = white, fontcolor = black];
+  node_2 [label = "in_2", width = 0.5, height = 0.2, color = white, fillcolor = white, fontcolor = black];
+  node_3 [label = "π", width = 0.3, height = 0.3, color = black, fillcolor = "#ff8888", fontcolor = black];
+  node_4 [label = "π/2", width = 0.3, height = 0.3, color = black, fillcolor = "#ddffdd", fontcolor = black];
+  node_5 [label = "3π/2", width = 0.3, height = 0.3, color = black, fillcolor = "#ddffdd", fontcolor = black];
+  node_6 [label = "π", width = 0.3, height = 0.3, color = black, fillcolor = "#ddffdd", fontcolor = black];
+  node_7 [label = "π/4", width = 0.3, height = 0.3, color = black, fillcolor = "#ddffdd", fontcolor = black];
+  node_8 [label = "π/4", width = 0.3, height = 0.3, color = black, fillcolor = "#ddffdd", fontcolor = black];
+  node_9 [label = "7π/4", width = 0.3, height = 0.3, color = black, fillcolor = "#ddffdd", fontcolor = black];
+  node_10 [label = "3π/4", width = 0.3, height = 0.3, color = black, fillcolor = "#ddffdd", fontcolor = black];
+  node_11 [label = "", width = 0.15, height = 0.15, color = black, fillcolor = "#ff8888", fontcolor = black];
+  node_12 [label = "", width = 0.15, height = 0.15, color = black, fillcolor = "#ddffdd", fontcolor = black];
+  node_13 [label = "out_1", width = 0.5, height = 0.2, color = white, fillcolor = white, fontcolor = black];
+  node_14 [label = "out_0", width = 0.5, height = 0.2, color = white, fillcolor = white, fontcolor = black];
+  node_15 [label = "out_2", width = 0.5, height = 0.2, color = white, fillcolor = white, fontcolor = black];
+
+  node_0 -- node_3 [style = solid, color = black];
+  node_1 -- node_4 [style = solid, color = black];
+  node_2 -- node_5 [style = solid, color = black];
+  node_3 -- node_6 [style = solid, color = black];
+  node_4 -- node_8 [style = solid, color = black];
+  node_5 -- node_9 [style = solid, color = black];
+  node_6 -- node_7 [style = solid, color = black];
+  node_7 -- node_12 [style = solid, color = black];
+  node_8 -- node_10 [style = solid, color = black];
+  node_9 -- node_11 [style = solid, color = black];
+  node_10 -- node_13 [style = dashed, color = blue];
+  node_11 -- node_12 [style = solid, color = black];
+  node_11 -- node_15 [style = solid, color = black];
+  node_12 -- node_14 [style = solid, color = black];
+  node_0 -- node_1 [style = solid, color = white];
+  node_1 -- node_2 [style = solid, color = white];
+  node_14 -- node_13 [style = solid, color = white];
+  node_13 -- node_15 [style = solid, color = white];
+
+  {rank = min; node_0; node_1; node_2; }
+  {rank = max; node_13; node_14; node_15; }
+}
