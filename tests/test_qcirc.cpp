@@ -11,7 +11,6 @@ TEST(QCirc, Reverse) {
   qc.sdg(2);
   qc.t(1);
   qc.tdg(2);
-  //qc.rx(0, PI/4);
   qc.rz(1, 3*PI/4);
   qc.cx(0,2);
   qc.h(1);
@@ -24,7 +23,6 @@ TEST(QCirc, Reverse) {
   EXPECT_EQ("S+ 2", qc_rev.qgates()[5].to_string());
   EXPECT_EQ("T 1", qc_rev.qgates()[4].to_string());
   EXPECT_EQ("T+ 2", qc_rev.qgates()[3].to_string());
-  //EXPECT_EQ("RX(1/4) 0", qc_rev.qgates()[3].to_string(false));
   EXPECT_EQ("RZ(3/4) 1", qc_rev.qgates()[2].to_string(false));
   EXPECT_EQ("CX 0 2", qc_rev.qgates()[1].to_string());
   EXPECT_EQ("H 1", qc_rev.qgates()[0].to_string());
@@ -39,7 +37,6 @@ TEST(QCirc, Inverse) {
   qc.sdg(2);
   qc.t(1);
   qc.tdg(2);
-  //qc.rx(0, PI/4);
   qc.rz(1, 3*PI/4);
   qc.cx(0,2);
   qc.h(1);
@@ -52,7 +49,6 @@ TEST(QCirc, Inverse) {
   EXPECT_EQ("S 2", qc_inv.qgates()[5].to_string());
   EXPECT_EQ("T+ 1", qc_inv.qgates()[4].to_string());
   EXPECT_EQ("T 2", qc_inv.qgates()[3].to_string());
-  //EXPECT_EQ("RX(7/4) 0", qc_inv.qgates()[3].to_string(false));
   EXPECT_EQ("RZ(5/4) 1", qc_inv.qgates()[2].to_string(false));
   EXPECT_EQ("CX 0 2", qc_inv.qgates()[1].to_string());
   EXPECT_EQ("H 1", qc_inv.qgates()[0].to_string());
@@ -67,7 +63,6 @@ TEST(QCirc, AddQGate) {
   qc.sdg(2);
   qc.t(1);
   qc.tdg(2);
-  //qc.rx(0, PI/4);
   qc.rz(1, 3*PI/4);
   qc.cx(0,2);
   qc.h(1);
@@ -79,8 +74,6 @@ TEST(QCirc, AddQGate) {
   EXPECT_EQ("S+ 2", qc.qgates()[3].to_string());
   EXPECT_EQ("T 1", qc.qgates()[4].to_string());
   EXPECT_EQ("T+ 2", qc.qgates()[5].to_string());
-  //EXPECT_EQ("RX(π/4) 0", qc.qgates()[6].to_string());
-  //EXPECT_EQ("RX(1/4) 0", qc.qgates()[6].to_string(false));
   EXPECT_EQ("RZ(3/4) 1", qc.qgates()[6].to_string(false));
   EXPECT_EQ("CX 0 2", qc.qgates()[7].to_string());
   EXPECT_EQ("H 1", qc.qgates()[8].to_string());

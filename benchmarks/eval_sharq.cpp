@@ -1,6 +1,5 @@
 #include "sharq.h"
 
-//void eval_sharq(const std::string& name, const std::string& path) {
 void eval_sharq(const std::string& name, const std::string& path_in, const std::string& path_out) {
 
   try {
@@ -47,14 +46,6 @@ int main(int argc, char** argv)
   }
 
   ifs.close();
-
-  
-  //std::cout << "name,time[sec],T-count<in>,T-count<out>" << std::endl;
-  //eval_sharq("tof_3", "qcirc_sharq/tof_3_before.sqc", "qcirc_sharq/tof_3_after.sqc");
-  //eval_sharq("tof_10", "qcirc_sharq/tof_10_before.sqc", "qcirc_sharq/tof_10_after.sqc");
-  //eval_sharq("barenco_tof_10", "qcirc_sharq/barenco_tof_10_before.sqc", "qcirc_sharq/barenco_tof_10_after.sqc");
-  //eval_sharq("gf2^8", "qcirc_sharq/gf2^E8_mult_before.sqc", "qcirc_sharq/gf2^E8_mult_after.sqc");
-  //eval_sharq("Adder16", "qcirc_sharq/Adder16_before.sqc", "qcirc_sharq/Adder16_after.sqc");
 
   return 0;
 }

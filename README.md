@@ -110,7 +110,13 @@ Use 'load' method to load the file.
 
 ## Benchmarks
 
+Processing time and T-count compared with [PyZX](https://github.com/Quantomatic/pyzx).
+
 ![benchmarks](/benchmarks/plot.png)
+
+The quantum circuit data used in this benchmark is listed below.
+
+Yunseong Nam, Neil J Ross, Yuan Su, Andrew M Childs, and Dmitri Maslov. optimizer: Benchmark quantum circuits before and after optimization. [URl][https://github.com/njross/optimizer.]
 
 ## Requirements
 

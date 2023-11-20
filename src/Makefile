@@ -7,7 +7,6 @@ LIB_SRC = fraction.cpp phase.cpp binary_matrix.cpp qgate.cpp qcirc.cpp zxnode.cp
 LIB_OBJ = $(LIB_SRC:%.cpp=%.o)
 
 CC = g++
-#CFLAG = -fPIC -Wall -O4 -fopenmp -std=c++17
 CFLAG = -fPIC -Wall -O4 -std=c++17
 
 PROG = main
@@ -20,9 +19,6 @@ LFLAG = -L . -L ~/lib
 
 INSTALL_INC = ~/include
 INSTALL_LIB = ~/lib
-
-#GPROF =
-#GPROF = -pg
 
 $(PROG): $(PROG_OBJ) $(LIB)
 	$(CC) -o $@ $(CFLAG) $(LFLAG) $(IFLAG) $(PROG_OBJ) -lsharq

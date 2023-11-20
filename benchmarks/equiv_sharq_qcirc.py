@@ -24,11 +24,9 @@ def pyzx_qcirc(lines):
         if len(token) == 2 and token[0][0:2] != "RZ":
             gstr = token[0]
             qid = [int(token[1])]
-            #print("gstr={}, qid={}".format(gstr, qid[0]))
         elif len(token) == 2 and token[0][0:2] == "RZ":
             gstr = token[0][0:2]
             pstr = token[0][3:len(token[0])-1]
-            #pstr_nume, pstr_deno = pstr.split("/")
             pstr_frac = pstr.split("/")
             if len(pstr_frac) == 1:
                 p_nume = int(pstr_frac[0])
@@ -37,11 +35,10 @@ def pyzx_qcirc(lines):
                 p_nume = int(pstr_frac[0])
                 p_deno = int(pstr_frac[1])
             qid = [int(token[1])]
-            #print("gstr={}, phase={}/{}, qid={}".format(gstr, p_nume, p_deno, qid[0]))
+
         elif len(token) == 3 and token[0] == "CX":
             gstr = token[0]
             qid = [int(token[1]), int(token[2])]
-            #print("gstr={}, qid={},{}".format(gstr, qid[0], qid[1]))
 
         if gstr == "CX":
             qc.add_gate("CNOT", qid[0], qid[1])

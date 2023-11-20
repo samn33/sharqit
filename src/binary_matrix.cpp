@@ -43,8 +43,6 @@ void Sharq::BinaryMatrix::swap_rows(const uint32_t a, const uint32_t b)
 
 void Sharq::BinaryMatrix::swap_cols(const uint32_t a, const uint32_t b)
 {
-  //  std::cout << "-- swap_cols --" << std::endl; // test
-
   if (a > col_num_ || b > col_num_) {
     throw std::runtime_error("argument is too large.");
   }
@@ -73,8 +71,6 @@ bool Sharq::BinaryMatrix::feasible() const
 std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce()
 {
   std::vector<std::pair<uint32_t, uint32_t>> row_ops;
-
-  //if (feasible()) return row_ops;
 
   /* foreward elimination */
   for (int32_t i = 0; i < (int32_t)row_num_ - 1; ++i) {

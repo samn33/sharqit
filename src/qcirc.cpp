@@ -234,8 +234,6 @@ Sharq::QCirc Sharq::QCirc::reverse() const
   uint32_t qgate_num = qgates_.size();
   for (uint32_t i = 0; i < qgate_num; ++i) {
     qc.add_qgate(qgates_[qgate_num - i - 1]);
-
-    //qc.add_qgate(qgates_[qgate_num - i - 1].kind(), qgates_[qgate_num - i - 1].qid(), qgates_[qgate_num - i - 1].phase());
   }
   return qc;
 }
@@ -547,8 +545,6 @@ void Sharq::QCirc::gate_cancel()
   while (true) {
     uint32_t qgate_num = qgates_.size();
     gate_cancel_one_time();
-    //std::cout << "before, after: " << qgate_num << ", " << qgates_.size() << std::endl; // test
-    //show(); // test
     if (qgates_.size() == qgate_num) break;
   }
 }

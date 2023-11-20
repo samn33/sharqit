@@ -79,18 +79,6 @@ TEST(QGate, H) {
   EXPECT_EQ("H 1", qgate.to_string(false));
 }
 
-//TEST(QGate, RX) {
-//  Sharq::Phase PI("PI");
-//  Sharq::QGate qgate(Sharq::QGateKind::RX, {1}, 3*PI/4);
-//  EXPECT_EQ(Sharq::QGateKind::RX, qgate.kind());
-//  EXPECT_EQ(1, qgate.qid()[0]);
-//  EXPECT_EQ(true, qgate.phase() == 3*PI/4);
-//  EXPECT_EQ("RX(3π/4)", qgate.name(true));
-//  EXPECT_EQ("RX(3/4)", qgate.name(false));
-//  EXPECT_EQ("RX(3π/4) 1", qgate.to_string(true));
-//  EXPECT_EQ("RX(3/4) 1", qgate.to_string(false));
-//}
-
 TEST(QGate, RZ) {
   Sharq::Phase PI("PI");
   Sharq::QGate qgate(Sharq::QGateKind::RZ, {1}, 3*PI/4);
@@ -114,14 +102,3 @@ TEST(QGate, CX) {
   EXPECT_EQ("CX 1 3", qgate.to_string(true));
   EXPECT_EQ("CX 1 3", qgate.to_string(false));
 }
-
-//TEST(QGate, KindPhase) {
-//  std::string str = "RX(2*PI/3)";
-//  std::tuple<Sharq::QGateKind, Sharq::Phase> kp = Sharq::QGate::kind_phase(str);
-//  EXPECT_EQ(Sharq::QGateKind::RX, std::get<0>(kp));
-//  EXPECT_EQ(true, Sharq::Phase(2,3) == std::get<1>(kp));
-//  str = "RX(-2*PI/3)";
-//  kp = Sharq::QGate::kind_phase(str);
-//  EXPECT_EQ(Sharq::QGateKind::RX, std::get<0>(kp));
-//  EXPECT_EQ(true, Sharq::Phase(-2,3) == std::get<1>(kp));
-//}

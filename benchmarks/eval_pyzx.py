@@ -30,11 +30,6 @@ if __name__ == '__main__':
         name_list.append(name)
         path_list.append(path)
     
-    #name_list = ["tof_3", "gf2^8", "Adder16"]
-    #path_list = ["qcirc_pyzx/tof_3_before",
-    #             "qcirc_pyzx/gf2^E8_mult_before",
-    #             "qcirc_pyzx/Adder16_before"]
-
     print("name,time[sec],T-count<in>,T-count<out>")
     for n,p in zip(name_list, path_list):
         (ptime, tcout_in, tcout_out) = eval_pyzx(p)

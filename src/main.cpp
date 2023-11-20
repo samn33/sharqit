@@ -4,7 +4,6 @@ void test_load(const std::string& s) {
 
   try {
     Sharq::Optimizer opt;
-    //opt.log_file("hoge.log");
 
     Sharq::QCirc qc_in;
     qc_in.load("sandbox/" + s + ".sqc");
@@ -12,8 +11,6 @@ void test_load(const std::string& s) {
 
     Sharq::QCirc qc_out = opt.execute(qc_in);
 
-    //qc_in.show();
-    //qc_out.show();
     std::cout << "T-count: " << qc_in.tcount() << ","<< qc_out.tcount() << std::endl;
     std::cout << "equal? " << qc_in.is_equal(qc_out) << std::endl;
   }
@@ -47,7 +44,7 @@ void test(int n) {
       qc_in.cx(0,1).t(1).s(0).x(1).t(1).cx(1,0).h(1).s(1);
     }
     else if (n == 5) {
-      qc_in.cx(1,0).h(0).h(1).cx(0,1).cx(1,0).cx(0,1).s(1).cx(0,1); // NG
+      qc_in.cx(1,0).h(0).h(1).cx(0,1).cx(1,0).cx(0,1).s(1).cx(0,1);
     }
     else if (n == 6) {
       qc_in.cx(0,1).cx(0,1).cx(1,0).cx(1,0).h(0).h(1).cx(0,1).s(1);
@@ -164,12 +161,8 @@ void test_zxdiagram_stats()
     qc.x(0).z(1).s(0).cz(1,2).sdg(1).h(0).t(0).tdg(1).h(2).rz(0,PI/2).rz(2,PI/4).cx(0,1);
     qc.show();
 
-    //qc.to_svg_file("qc.svg"); // test
-
     Sharq::ZXDiagram zx = qc.to_zxdiagram();
     zx.show();
-
-    //zx.to_svg_file("zx.svg"); // test
 
     std::map<std::string, uint32_t> sts = zx.stats();
 
@@ -229,9 +222,6 @@ void test_gfusion(int pg_num, int leaf_num)
 
 int main(int argc, char** argv)
 {
-  //test_zxdiagram_stats();
-  //test_qcirc_stats();
-
   std::string mode;
   if (argc > 1) {
     mode = argv[1];
