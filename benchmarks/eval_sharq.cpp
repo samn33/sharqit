@@ -20,7 +20,7 @@ void eval_sharq(const std::string& name, const std::string& path_in, const std::
     auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
     double proc_time = msec / 1000.;
 
-    std::cout << name << "," << std::to_string(proc_time) << "," << qc_in.tcount() << ","<< qc_out.tcount() << std::endl;
+    std::cout << name << "," << std::to_string(proc_time) << "," << qc_in.t_count() << ","<< qc_out.t_count() << std::endl;
   }
   catch (std::runtime_error& e) {
     std::cerr << "runtime_error: " << e.what() << std::endl;

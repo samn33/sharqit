@@ -11,7 +11,7 @@ void test_load(const std::string& s) {
 
     Sharq::QCirc qc_out = opt.execute(qc_in);
 
-    std::cout << "T-count: " << qc_in.tcount() << ","<< qc_out.tcount() << std::endl;
+    std::cout << "T-count: " << qc_in.t_count() << ","<< qc_out.t_count() << std::endl;
     std::cout << "equal? " << qc_in.is_equal(qc_out) << std::endl;
   }
   catch (std::runtime_error& e) {

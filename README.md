@@ -24,7 +24,7 @@ Install the library 'sharq'.
     $ make
     $ make install
 
-Add folloing line to your ~/.bashrc. (If you are using another shell, replace as appropriate.)
+Add following line to your ~/.bashrc. (If you are using another shell, replace as appropriate.)
 
     export LD_LIBRARY_PATH="${HOME}/lib:$LD_LIBRARY_PATH"
 
@@ -49,14 +49,14 @@ Add folloing line to your ~/.bashrc. (If you are using another shell, replace as
     
       qc_in.show(); // show the circuit
       qc_in.save("in.sqc"); // save to text file
-      std::cout << "T-count (in) = " << qc_in.tcount() << std::endl;
+      std::cout << "T-count (in) = " << qc_in.t_count() << std::endl;
     
       Sharq::Optimizer opt;
       Sharq::QCirc qc_out = opt.execute(qc_in); // circuit optimization
     
       qc_out.show(); // show the circuit
       qc_out.save("out.sqc"); // save to text file
-      std::cout << "T-count (out) = " << qc_out.tcount() << std::endl;
+      std::cout << "T-count (out) = " << qc_out.t_count() << std::endl;
     
       return 0;
     }
@@ -66,7 +66,7 @@ Build and execute it.
     $ g++ -O4 -std=c++17 -L ~/lib -I ~/include -I /usr/include/eigen3 sample1.cpp -lsharq
 	$ ./a.out
 
-#### Explicitly specified the quantum circuit
+#### Explicitly specified quantum circuit
 
     $ cat sample2.cpp
 	...
@@ -81,7 +81,7 @@ Build and execute it.
     Sharq::QCirc qc_out = opt.execute(qc_in);
     ...
 
-#### Load quantum circuit
+#### Quantum circuit file
 
     $ cat in.sqc
     H 3
@@ -110,7 +110,7 @@ Use 'load' method to load the file.
 
 ## Benchmarks
 
-Processing time and T-count compared with [PyZX](https://github.com/Quantomatic/pyzx) (Intel(R) Core(TM) i5-3320M CPU @ 2.60GHz, 16GB RAM).
+Processing time and T-count compared with [PyZX](https://github.com/Quantomatic/pyzx) (Intel Core i5-3320M CPU @ 2.60GHz, 16GB RAM).
 
 ![benchmarks](/benchmarks/plot.png)
 

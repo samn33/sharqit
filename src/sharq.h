@@ -355,7 +355,7 @@ namespace Sharq {
     void save(const std::string& file_name) const;
     void load(const std::string& file_name);
     std::map<std::string, uint32_t> stats() const;
-    uint32_t tcount() const
+    uint32_t t_count() const
     {
       uint32_t cnt = 0;
       for (auto& qgate:qgates_) {
