@@ -110,13 +110,11 @@ Use 'load' method to load the file.
 
 ## Benchmarks
 
-Processing time and T-count compared with [PyZX](https://github.com/Quantomatic/pyzx).
+Processing time and T-count compared with [PyZX](https://github.com/Quantomatic/pyzx) (Intel(R) Core(TM) i5-3320M CPU @ 2.60GHz, 16GB RAM).
 
 ![benchmarks](/benchmarks/plot.png)
 
-The quantum circuit data used in this benchmark is listed below.
-
-Yunseong Nam, Neil J Ross, Yuan Su, Andrew M Childs, and Dmitri Maslov. optimizer: Benchmark quantum circuits before and after optimization. [URl][https://github.com/njross/optimizer.]
+The quantum circuit data from [optimizer: Benchmark quantum circuits before and after optimization](https://github.com/njross/optimizer).
 
 ## Requirements
 
