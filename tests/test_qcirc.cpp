@@ -751,11 +751,16 @@ TEST(QCirc, Stats) {
   Sharq::Optimizer opt;
   Sharq::QCirc qc;
 
-  qc.x(0).z(1).s(0).sdg(1).t(0).tdg(1).h(2).rz(0,PI/2).rz(1,PI/4);
+  qc.x(0).z(1).s(0).sdg(1).t(0).tdg(1).h(2).rz(0,PI/2).id(3).rz(1,PI/4);
+  qc.show();
   std::map<std::string, uint32_t> sts = qc.stats();
 
-  EXPECT_EQ(sts["clifford"], 6);
-  EXPECT_EQ(sts["non_clifford"], 3);
-  EXPECT_EQ(sts["pauli"], 2);
-  EXPECT_EQ(sts["proper_clifford"], 3);
+  EXPECT_EQ(sts["id_count"], 1);
+  EXPECT_EQ(sts["x_count"], 1);
+  EXPECT_EQ(sts["z_count"], 1);
+  EXPECT_EQ(sts["h_count"], 1);
+  EXPECT_EQ(sts["s_count"], 3);
+  EXPECT_EQ(sts["t_count"], 3);
+  EXPECT_EQ(sts["rz_count"], 8);
+  EXPECT_EQ(sts["gate_count"], 9);
 }

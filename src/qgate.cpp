@@ -299,7 +299,7 @@ bool Sharq::QGate::mergeable(const Sharq::QGate& other) const
 
   if (qid_.size() == 1 && other.qid().size() == 1) {
     if (kind_ == other.kind()) return true;
-    else if (is_rotation_Z() && other.is_rotation_Z()) return true;
+    else if (is_RZ_gate() && other.is_RZ_gate()) return true;
   }
   else if (qid_.size() == 2 && other.qid().size() == 2) {
     if (kind_ == other.kind() && qid_[0] == other.qid()[0] && qid_[1] == other.qid()[1]) return true;
@@ -326,10 +326,10 @@ bool Sharq::QGate::commutable(const Sharq::QGate& other) const
 
   /* single qubit gate and CNOT gate */
   if (qid_.size() == 1 && other.qid().size() == 2) {
-    if (is_rotation_Z() && (qid_[0] == other.qid()[0])) return true;
+    if (is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
   }
   if (qid_.size() == 2 && other.qid().size() == 1) {
-    if (other.is_rotation_Z() && (qid_[0] == other.qid()[0])) return true;
+    if (other.is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
   }  
   if (qid_.size() == 2 && other.qid().size() == 2) {
     if (kind_ == other.kind() &&
@@ -341,7 +341,7 @@ bool Sharq::QGate::commutable(const Sharq::QGate& other) const
 
 void Sharq::QGate::merge(Sharq::QGate other)
 {
-  if (kind_ == other.kind() && !is_rotation_Z()) {
+  if (kind_ == other.kind() && !is_RZ_gate()) {
     kind(Sharq::QGateKind::Id);
   }
   else {

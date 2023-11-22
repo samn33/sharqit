@@ -299,21 +299,24 @@ namespace Sharq {
     /* member functions */
     std::string name(bool pi_str = true) const;
     std::string to_string(bool pi_str = true) const;
-    bool is_pauli() const { return (kind_ == QGateKind::X || kind_ == QGateKind::Z || kind_ == QGateKind::Id); }
-    bool is_proper_clifford() const
+    bool is_Id_gate() const { return (kind_ == QGateKind::Id); }
+    bool is_X_gate() const { return (kind_ == QGateKind::X); }
+    bool is_Z_gate() const
+    {
+      if (kind_ == QGateKind::Z) return true;
+      else if (kind_ == QGateKind::RZ && phase_ == Phase(1)) return true;
+      return false;
+    }
+    bool is_H_gate() const { return (kind_ == QGateKind::H); }
+    bool is_S_gate() const
     {
       bool ans = false;
       if (kind_ == QGateKind::RZ) {
-	if (phase_ == Phase(1,2) || phase_ == Phase(3,2)) ans = true;
+	if (phase_ == Phase(1,2) || phase_ == Phase(-1,2)) ans = true;
       }
       else if (kind_ == QGateKind::S || kind_ == QGateKind::Sdg) { ans = true; }
       return ans;
     }
-    bool is_clifford() const { return (kind_ == QGateKind::H || kind_ == QGateKind::CX || is_pauli() || is_proper_clifford()); }
-    bool is_non_clifford() const { return !(is_clifford()); }
-    bool is_rotation_Z() const { return (kind_ == QGateKind::Z || kind_ == QGateKind::S || kind_ == QGateKind::Sdg ||
-					 kind_ == QGateKind::T || kind_ == QGateKind::Tdg || kind_ == QGateKind::RZ ||
-					 kind_ == QGateKind::Id); }
     bool is_T_gate() const
     {
       bool ans = false;
@@ -323,6 +326,14 @@ namespace Sharq {
       else if (kind_ == QGateKind::T || kind_ == QGateKind::Tdg) { ans = true; }
       return ans;
     }
+    bool is_CX_gate() const { return (kind_ == QGateKind::CX); }
+    bool is_RZ_gate() const { return (kind_ == QGateKind::Z || kind_ == QGateKind::S || kind_ == QGateKind::Sdg ||
+				      kind_ == QGateKind::T || kind_ == QGateKind::Tdg || kind_ == QGateKind::RZ ||
+				      kind_ == QGateKind::Id); }
+    bool is_pauli_gate() const { return (is_X_gate() || is_Z_gate() || is_Id_gate()); }
+    bool is_proper_clifford_gate() const { return is_S_gate(); }
+    bool is_clifford_gate() const{ return (is_pauli_gate() || is_H_gate() || is_CX_gate() || is_S_gate()); }
+    bool is_non_clifford_gate() const { return !(is_clifford_gate()); }
     QGate inverse() const;
     bool is_identical(QGate& other) const;
     bool mergeable(const QGate& other) const;
@@ -355,14 +366,15 @@ namespace Sharq {
     void save(const std::string& file_name) const;
     void load(const std::string& file_name);
     std::map<std::string, uint32_t> stats() const;
-    uint32_t t_count() const
-    {
-      uint32_t cnt = 0;
-      for (auto& qgate:qgates_) {
-	if (qgate.is_T_gate()) ++cnt;
-      }
-      return cnt;
-    }
+    uint32_t gate_count() const { return (qgates_.size() - id_count()); }
+    uint32_t id_count() const;
+    uint32_t x_count() const;
+    uint32_t z_count() const;
+    uint32_t h_count() const;
+    uint32_t s_count() const;
+    uint32_t t_count() const;
+    uint32_t cx_count() const;
+    uint32_t rz_count() const;
     std::string to_string(const uint32_t width = 100) const;
     void show(const uint32_t width = 100) const { std::cout << to_string(width); }
     QCirc& add_qgate(const QGateKind kind, const std::vector<uint32_t>& qid, const Phase& phase = 0);
@@ -680,16 +692,24 @@ namespace Sharq {
   class Optimizer
   {
   private:
-    std::string log_file_;
+    double proc_time_;
+    std::map<std::string, uint32_t> stats_in_;
+    std::map<std::string, uint32_t> stats_out_;
   public:
-    Optimizer(const std::string& log_file = "") : log_file_(log_file) {}
     /* getters */
-    std::string log_file() const { return log_file_; }
+    double proc_time() const { return proc_time_; }
+    std::map<std::string, uint32_t> stats_in() const { return stats_in_; }    
+    std::map<std::string, uint32_t> stats_out() const { return stats_out_; }    
     /* setters */
-    void log_file(const std::string& log_file) { log_file_ = log_file; }
+    void proc_time(const double proc_time) { proc_time_ = proc_time; }
+    void stats_in(const std::map<std::string, uint32_t>& stats_in) { stats_in_ = stats_in; }
+    void stats_out(const std::map<std::string, uint32_t>& stats_out) { stats_out_ = stats_out; }
     /* member functions */
+    std::string to_string() const;
+    void show() const { std::cout << to_string() << std::endl; }
     QCirc execute(const QCirc& qc_in);
-  };
+    friend std::ostream& operator<<(std::ostream& ost, const Optimizer& opt) { ost << opt.to_string(); return ost; }
+   };
   
   /* utility functions */
   

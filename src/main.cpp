@@ -9,10 +9,17 @@ void test_load(const std::string& s) {
     qc_in.load("sandbox/" + s + ".sqc");
     std::cout << "file : " << "sandbox/" + s + ".sqc" << std::endl;
 
+    //std::cout << "== result (before) ==" << std::endl;
+    //opt.show();
+
     Sharq::QCirc qc_out = opt.execute(qc_in);
 
     std::cout << "T-count: " << qc_in.t_count() << ","<< qc_out.t_count() << std::endl;
     std::cout << "equal? " << qc_in.is_equal(qc_out) << std::endl;
+
+    std::cout << "== result ==" << std::endl;
+    opt.show();
+    //std::cout << opt << std::endl;
   }
   catch (std::runtime_error& e) {
     std::cerr << "runtime_error: " << e.what() << std::endl;
