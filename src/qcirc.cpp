@@ -44,6 +44,7 @@ std::map<std::string, uint32_t> Sharq::QCirc::stats() const
   sts["cx_count"] = cx_count();
   sts["rz_count"] = rz_count();
   sts["gate_count"] = gate_count();
+  sts["depth"] = depth();
   return sts;
 }
 
@@ -101,6 +102,30 @@ uint32_t Sharq::QCirc::rz_count() const
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_RZ_gate()) ++cnt;
   return cnt;
+}
+
+uint32_t Sharq::QCirc::depth() const
+{
+  std::vector<uint32_t> depth_count(qubit_num_, 0);
+
+  for (auto& qgate:qgates_) {
+    std::vector<uint32_t> qid = qgate.qid();
+    uint32_t max_dep = 0;
+    for (auto& q:qid) {
+      ++depth_count[q];
+      if (depth_count[q] > max_dep) {
+	max_dep = depth_count[q];
+      }
+    }
+    if (qid.size() > 1) {
+      for (auto& q:qid) {
+	depth_count[q] = max_dep;
+      }
+    }
+  }
+  uint32_t depth = *max_element(depth_count.begin(), depth_count.end());
+
+  return depth;
 }
 
 std::string Sharq::QCirc::to_string(const uint32_t width) const

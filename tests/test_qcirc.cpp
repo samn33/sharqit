@@ -748,11 +748,9 @@ TEST(QCirc, SaveLoad) {
 
 TEST(QCirc, Stats) {
   Sharq::Phase PI("PI");
-  Sharq::Optimizer opt;
   Sharq::QCirc qc;
 
   qc.x(0).z(1).s(0).sdg(1).t(0).tdg(1).h(2).rz(0,PI/2).id(3).rz(1,PI/4);
-  qc.show();
   std::map<std::string, uint32_t> sts = qc.stats();
 
   EXPECT_EQ(sts["id_count"], 1);
@@ -763,4 +761,22 @@ TEST(QCirc, Stats) {
   EXPECT_EQ(sts["t_count"], 3);
   EXPECT_EQ(sts["rz_count"], 8);
   EXPECT_EQ(sts["gate_count"], 9);
+  EXPECT_EQ(sts["depth"], 4);
+}
+
+TEST(QCirc, Stats00) {
+  Sharq::QCirc qc;
+
+  qc.load("data/00.sqc");
+  std::map<std::string, uint32_t> sts = qc.stats();
+
+  EXPECT_EQ(sts["id_count"], 0);
+  EXPECT_EQ(sts["x_count"], 2);
+  EXPECT_EQ(sts["z_count"], 0);
+  EXPECT_EQ(sts["h_count"], 10);
+  EXPECT_EQ(sts["s_count"], 7);
+  EXPECT_EQ(sts["t_count"], 2);
+  EXPECT_EQ(sts["rz_count"], 9);
+  EXPECT_EQ(sts["gate_count"], 26);
+  EXPECT_EQ(sts["depth"], 11);
 }

@@ -5,4 +5,6 @@
 
 ## [0.0.2] - 2023-xx-xx
 ### Changed
-- Optimizer::stats - to store every gate count, total gate count, and processing time
+- QCirc::stats - to store every gate count, total gate count, and processing time
+### Added
+- QCirc::depth - to get depth of quantum circuit

@@ -8,9 +8,7 @@ void test_load(const std::string& s) {
     Sharq::QCirc qc_in;
     qc_in.load("sandbox/" + s + ".sqc");
     std::cout << "file : " << "sandbox/" + s + ".sqc" << std::endl;
-
-    //std::cout << "== result (before) ==" << std::endl;
-    //opt.show();
+    qc_in.show();
 
     Sharq::QCirc qc_out = opt.execute(qc_in);
 
@@ -19,7 +17,7 @@ void test_load(const std::string& s) {
 
     std::cout << "== result ==" << std::endl;
     opt.show();
-    //std::cout << opt << std::endl;
+    qc_out.show();
   }
   catch (std::runtime_error& e) {
     std::cerr << "runtime_error: " << e.what() << std::endl;

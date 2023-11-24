@@ -375,6 +375,7 @@ namespace Sharq {
     uint32_t t_count() const;
     uint32_t cx_count() const;
     uint32_t rz_count() const;
+    uint32_t depth() const;
     std::string to_string(const uint32_t width = 100) const;
     void show(const uint32_t width = 100) const { std::cout << to_string(width); }
     QCirc& add_qgate(const QGateKind kind, const std::vector<uint32_t>& qid, const Phase& phase = 0);
