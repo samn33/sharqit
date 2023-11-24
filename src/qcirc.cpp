@@ -35,13 +35,97 @@ void Sharq::QCirc::load(const std::string& file_name)
 std::map<std::string, uint32_t> Sharq::QCirc::stats() const
 {
   std::map<std::string, uint32_t> sts;
-  for (auto& qgate:qgates_) {
-    if (qgate.is_pauli()) sts["pauli"] = sts["pauli"] + 1;
-    if (qgate.is_proper_clifford()) sts["proper_clifford"] = sts["proper_clifford"] + 1;
-    if (qgate.is_clifford()) sts["clifford"] = sts["clifford"] + 1;
-    if (qgate.is_non_clifford()) sts["non_clifford"] = sts["non_clifford"] + 1;
-  }
+  sts["id_count"] = id_count();
+  sts["x_count"] = x_count();
+  sts["z_count"] = z_count();
+  sts["h_count"] = h_count();
+  sts["s_count"] = s_count();
+  sts["t_count"] = t_count();
+  sts["cx_count"] = cx_count();
+  sts["rz_count"] = rz_count();
+  sts["gate_count"] = gate_count();
+  sts["depth"] = depth();
   return sts;
+}
+
+uint32_t Sharq::QCirc::id_count() const
+{
+  uint32_t cnt = 0;
+  for (auto& qgate:qgates_) if (qgate.is_Id_gate()) ++cnt;
+  return cnt;
+}
+
+uint32_t Sharq::QCirc::x_count() const
+{
+  uint32_t cnt = 0;
+  for (auto& qgate:qgates_) if (qgate.is_X_gate()) ++cnt;
+  return cnt;
+}
+
+uint32_t Sharq::QCirc::z_count() const
+{
+  uint32_t cnt = 0;
+  for (auto& qgate:qgates_) if (qgate.is_Z_gate()) ++cnt;
+  return cnt;
+}
+
+uint32_t Sharq::QCirc::h_count() const
+{
+  uint32_t cnt = 0;
+  for (auto& qgate:qgates_) if (qgate.is_H_gate()) ++cnt;
+  return cnt;
+}
+
+uint32_t Sharq::QCirc::s_count() const
+{
+  uint32_t cnt = 0;
+  for (auto& qgate:qgates_) if (qgate.is_S_gate()) ++cnt;
+  return cnt;
+}
+
+uint32_t Sharq::QCirc::t_count() const
+{
+  uint32_t cnt = 0;
+  for (auto& qgate:qgates_) if (qgate.is_T_gate()) ++cnt;
+  return cnt;
+}
+
+uint32_t Sharq::QCirc::cx_count() const
+{
+  uint32_t cnt = 0;
+  for (auto& qgate:qgates_) if (qgate.is_CX_gate()) ++cnt;
+  return cnt;
+}
+
+uint32_t Sharq::QCirc::rz_count() const
+{
+  uint32_t cnt = 0;
+  for (auto& qgate:qgates_) if (qgate.is_RZ_gate()) ++cnt;
+  return cnt;
+}
+
+uint32_t Sharq::QCirc::depth() const
+{
+  std::vector<uint32_t> depth_count(qubit_num_, 0);
+
+  for (auto& qgate:qgates_) {
+    std::vector<uint32_t> qid = qgate.qid();
+    uint32_t max_dep = 0;
+    for (auto& q:qid) {
+      ++depth_count[q];
+      if (depth_count[q] > max_dep) {
+	max_dep = depth_count[q];
+      }
+    }
+    if (qid.size() > 1) {
+      for (auto& q:qid) {
+	depth_count[q] = max_dep;
+      }
+    }
+  }
+  uint32_t depth = *max_element(depth_count.begin(), depth_count.end());
+
+  return depth;
 }
 
 std::string Sharq::QCirc::to_string(const uint32_t width) const
@@ -500,7 +584,7 @@ void Sharq::QCirc::gate_cancel_one_time()
 
     bool merge = false;
     uint32_t pos = 0;
-    for (int32_t i = qgates_out.size() - 1; i > 0; --i) {
+    for (int32_t i = qgates_out.size() - 1; i >= 0; --i) {
       if (qgates_out[i].mergeable(qgate)) {
 	merge = true;
 	pos = i;

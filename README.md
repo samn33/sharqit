@@ -108,21 +108,38 @@ Use 'load' method to load the file.
     Sharq::QCirc qc_out = opt.execute(qc_in);
     ...
 
+
 ## Benchmarks
 
-Processing time and T-count compared with [PyZX](https://github.com/Quantomatic/pyzx) (Intel Core i5-3320M CPU @ 2.60GHz, 16GB RAM).
+Processing time and T-count of 'sharq' are compared with [PyZX](https://github.com/Quantomatic/pyzx). The operating environment is Intel Core i5-3320M CPU @2.60GHz, 16GB RAM.
 
 ![benchmarks](/benchmarks/plot.png)
 
-The quantum circuit data from [optimizer: Benchmark quantum circuits before and after optimization](https://github.com/njross/optimizer).
+Quantum circuit data used in the benchmarks are from [optimizer: Benchmark quantum circuits before and after optimization](https://github.com/njross/optimizer).
+
+
+## References
+
+Papers about quantum circuit optimization using ZX-calculus.
+
+1. Ross Duncan, Aleks Kissinger, Simon Perdrix, John van de Wetering,
+"Graph-theoretic Simplification of Quantum Circuits with the ZX-calculus",
+[arXiv:1902.03178](https://arxiv.org/abs/1902.03178)
+
+2. Aleks Kissinger, John van de Wetering,
+"Reducing T-count with the ZX-calculus",
+[arXiv:1903.10477](https://arxiv.org/abs/1903.10477)
+
 
 ## Requirements
 
 - Linux (Ubuntu 22.04 LTS)
 
+
 ## Licence
 
 MIT
+
 
 ## Author
 
