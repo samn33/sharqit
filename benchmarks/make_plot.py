@@ -1,5 +1,8 @@
 import matplotlib.pyplot as plt
 
+PYZX_LABEL="pyzx-0.7.3"
+SHARQ_LABEL="sharq-0.0.2"
+
 def main():
 
     with open("result_pyzx.csv", mode='r') as f:
@@ -30,8 +33,8 @@ def main():
     ax1 = fig.add_subplot(1, 2, 1)
     ax1.set_xlabel("circuit", fontsize=14)
     ax1.set_ylabel("time (sec)", fontsize=14)
-    g1 = ax1.bar(names, time_pyzx, label='pyzx', align='edge', width=-0.3)
-    g2 = ax1.bar(names, time_sharq, label='sharq', align='edge', width=0.3)
+    g1 = ax1.bar(names, time_pyzx, label=PYZX_LABEL, align='edge', width=-0.3)
+    g2 = ax1.bar(names, time_sharq, label=SHARQ_LABEL, align='edge', width=0.3)
 
     ax1.set_xticks(range(len(names)))
     ax1.set_xticklabels(names, rotation=90)
@@ -44,8 +47,8 @@ def main():
     ax2 = fig.add_subplot(1, 2, 2)
     ax2.set_xlabel("circuit", fontsize=14)
     ax2.set_ylabel("T-Count", fontsize=14)
-    g1 = ax2.bar(names, tcount_pyzx, label='pyzx', align='edge', width=-0.3)
-    g2 = ax2.bar(names, tcount_sharq, label='sharq', align='edge', width=0.3)
+    g1 = ax2.bar(names, tcount_pyzx, label=PYZX_LABEL, align='edge', width=-0.3)
+    g2 = ax2.bar(names, tcount_sharq, label=SHARQ_LABEL, align='edge', width=0.3)
 
     ax2.set_ylim(0, 350)
     ax2.set_xticks(range(len(names)))

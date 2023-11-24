@@ -401,9 +401,9 @@ namespace Sharq {
     QCirc& tdg(const uint32_t q) { return add_qgate(QGateKind::Tdg, {q}); }
     QCirc& h(const uint32_t q) { return add_qgate(QGateKind::H, {q}); }
     QCirc& rz(const uint32_t q, const Phase& phase) { return add_qgate(QGateKind::RZ, {q}, phase); }
-    QCirc& rx(const uint32_t q, const Phase& phase) { h(q); rz(q,phase); h(q); return *this; }
     QCirc& cx(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::CX, {c, t}); }
     /* compound gates */
+    QCirc& rx(const uint32_t q, const Phase& phase) { h(q); rz(q,phase); h(q); return *this; }
     QCirc& y(const uint32_t q) { x(q); z(q); return *this; }
     QCirc& xr(const uint32_t q) { sdg(q); h(q); sdg(q); return *this;}
     QCirc& xrdg(const uint32_t q) { s(q); h(q); s(q); return *this;}
