@@ -584,7 +584,7 @@ void Sharq::QCirc::gate_cancel_one_time()
 
     bool merge = false;
     uint32_t pos = 0;
-    for (int32_t i = qgates_out.size() - 1; i > 0; --i) {
+    for (int32_t i = qgates_out.size() - 1; i >= 0; --i) {
       if (qgates_out[i].mergeable(qgate)) {
 	merge = true;
 	pos = i;
