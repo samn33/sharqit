@@ -25,6 +25,7 @@
 
 namespace Sharq {
 
+  constexpr char VERSION[] = "v0.0.3";
   constexpr double EPS = 1.0e-8;
 
   class Fraction;
@@ -378,6 +379,8 @@ namespace Sharq {
     uint32_t depth() const;
     std::string to_string(const uint32_t width = 100) const;
     void show(const uint32_t width = 100) const { std::cout << to_string(width); }
+    void print_qcirc() const { for (auto& g:qgates_) { std::cout << g.to_string(false) << std::endl; }}
+    void print_stats() const;
     QCirc& add_qgate(const QGateKind kind, const std::vector<uint32_t>& qid, const Phase& phase = 0);
     QCirc& add_qgate(const QGate& qgate);
     QCirc& add_qcirc(const QCirc& other);

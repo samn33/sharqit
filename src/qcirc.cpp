@@ -48,6 +48,20 @@ std::map<std::string, uint32_t> Sharq::QCirc::stats() const
   return sts;
 }
 
+void Sharq::QCirc::print_stats() const
+{
+  std::map<std::string, uint32_t> sts = Sharq::QCirc::stats();
+  std::cout << "X_count  = " << sts["x_count"] << std::endl;
+  std::cout << "Z_count  = " << sts["z_count"] << std::endl;
+  std::cout << "H_count  = " << sts["h_count"] << std::endl;
+  std::cout << "S_count  = " << sts["s_count"] << std::endl;
+  std::cout << "T_count  = " << sts["t_count"] << std::endl;
+  std::cout << "RZ_count = " << sts["rz_count"] << std::endl;
+  std::cout << "CX_count = " << sts["cx_count"] << std::endl;
+  std::cout << "gate_count = " << sts["gate_count"] << std::endl;
+  std::cout << "depth      = " << sts["depth"] << std::endl;
+}
+
 uint32_t Sharq::QCirc::id_count() const
 {
   uint32_t cnt = 0;
