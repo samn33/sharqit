@@ -11,14 +11,14 @@ int main()
   
   qc_in.show();
   qc_in.save("in.sqc");
-  std::cout << "T-count (in) = " << qc_in.tcount() << std::endl;
+  std::cout << "T-count (in) = " << qc_in.t_count() << std::endl;
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_out = opt.execute(qc_in);
 
   qc_out.show();
   qc_out.save("out.sqc");
-  std::cout << "T-count (out) = " << qc_out.tcount() << std::endl;
+  std::cout << "T-count (out) = " << qc_out.t_count() << std::endl;
 
   return 0;
 }
