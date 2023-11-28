@@ -5,16 +5,18 @@ void print_help()
   std::stringstream ss;
   ss << "sharq - quantum circuit optimizer" << std::endl;
   ss << "[usage]" << std::endl;
-  ss << "  sharq [option] [file] (> [file])" << std::endl;
+  ss << "  sharq [option] ([file]..)([params]) (> [file])" << std::endl;
   ss << "[option]" << std::endl;
-  ss << "  --opt FILE    : optimize the circuit file, output to stdout." << std::endl;
-  ss << "  --rand PARAMS : generate a random circuit file, output to stdout." << std::endl;
-  ss << "  --stats FILE  : print stats of the circut file." << std::endl;
-  ss << "  --show FILE   : print the circuit diagram as ascii text." << std::endl;
-  ss << "  --help        : print help message." << std::endl;
-  ss << "  --version     : print version." << std::endl;
+  ss << "  --opt FILE       : optimize the circuit file, output to stdout." << std::endl;
+  ss << "  --rand PARAMS    : generate a random circuit file, output to stdout." << std::endl;
+  ss << "  --eq FILE1 FILE2 : verify two circuits are equal. (can't execute that have too many qubits)" << std::endl;
+  ss << "  --stats FILE     : print stats of the circut file." << std::endl;
+  ss << "  --show FILE      : print the circuit diagram as ascii text." << std::endl;
+  ss << "  --help           : print help message." << std::endl;
+  ss << "  --version        : print version." << std::endl;
   ss << "[examples]" << std::endl;
   ss << "  $ sharq --opt foo.sqc > bar.sqc" << std::endl;
+  ss << "  $ sharq --eq foo.sqc bar.sqc" << std::endl;
   ss << "  $ sharq --rand 3,100,\"X\":1,\"H\":2,\"T\":3.5,\"RZ(1/2)\":1.5 > bar.sqc # 3 qubits,100 gates" << std::endl;
   ss << "  $ sharq --stats foo.sqc" << std::endl;
   ss << "  $ sharq --show foo.sqc" << std::endl;
@@ -42,6 +44,23 @@ void optimize(std::string& fin)
     qc_in.load(fin);
     Sharq::QCirc qc_out = opt.execute(qc_in);
     qc_out.print_qcirc();
+    std::cerr << opt << std::endl;
+  }
+  catch (std::runtime_error& e) {
+    std::cerr << "runtime_error: " << e.what() << std::endl;
+  }
+}
+
+void verify_equality(std::string& fin_A, std::string& fin_B)
+{
+  try {
+    Sharq::QCirc qc_A;
+    Sharq::QCirc qc_B;
+    qc_A.load(fin_A);
+    qc_B.load(fin_B);
+    bool eq = qc_A.is_equal(qc_B);
+    if (eq) std::cout << "true" << std::endl;
+    else std::cout << "false" << std::endl;
   }
   catch (std::runtime_error& e) {
     std::cerr << "runtime_error: " << e.what() << std::endl;
@@ -98,9 +117,6 @@ void show_qcirc(std::string& fin)
 
 int main(int argc, char** argv)
 {
-  std::string fin;
-  std::string params;
-  
   for (int n=1; n<argc; n++) {
     if (strcmp(argv[n],"--help") == 0) {
       print_help();
@@ -119,8 +135,22 @@ int main(int argc, char** argv)
       	std::cerr << "Too many arguments." << std::endl;
       	exit(1);
       }
-      fin = argv[++n];
+      std::string fin = argv[++n];
       optimize(fin);
+      break;
+    }
+    else if (strcmp(argv[n],"--eq") == 0) {
+      if (argc - n <= 1) {
+      	std::cerr << "You must specify two circuit file names." << std::endl;
+      	exit(1);
+      }
+      else if (argc - n > 3) {
+      	std::cerr << "Too many arguments." << std::endl;
+      	exit(1);
+      }
+      std::string fin_A = argv[++n];
+      std::string fin_B = argv[++n];
+      verify_equality(fin_A, fin_B);
       break;
     }
     else if (strcmp(argv[n],"--rand") == 0) {
@@ -132,7 +162,7 @@ int main(int argc, char** argv)
       	std::cerr << "Too many arguments." << std::endl;
       	exit(1);
       }
-      params = argv[++n];
+      std::string params = argv[++n];
       random_qcirc(params);
       break;
     }
@@ -145,7 +175,7 @@ int main(int argc, char** argv)
       	std::cerr << "Too many arguments." << std::endl;
       	exit(1);
       }
-      fin = argv[++n];
+      std::string fin = argv[++n];
       print_stats(fin);
       break;
     }
@@ -158,7 +188,7 @@ int main(int argc, char** argv)
       	std::cerr << "Too many arguments." << std::endl;
       	exit(1);
       }
-      fin = argv[++n];
+      std::string fin = argv[++n];
       show_qcirc(fin);
       break;
     }

@@ -45,6 +45,7 @@ std::map<std::string, uint32_t> Sharq::QCirc::stats() const
   sts["rz_count"] = rz_count();
   sts["gate_count"] = gate_count();
   sts["depth"] = depth();
+  sts["qubit_num"] = qubit_num();
   return sts;
 }
 
@@ -60,6 +61,7 @@ void Sharq::QCirc::print_stats() const
   std::cout << "CX_count = " << sts["cx_count"] << std::endl;
   std::cout << "gate_count = " << sts["gate_count"] << std::endl;
   std::cout << "depth      = " << sts["depth"] << std::endl;
+  std::cout << "qubit_num  = " << sts["qubit_num"] << std::endl;
 }
 
 uint32_t Sharq::QCirc::id_count() const
@@ -278,6 +280,9 @@ Sharq::QCirc& Sharq::QCirc::add_random(const uint32_t qubit_num, const uint32_t 
   std::vector<double> prob_list;
   std::vector<Sharq::Phase> phase_list;
   double prob_tmp = 0.0;
+  if (probs.size() == 0) {
+    throw std::runtime_error("no probabilities are specified.");
+  }
   for (auto it = probs.begin(); it != probs.end(); ++it) {
     std::string str = it.key();
     std::tuple<Sharq::QGateKind, Sharq::Phase> kp = Sharq::QGate::kind_phase(str);
@@ -359,6 +364,7 @@ bool Sharq::QCirc::is_equal(const QCirc& other) const
 {
   Sharq::LinearMap lmap = to_linearmap();
   Sharq::LinearMap lmap_other = other.inverse().to_linearmap();
+  if (qubit_num() != other.qubit_num()) return false;
   lmap *= lmap_other;
   if (lmap.is_identity_multiple_constant()) return true;
   else return false;

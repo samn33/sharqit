@@ -23,6 +23,7 @@ std::string Sharq::Optimizer::to_string() const
   ss << "CX-count = " << stats_in["cx_count"] << " -> " << stats_out["cx_count"] << std::endl;
   ss << "gate-count = " << stats_in["gate_count"] << " -> " << stats_out["gate_count"] << std::endl;
   ss << "depth      = " << stats_in["depth"] << " -> " << stats_out["depth"] << std::endl;
+  ss << "qubit_num  = " << stats_in["qubit_num"] << " -> " << stats_out["qubit_num"] << std::endl;
   ss << "proc time (sec) = " << std::to_string(proc_time_) << std::endl;
   
   std::string s = ss.str();
