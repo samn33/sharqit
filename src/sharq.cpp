@@ -7,13 +7,15 @@ void print_help()
   ss << "[usage]" << std::endl;
   ss << "  sharq [option] [file] (> [file])" << std::endl;
   ss << "[option]" << std::endl;
-  ss << "  --opt     : optimize the circuit file, output to stdout." << std::endl;
-  ss << "  --stats   : print stats of the circut file." << std::endl;
-  ss << "  --show    : print the circuit diagram as ascii text." << std::endl;
-  ss << "  --help    : print help message." << std::endl;
-  ss << "  --version : print version." << std::endl;
+  ss << "  --opt FILE    : optimize the circuit file, output to stdout." << std::endl;
+  ss << "  --rand PARAMS : generate a random circuit file, output to stdout." << std::endl;
+  ss << "  --stats FILE  : print stats of the circut file." << std::endl;
+  ss << "  --show FILE   : print the circuit diagram as ascii text." << std::endl;
+  ss << "  --help        : print help message." << std::endl;
+  ss << "  --version     : print version." << std::endl;
   ss << "[examples]" << std::endl;
   ss << "  $ sharq --opt foo.sqc > bar.sqc" << std::endl;
+  ss << "  $ sharq --rand 3,100,\"X\":1,\"H\":2,\"T\":3.5,\"RZ(1/2)\":1.5 > bar.sqc # 3 qubits,100 gates" << std::endl;
   ss << "  $ sharq --stats foo.sqc" << std::endl;
   ss << "  $ sharq --show foo.sqc" << std::endl;
   ss << "[file format]" << std::endl;
@@ -34,30 +36,70 @@ void print_help()
 
 void optimize(std::string& fin)
 {
-  Sharq::Optimizer opt;
-  Sharq::QCirc qc_in;
-  qc_in.load(fin);
-  Sharq::QCirc qc_out = opt.execute(qc_in);
-  qc_out.print_qcirc();
+  try {
+    Sharq::Optimizer opt;
+    Sharq::QCirc qc_in;
+    qc_in.load(fin);
+    Sharq::QCirc qc_out = opt.execute(qc_in);
+    qc_out.print_qcirc();
+  }
+  catch (std::runtime_error& e) {
+    std::cerr << "runtime_error: " << e.what() << std::endl;
+  }
+}
+
+void random_qcirc(std::string& params)
+{
+  try {
+    std::vector<std::string> args = Sharq::split(params, ',');
+    uint32_t qubit_num = atoi(args[0].c_str());
+    uint32_t gate_num = atoi(args[1].c_str());
+
+    nlohmann::json probs;
+    for (uint32_t i = 2; i < args.size(); ++i) {
+      std::vector<std::string> key_value = Sharq::split(args[i], ':');
+      std::string gate_str = key_value[0];
+      std::string prob_str = key_value[1];
+      probs[gate_str] = atof(prob_str.c_str());
+    }
+
+    Sharq::QCirc qc_rand;
+    qc_rand.add_random(qubit_num, gate_num, probs);
+    qc_rand.print_qcirc();
+  }
+  catch (std::runtime_error& e) {
+    std::cerr << "runtime_error: " << e.what() << std::endl;
+  }
 }
 
 void print_stats(std::string& fin)
 {
-  Sharq::QCirc qc;
-  qc.load(fin);
-  qc.print_stats();
+  try {
+    Sharq::QCirc qc;
+    qc.load(fin);
+    qc.print_stats();
+  }
+  catch (std::runtime_error& e) {
+    std::cerr << "runtime_error: " << e.what() << std::endl;
+  }
 }
 
 void show_qcirc(std::string& fin)
 {
-  Sharq::QCirc qc;
-  qc.load(fin);
-  qc.show();
+  try {
+    Sharq::QCirc qc;
+    qc.load(fin);
+    qc.show();
+  }
+  catch (std::runtime_error& e) {
+    std::cerr << "runtime_error: " << e.what() << std::endl;
+  }
 }
 
 int main(int argc, char** argv)
 {
   std::string fin;
+  std::string params;
   
   for (int n=1; n<argc; n++) {
     if (strcmp(argv[n],"--help") == 0) {
@@ -69,31 +111,52 @@ int main(int argc, char** argv)
       break;
     }
     else if (strcmp(argv[n],"--opt") == 0) {
-      if (argc == 2) {
-	std::cerr << "You must specify a circuit file name." << std::endl;
-	exit(1);
+      if (argc - n <= 1) {
+      	std::cerr << "You must specify a circuit file name." << std::endl;
+      	exit(1);
       }
-      else if (argc > 3) {
-	std::cerr << "Too many arguments." << std::endl;
-	exit(1);
+      else if (argc - n > 2) {
+      	std::cerr << "Too many arguments." << std::endl;
+      	exit(1);
       }
       fin = argv[++n];
       optimize(fin);
       break;
     }
+    else if (strcmp(argv[n],"--rand") == 0) {
+      if (argc - n <= 1) {
+      	std::cerr << "You must specify a circuit file name." << std::endl;
+      	exit(1);
+      }
+      else if (argc - n > 2) {
+      	std::cerr << "Too many arguments." << std::endl;
+      	exit(1);
+      }
+      params = argv[++n];
+      random_qcirc(params);
+      break;
+    }
     else if (strcmp(argv[n],"--stats") == 0) {
-      if (argc != 3) {
+      if (argc - n <= 1) {
 	std::cerr << "You must specify a circuit file name." << std::endl;
 	exit(1);
+      }
+      else if (argc - n > 2) {
+      	std::cerr << "Too many arguments." << std::endl;
+      	exit(1);
       }
       fin = argv[++n];
       print_stats(fin);
       break;
     }
     else if (strcmp(argv[n],"--show") == 0) {
-      if (argc != 3) {
+      if (argc - n <= 1) {
 	std::cerr << "You must specify a circuit file name." << std::endl;
 	exit(1);
+      }
+      else if (argc - n > 2) {
+      	std::cerr << "Too many arguments." << std::endl;
+      	exit(1);
       }
       fin = argv[++n];
       show_qcirc(fin);

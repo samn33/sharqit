@@ -118,13 +118,15 @@ Print help message.
     [usage]
       sharq [option] [file] (> [file])
     [option]
-      --opt     : optimize the circuit file, output to stdout.
-      --stats   : print stats of the circut file.
-      --show    : print the circuit diagram as ascii text.
-      --help    : print help message.
-      --version : print version.
+      --opt FILE    : optimize the circuit file, output to stdout.
+      --rand PARAMS : generate a random circuit file, output to stdout.
+      --stats FILE  : print stats of the circut file.
+      --show FILE   : print the circuit diagram as ascii text.
+      --help        : print help message.
+      --version     : print version.
     [examples]
       $ sharq --opt foo.sqc > bar.sqc
+      $ sharq --rand 3,100,"X":1,"H":2,"T":3.5,"RZ(1/2)":1.5 > bar.sqc # 3 qubits,100 gates
       $ sharq --stats foo.sqc
       $ sharq --show foo.sqc
     ...
