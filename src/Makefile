@@ -9,9 +9,9 @@ LIB_OBJ = $(LIB_SRC:%.cpp=%.o)
 CC = g++
 CFLAG = -fPIC -Wall -O4 -std=c++17
 
-PROG = main
-PROG_SRC = main.cpp
-PROG_OBJ = main.o
+PROG = sharq
+PROG_SRC = sharq.cpp
+PROG_OBJ = sharq.o
 LIB = libsharq.so
 
 IFLAG = -I . -I ~/include -I /usr/include/eigen3
@@ -19,6 +19,7 @@ LFLAG = -L . -L ~/lib
 
 INSTALL_INC = ~/include
 INSTALL_LIB = ~/lib
+INSTALL_BIN = ~/bin
 
 $(PROG): $(PROG_OBJ) $(LIB)
 	$(CC) -o $@ $(CFLAG) $(LFLAG) $(IFLAG) $(PROG_OBJ) -lsharq
@@ -34,7 +35,7 @@ $(LIB_OBJ): $(LIB_SRC)
 $(PROG_OBJ): $(PROG_SRC)
 
 install:
-	cp $(LIB) $(INSTALL_LIB); cp $(INC) $(INSTALL_INC)
+	cp $(LIB) $(INSTALL_LIB); cp $(INC) $(INSTALL_INC); cp $(PROG) $(INSTALL_BIN)
 
 tags:
 	etags *.cpp *.h

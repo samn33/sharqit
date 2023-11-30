@@ -762,6 +762,7 @@ TEST(QCirc, Stats) {
   EXPECT_EQ(sts["rz_count"], 8);
   EXPECT_EQ(sts["gate_count"], 9);
   EXPECT_EQ(sts["depth"], 4);
+  EXPECT_EQ(sts["qubit_num"], 4);
 }
 
 TEST(QCirc, Stats00) {

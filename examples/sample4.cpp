@@ -6,8 +6,8 @@ void test_load(const std::string& s) {
     Sharq::Optimizer opt;
 
     Sharq::QCirc qc_in;
-    qc_in.load("sandbox/" + s + ".sqc");
-    std::cout << "file : " << "sandbox/" + s + ".sqc" << std::endl;
+    qc_in.load("../src/sandbox/" + s + ".sqc");
+    std::cout << "file : " << "../src/sandbox/" + s + ".sqc" << std::endl;
     qc_in.show();
 
     Sharq::QCirc qc_out = opt.execute(qc_in);

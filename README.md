@@ -1,7 +1,7 @@
 sharq
 =====
 
-Quantum Circuit Optimization Library
+Quantum Circuit Optimizer
 
 ## Feature
 
@@ -16,27 +16,28 @@ Install the following software first.
 	$ sudo apt install graphviz
 	$ sudo apt install libeigen3-dev
 
-Install the library 'sharq'.
+Install the library 'libsharq.so' and 'sharq' command.
 
 	$ git clone https://github.com/samn33/sharq.git
     $ cd sharq/src
-    $ mkdir -p ~/lib ~/include
+    $ mkdir -p ~/lib ~/include ~/bin
     $ make
     $ make install
 
-Add following line to your ~/.bashrc. (If you are using another shell, replace as appropriate.)
+Add following lines to your ~/.bashrc. (If you are using another shell, replace as appropriate.)
 
     export LD_LIBRARY_PATH="${HOME}/lib:$LD_LIBRARY_PATH"
+    export PATH="${HOME}/bin:$PATH"
 
 ## Uninstall
 
-    $ rm ~/lib/libsharq.so ~/include/sharq.h
+    $ rm ~/lib/libsharq.so ~/include/sharq.h ~/bin/sharq
 
 ## Usage
 
-### Simple examples
+### Sharq library
 
-#### Random quantum circuit.
+#### Random quantum circuit
 
     $ cat sample1.cpp
     #include "sharq.h"
@@ -81,7 +82,7 @@ Build and execute it.
     Sharq::QCirc qc_out = opt.execute(qc_in);
     ...
 
-#### Quantum circuit file
+#### Quantum circuit loaded from file
 
     $ cat in.sqc
     H 3
@@ -107,6 +108,51 @@ Use 'load' method to load the file.
     Sharq::Optimizer opt;
     Sharq::QCirc qc_out = opt.execute(qc_in);
     ...
+
+### Sharq command
+
+Print help message.
+
+    $ sharq --help
+    sharq - quantum circuit optimizer
+    [usage]
+      sharq [option] ([file]..)([params]) (> [file])
+    [option]
+      --opt FILE       : optimize the circuit file, output to stdout.
+      --rand PARAMS    : generate a random circuit file, output to stdout.
+      --eq FILE1 FILE2 : verify two circuits are equal. (can't execute that have too many qubits)
+      --stats FILE     : print stats of the circut file.
+      --show FILE      : print the circuit diagram as ascii text.
+      --help           : print help message.
+      --version        : print version.
+    [examples]
+      $ sharq --opt foo.sqc > bar.sqc
+      $ sharq --eq foo.sqc bar.sqc
+      $ sharq --rand 3,100,"X":1,"H":2,"T":3.5,"RZ(1/2)":1.5 > bar.sqc # 3 qubits,100 gates
+      $ sharq --stats foo.sqc
+      $ sharq --show foo.sqc
+    ...
+
+## Quantum circuit file format
+
+Sharq supports a simple file format for quantum circuits as follows.
+
+    $ cat foo.sqc"
+    H 0
+    CX 0 1
+    RZ(1/2) 0
+	H 2
+    T+ 2
+    ...
+
+Supported quantum gates are X,Z,H,S,S+,T,T+,CX,RZ.
+S+ and T+ are Hermitian conjugates of S and T respectively.
+RZ gate have a phase factor denoted by fraction brackled in parentheses.
+The unit of phase factor is radian, so 3/4 means 3PI/4, 1 means PI, and so on.
+
+### How to convert from other file format
+
+Sample code converting from qasm file is [here](benchmarks/qasm_to_sqc.py).
 
 
 ## Benchmarks
