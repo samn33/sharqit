@@ -2,7 +2,7 @@
 
 ## [0.0.3-beta] - 2023-11-27
 ### Added
-- sharq command - to execute optimization, print stats, show circuit diagram
+- sharq command - to execute optimization, print stats, show circuit diagram etc
 
 ## [0.0.2] - 2023-11-24
 ### Changed

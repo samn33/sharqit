@@ -113,6 +113,7 @@ Use 'load' method to load the file.
 
 Print help message.
 
+    $ sharq --help
     sharq - quantum circuit optimizer
     [usage]
       sharq [option] ([file]..)([params]) (> [file])
