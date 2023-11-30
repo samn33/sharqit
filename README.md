@@ -135,7 +135,7 @@ Print help message.
 
 ## Quantum circuit file format
 
-bSharq supports a simple file format for quantum circuits as follows.
+Sharq supports a simple file format for quantum circuits as follows.
 
     $ cat foo.sqc"
     H 0
@@ -150,9 +150,9 @@ S+ and T+ are Hermitian conjugates of S and T respectively.
 RZ gate have a phase factor denoted by fraction brackled in parentheses.
 The unit of phase factor is radian, so 3/4 means 3PI/4, 1 means PI, and so on.
 
-### How to convert from OpenQASM format
+### How to convert from other file format
 
-Sample code is [here](benchmarks/qasm_to_sqc.py).
+Sample code converting from qasm file is [here](benchmarks/qasm_to_sqc.py).
 
 
 ## Benchmarks
