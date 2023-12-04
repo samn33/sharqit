@@ -437,14 +437,14 @@ void Sharq::ZXDiagram::xor_hadamard_edges(std::vector<uint32_t> node_indexes)
 Sharq::ZXNodeKind Sharq::ZXDiagram::remove_node(const uint32_t idx)
 {
   adj_mat_.erase(adj_mat_.begin() + idx);
-  for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
-    for (auto it = adj_mat_[i].begin(); it != adj_mat_[i].end(); ++it) {
+  for (auto& node:adj_mat_) {
+    for (auto it = node.begin(); it != node.end(); ++it) {
       if (it->to() == idx) {
-	it = adj_mat_[i].erase(it);
-	--it;
+  	it = node.erase(it);
+  	--it;
       }
       else if (it->to() > idx) {
-	it->to(it->to() - 1);
+  	it->to(it->to() - 1);
       }
     }
   }

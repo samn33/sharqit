@@ -25,7 +25,7 @@
 
 namespace Sharq {
 
-  constexpr char VERSION[] = "v0.0.3";
+  constexpr char VERSION[] = "v0.0.4";
   constexpr double EPS = 1.0e-8;
 
   class Fraction;
@@ -58,13 +58,34 @@ namespace Sharq {
     void denominator(const int32_t denominator) { denominator_ = denominator; reduce(); }
     /* member functions */
     std::string to_string() const;
-    Fraction add(const Fraction& other) const;
+    Fraction add(const Fraction& other) const
+    {
+      int32_t n = numerator_ * other.denominator() + other.numerator() * denominator_;
+      int32_t d = denominator_ * other.denominator();
+      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+    }
     Fraction add(const int32_t other) const { return add(Fraction(other)); }
-    Fraction sub(const Fraction& other) const;
+    Fraction sub(const Fraction& other) const
+    {
+      int n = numerator_ * other.denominator() - other.numerator() * denominator_;
+      int d = denominator_ * other.denominator();
+      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+    }
     Fraction sub(const int32_t other) const { return sub(Fraction(other)); }
-    Fraction mul(const Fraction& other) const;
+    Fraction mul(const Fraction& other) const
+    {
+      int n = numerator_ * other.numerator();
+      int d = denominator_ * other.denominator();
+      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+    }
     Fraction mul(const int32_t other) const { return mul(Fraction(other)); }
-    Fraction div(const Fraction& other) const;
+    //Fraction div(const Fraction& other) const;
+    Fraction div(const Fraction& other) const
+    {
+      int n = numerator_ * other.denominator();
+      int d = denominator_ * other.numerator();
+      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+    }
     Fraction div(const int32_t other) const { return div(Fraction(other)); }
     bool is_zero() const { return numerator_ == 0; }
     bool is_positive() const { return numerator_ * denominator_ > 0; }
@@ -78,13 +99,26 @@ namespace Sharq {
 	denominator_ = -denominator_;
       }
       /* reduce */
+      //int32_t fac = std::abs(std::gcd(numerator_, denominator_));
       int32_t fac = std::abs(gcd(numerator_, denominator_));
       if (fac != 0 && fac != 1) {
 	numerator_ /= fac;
 	denominator_ /= fac;
       }
     }
-    static int32_t gcd(const int32_t n, const int32_t d);
+    //static int32_t gcd(const int32_t n, const int32_t d);
+    static int32_t gcd(const int32_t n, const int32_t d)
+    {
+      int32_t remainder;
+      int32_t nn = std::abs(n);
+      int32_t dd = std::abs(d);
+      while (dd != 0) {
+	remainder = nn % dd;
+	nn = dd;
+	dd = remainder;
+      }
+      return nn;
+    }
     Fraction operator+() const { return *this; }
     Fraction operator-() const { return mul(-1); }
     Fraction& operator+=(const Fraction& rhs)
@@ -161,7 +195,20 @@ namespace Sharq {
     bool is_positive() const { return frac_.is_positive(); }
     bool is_negative() const { return frac_.is_negative(); }
     void reduce() { frac_.reduce(); }
-    void mod_2pi();
+    void mod_2pi()
+    {
+      frac_.reduce();
+      if (frac_.is_positive()) {
+    	int32_t rounds = frac_.numerator() / (frac_.denominator() * 2);
+    	frac_.numerator(frac_.numerator() - 2 * rounds * frac_.denominator());
+      }
+      else if (frac_.is_negative()) {
+    	int32_t nume = -frac_.numerator();
+    	int32_t deno_2 = frac_.denominator() * 2;
+    	int32_t rounds = (nume + deno_2 - 1 ) / deno_2;
+    	frac_.numerator(2 * rounds * frac_.denominator() + frac_.numerator());
+      }
+    }
     Phase operator+() const { return *this; }
     Phase operator-() const { return Phase(-frac_); }
     Phase& operator+=(const Phase& rhs) { frac_ += rhs.frac(); return *this; }

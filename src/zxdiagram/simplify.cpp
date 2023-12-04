@@ -695,49 +695,67 @@ void Sharq::ZXDiagram::gfusion()
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
   }
 
+  std::vector<uint32_t> leafs_A;
+  std::vector<uint32_t> leafs_B;
+
   while(true) {
-  
+
     update_node_places();
     update_phase_gadget();
-  
+
+    uint32_t max_degree = 0;
     std::vector<uint32_t> pg_phase_spiders;
     for (uint32_t i = 0; i < nodes_.size(); ++i) {
-      if (check_pg_phase_node(i)) pg_phase_spiders.push_back(i);
+      if (check_pg_phase_node(i)) {
+	pg_phase_spiders.push_back(i);
+	if (degree_of_node(adj_mat_[i][0].to()) > max_degree) {
+	  max_degree = degree_of_node(adj_mat_[i][0].to());
+	}
+      }
     }
   
     /* find 2 phase gadget that have same leaf nodes */
+    leafs_A.resize(max_degree);
+    leafs_B.resize(max_degree);
+    uint32_t leafs_A_size = 0;
+    uint32_t leafs_B_size = 0;
+    uint32_t leafs_size = 0;
+
     uint32_t idx_A_phase = 0; // phase gadget (phase node)
     uint32_t idx_B_phase = 0; // phase gadget (phase node)
     uint32_t idx_A_root = 0; // phase gadget (root node)
     uint32_t idx_B_root = 0; // phase gadget (root node)
     std::vector<uint32_t> leafs;
     bool find = false;
+
     for (uint32_t i = 0; i < pg_phase_spiders.size(); ++i) {
+
+      idx_A_phase = pg_phase_spiders[i];
+      idx_A_root = adj_mat_[idx_A_phase][0].to();
+      leafs_A_size = 0;
+      for (uint32_t i = 0; i < adj_mat_[idx_A_root].size(); ++i) {
+	if (adj_mat_[idx_A_root][i].to() == idx_A_phase) continue;
+	leafs_A[leafs_A_size] = adj_mat_[idx_A_root][i].to();
+	++leafs_A_size;
+      }
+      std::sort(leafs_A.begin(), leafs_A.begin() + leafs_A_size);
+
       for (uint32_t j = i + 1; j < pg_phase_spiders.size(); ++j) {
-  	idx_A_phase = pg_phase_spiders[i];
+
   	idx_B_phase = pg_phase_spiders[j];
-  	idx_A_root = adj_mat_[idx_A_phase][0].to();
   	idx_B_root = adj_mat_[idx_B_phase][0].to();
   	if (adj_mat_[idx_A_root].size() == adj_mat_[idx_B_root].size()) {
-	  uint32_t leaf_num = 0; // number of leaf nodes
-  	  leaf_num = adj_mat_[idx_A_root].size() - 1;
-
-	  std::vector<uint32_t> leafs_A;
-	  std::vector<uint32_t> leafs_B;
-	  for (uint32_t i = 0; i < adj_mat_[idx_A_root].size(); ++i) {
-	    if (adj_mat_[idx_A_root][i].to() == idx_A_phase) continue;
-	    leafs_A.push_back(adj_mat_[idx_A_root][i].to());
-	  }
+	  leafs_B_size = 0;
 	  for (uint32_t i = 0; i < adj_mat_[idx_B_root].size(); ++i) {
 	    if (adj_mat_[idx_B_root][i].to() == idx_B_phase) continue;
-	    leafs_B.push_back(adj_mat_[idx_B_root][i].to());
+	    leafs_B[leafs_B_size] = adj_mat_[idx_B_root][i].to();
+	    ++leafs_B_size;
 	  }
-	  std::sort(leafs_A.begin(), leafs_A.end());
-	  std::sort(leafs_B.begin(), leafs_B.end());
-	  leafs = leafs_A;
-  
+	  std::sort(leafs_B.begin(), leafs_B.begin() + leafs_B_size);
+	  leafs_size = leafs_A_size;
+	  
   	  find = true;
-	  for (uint32_t i = 0; i < leaf_num; ++i) {
+	  for (uint32_t i = 0; i < leafs_size; ++i) {
 	    if (leafs_A[i] != leafs_B[i]) {
 	      find = false;
 	      break;
@@ -757,8 +775,7 @@ void Sharq::ZXDiagram::gfusion()
     Sharq::Phase p = nodes_[idx_A_phase].phase() + nodes_[idx_B_phase].phase();
     idx_C_phase = append_node(ZXNode(ZXNodeKind::ZSpider, p));
     idx_C_root = append_node(ZXNode(ZXNodeKind::ZSpider, Phase(0)), ZXEdge(ZXEdgeKind::Hadamard, idx_C_phase));
-    //for (auto& n:leafs_A) connect_nodes(idx_C_root, n, ZXEdgeKind::Hadamard);
-    for (auto& n:leafs) connect_nodes(idx_C_root, n, ZXEdgeKind::Hadamard);
+    for (uint32_t i = 0; i < leafs_size; ++i) connect_nodes(idx_C_root, leafs_A[i], ZXEdgeKind::Hadamard);
     remove_edges_of_node(idx_A_phase);
     remove_edges_of_node(idx_A_root);
     remove_edges_of_node(idx_B_phase);
