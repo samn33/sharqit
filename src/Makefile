@@ -26,15 +26,15 @@ INSTALL_BIN = ~/bin
 # Program
 #============================================================================
 
-ifeq ($(OPTION),-pg)
+ifdef OPTION
 
 $(PROG): $(PROG_OBJ) $(LIB_STATIC)
 	$(CC) -o $@ $(OPTION) $(CFLAG) $(LFLAG) $(IFLAG) $(PROG_OBJ) $(LIB_STATIC)
 
 else
 
-$(PROG): $(PROG_OBJ) $(LIB_DYNAMIC)
-	$(CC) -o $@ $(CFLAG) $(LFLAG) $(IFLAG) $(PROG_OBJ) -lsharq
+$(PROG): $(PROG_OBJ) $(LIB_DYNAMIC) $(LIB_STATIC)
+	$(CC) -o $@ $(CFLAG) $(LFLAG) $(IFLAG) $(PROG_OBJ) $(LIB_STATIC)
 
 endif
 
@@ -64,7 +64,7 @@ debug:
 	make OPTION=-g
 
 install:
-	cp $(LIB) $(LIB_STATIC) $(INSTALL_LIB); cp $(INC) $(INSTALL_INC); cp $(PROG) $(INSTALL_BIN)
+	cp $(LIB_DYNAMIC) $(LIB_STATIC) $(INSTALL_LIB); cp $(INC) $(INSTALL_INC); cp $(PROG) $(INSTALL_BIN)
 
 tags:
 	etags *.cpp *.h
