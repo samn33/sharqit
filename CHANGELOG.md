@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.4-beta] - 2023-xx-xx
+### Changed
+- improve the processing time for optimization
+
 ## [0.0.3] - 2023-11-30
 ### Added
 - sharq command - to execute optimization, random circuit generation, print stats, show circuit diagram etc
