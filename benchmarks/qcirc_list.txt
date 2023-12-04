@@ -11,3 +11,4 @@ qcla_mod_7 qcla_mod_7_before qcla_mod_7_after
 rc_adder_6 rc_adder_6_before rc_adder_6_after
 vbe_adder_3 vbe_adder_3_before vbe_adder_3_after
 Adder16 Adder16_before Adder16_after
+Adder32 Adder32_before Adder32_after

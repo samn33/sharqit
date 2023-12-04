@@ -4,10 +4,10 @@ import pyzx as zx
 def eval_pyzx(file_in):
     
     qc_ori = zx.Circuit.load(file_in)
+    qc_in = qc_ori.to_basic_gates()
 
     start = time()
 
-    qc_in = qc_ori.to_basic_gates()
     zx.optimize.basic_optimization(qc_in)
     g = qc_in.to_graph()
     zx.simplify.full_reduce(g)
