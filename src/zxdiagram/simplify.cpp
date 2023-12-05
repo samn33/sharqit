@@ -695,8 +695,19 @@ void Sharq::ZXDiagram::gfusion()
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
   }
 
+  /* random generation for Zobrist Hash */
+  std::random_device rnd;
+  std::mt19937 mt(rnd());
+  std::uniform_int_distribution<> rand100(0, 1000000);
+  std::vector<uint32_t> rand_table(adj_mat_.size());
+  for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
+    rand_table[i] = rand100(mt);
+  }
+
   std::vector<uint32_t> leafs_A;
   std::vector<uint32_t> leafs_B;
+
+  uint32_t max_degree_pre = 0;
 
   while(true) {
 
@@ -715,11 +726,19 @@ void Sharq::ZXDiagram::gfusion()
     }
   
     /* find 2 phase gadget that have same leaf nodes */
-    leafs_A.resize(max_degree);
-    leafs_B.resize(max_degree);
+
+    if (max_degree > max_degree_pre) {
+      leafs_A.resize(max_degree);
+      leafs_B.resize(max_degree);
+      max_degree_pre = max_degree;
+    }
+
     uint32_t leafs_A_size = 0;
     uint32_t leafs_B_size = 0;
     uint32_t leafs_size = 0;
+
+    uint32_t leafs_A_xor = 0;
+    uint32_t leafs_B_xor = 0;
 
     uint32_t idx_A_phase = 0; // phase gadget (phase node)
     uint32_t idx_B_phase = 0; // phase gadget (phase node)
@@ -732,33 +751,44 @@ void Sharq::ZXDiagram::gfusion()
 
       idx_A_phase = pg_phase_spiders[i];
       idx_A_root = adj_mat_[idx_A_phase][0].to();
+
+      leafs_A_xor = 0;
       leafs_A_size = 0;
       for (uint32_t i = 0; i < adj_mat_[idx_A_root].size(); ++i) {
 	if (adj_mat_[idx_A_root][i].to() == idx_A_phase) continue;
 	leafs_A[leafs_A_size] = adj_mat_[idx_A_root][i].to();
+	leafs_A_xor ^= rand_table[adj_mat_[idx_A_root][i].to()];
 	++leafs_A_size;
       }
-      std::sort(leafs_A.begin(), leafs_A.begin() + leafs_A_size);
 
       for (uint32_t j = i + 1; j < pg_phase_spiders.size(); ++j) {
 
   	idx_B_phase = pg_phase_spiders[j];
   	idx_B_root = adj_mat_[idx_B_phase][0].to();
+
   	if (adj_mat_[idx_A_root].size() == adj_mat_[idx_B_root].size()) {
+	  leafs_B_xor = 0;
 	  leafs_B_size = 0;
 	  for (uint32_t i = 0; i < adj_mat_[idx_B_root].size(); ++i) {
 	    if (adj_mat_[idx_B_root][i].to() == idx_B_phase) continue;
 	    leafs_B[leafs_B_size] = adj_mat_[idx_B_root][i].to();
+	    leafs_B_xor ^= rand_table[adj_mat_[idx_B_root][i].to()];
 	    ++leafs_B_size;
 	  }
-	  std::sort(leafs_B.begin(), leafs_B.begin() + leafs_B_size);
 	  leafs_size = leafs_A_size;
-	  
-  	  find = true;
-	  for (uint32_t i = 0; i < leafs_size; ++i) {
-	    if (leafs_A[i] != leafs_B[i]) {
-	      find = false;
-	      break;
+
+	  if (leafs_A_xor != leafs_B_xor) {
+	    find = false;
+	  }
+	  else {
+	    std::sort(leafs_A.begin(), leafs_A.begin() + leafs_A_size);
+	    std::sort(leafs_B.begin(), leafs_B.begin() + leafs_B_size);
+	    find = true;
+	    for (uint32_t i = 0; i < leafs_size; ++i) {
+	      if (leafs_A[i] != leafs_B[i]) {
+		find = false;
+		break;
+	      }
 	    }
 	  }
 	  if (find) break;
