@@ -79,7 +79,6 @@ namespace Sharq {
       return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
     }
     Fraction mul(const int32_t other) const { return mul(Fraction(other)); }
-    //Fraction div(const Fraction& other) const;
     Fraction div(const Fraction& other) const
     {
       int n = numerator_ * other.denominator();
@@ -99,14 +98,12 @@ namespace Sharq {
 	denominator_ = -denominator_;
       }
       /* reduce */
-      //int32_t fac = std::abs(std::gcd(numerator_, denominator_));
       int32_t fac = std::abs(gcd(numerator_, denominator_));
       if (fac != 0 && fac != 1) {
 	numerator_ /= fac;
 	denominator_ /= fac;
       }
     }
-    //static int32_t gcd(const int32_t n, const int32_t d);
     static int32_t gcd(const int32_t n, const int32_t d)
     {
       int32_t remainder;
@@ -727,6 +724,7 @@ namespace Sharq {
     void pivot1_one_time(const uint32_t idx_A, const uint32_t idx_B);
     void pivot2_one_time(const uint32_t idx_A, const uint32_t idx_B);
     void pivot3_one_time(const uint32_t idx_A, const uint32_t idx_B);
+    void gfusion_one_time(const uint32_t idx_A_phase, const uint32_t idx_B_phase);
   public:
     ZXDiagram(uint32_t qubit_num = 1);
     ZXDiagram(const ZXDiagram& zx)

@@ -182,8 +182,6 @@ void Sharq::ZXDiagram::graph_like()
   /* remove parallel and sel-loops Hadamard edges */
   remove_parallel_selfloops_hadamard_edges();
 
-  // test
-  
   /* if input connected to Hadamard edge, convert Plain edge */
   for (auto& in:inputs_) {
     for (auto& e:adj_mat_[in]) {
@@ -349,7 +347,6 @@ void Sharq::ZXDiagram::pivot1()
 	if (check_pauli_spider(edge.to()) && check_internal_node(edge.to())) {
 	  idx_A = idx;
 	  idx_B = edge.to();
-	  //pauli_count = 2;
 	  find = true;
 	  break;
 	}
@@ -680,13 +677,21 @@ void Sharq::ZXDiagram::id_removal()
       }
       remove_edges_of_node(idx_A);
       remove_edges_of_node(idx_C);
-
+      
       remove_isolated_spiders();
     }
     else break;
   }
 
   remove_parallel_selfloops_hadamard_edges();
+}
+
+void Sharq::ZXDiagram::gfusion_one_time(const uint32_t idx_A_phase, const uint32_t idx_B_phase)
+{
+  uint32_t idx_B_root = adj_mat_[idx_B_phase][0].to();
+  nodes_[idx_A_phase].phase(nodes_[idx_A_phase].phase() + nodes_[idx_B_phase].phase());
+  remove_edges_of_node(idx_B_phase);
+  remove_edges_of_node(idx_B_root);
 }
 
 void Sharq::ZXDiagram::gfusion()
@@ -709,16 +714,23 @@ void Sharq::ZXDiagram::gfusion()
 
   uint32_t max_degree_pre = 0;
 
+  std::vector<uint32_t> pg_phase_spiders;
+  std::map<uint32_t, uint32_t> pg_used_map;
+  std::vector<std::pair<uint32_t, uint32_t>> pg_phase_spiders_pairs;
+
   while(true) {
 
     update_node_places();
     update_phase_gadget();
 
+    /* get phase spiders of phase gadget, initialize used array */
+    pg_phase_spiders.clear();
+    pg_used_map.clear();
     uint32_t max_degree = 0;
-    std::vector<uint32_t> pg_phase_spiders;
     for (uint32_t i = 0; i < nodes_.size(); ++i) {
       if (check_pg_phase_node(i)) {
 	pg_phase_spiders.push_back(i);
+	pg_used_map[i] = 0;
 	if (degree_of_node(adj_mat_[i][0].to()) > max_degree) {
 	  max_degree = degree_of_node(adj_mat_[i][0].to());
 	}
@@ -726,6 +738,8 @@ void Sharq::ZXDiagram::gfusion()
     }
   
     /* find 2 phase gadget that have same leaf nodes */
+
+    pg_phase_spiders_pairs.clear();    
 
     if (max_degree > max_degree_pre) {
       leafs_A.resize(max_degree);
@@ -745,6 +759,7 @@ void Sharq::ZXDiagram::gfusion()
     uint32_t idx_A_root = 0; // phase gadget (root node)
     uint32_t idx_B_root = 0; // phase gadget (root node)
     std::vector<uint32_t> leafs;
+
     bool find = false;
 
     for (uint32_t i = 0; i < pg_phase_spiders.size(); ++i) {
@@ -752,12 +767,14 @@ void Sharq::ZXDiagram::gfusion()
       idx_A_phase = pg_phase_spiders[i];
       idx_A_root = adj_mat_[idx_A_phase][0].to();
 
+      if (pg_used_map[idx_A_phase] == 1) continue;
+
       leafs_A_xor = 0;
       leafs_A_size = 0;
-      for (uint32_t i = 0; i < adj_mat_[idx_A_root].size(); ++i) {
-	if (adj_mat_[idx_A_root][i].to() == idx_A_phase) continue;
-	leafs_A[leafs_A_size] = adj_mat_[idx_A_root][i].to();
-	leafs_A_xor ^= rand_table[adj_mat_[idx_A_root][i].to()];
+      for (uint32_t k = 0; k < adj_mat_[idx_A_root].size(); ++k) {
+	if (adj_mat_[idx_A_root][k].to() == idx_A_phase) continue;
+	leafs_A[leafs_A_size] = adj_mat_[idx_A_root][k].to();
+	leafs_A_xor ^= rand_table[adj_mat_[idx_A_root][k].to()];
 	++leafs_A_size;
       }
 
@@ -766,50 +783,46 @@ void Sharq::ZXDiagram::gfusion()
   	idx_B_phase = pg_phase_spiders[j];
   	idx_B_root = adj_mat_[idx_B_phase][0].to();
 
+	if (pg_used_map[idx_B_phase] == 1) continue;
+
   	if (adj_mat_[idx_A_root].size() == adj_mat_[idx_B_root].size()) {
 	  leafs_B_xor = 0;
 	  leafs_B_size = 0;
-	  for (uint32_t i = 0; i < adj_mat_[idx_B_root].size(); ++i) {
-	    if (adj_mat_[idx_B_root][i].to() == idx_B_phase) continue;
-	    leafs_B[leafs_B_size] = adj_mat_[idx_B_root][i].to();
-	    leafs_B_xor ^= rand_table[adj_mat_[idx_B_root][i].to()];
+	  for (uint32_t l = 0; l < adj_mat_[idx_B_root].size(); ++l) {
+	    if (adj_mat_[idx_B_root][l].to() == idx_B_phase) continue;
+	    leafs_B[leafs_B_size] = adj_mat_[idx_B_root][l].to();
+	    leafs_B_xor ^= rand_table[adj_mat_[idx_B_root][l].to()];
 	    ++leafs_B_size;
 	  }
 	  leafs_size = leafs_A_size;
 
-	  if (leafs_A_xor != leafs_B_xor) {
-	    find = false;
-	  }
-	  else {
+	  if (leafs_A_xor == leafs_B_xor) {
 	    std::sort(leafs_A.begin(), leafs_A.begin() + leafs_A_size);
 	    std::sort(leafs_B.begin(), leafs_B.begin() + leafs_B_size);
-	    find = true;
-	    for (uint32_t i = 0; i < leafs_size; ++i) {
-	      if (leafs_A[i] != leafs_B[i]) {
-		find = false;
+	    bool flg = true;
+	    for (uint32_t m = 0; m < leafs_size; ++m) {
+	      if (leafs_A[m] != leafs_B[m]) {
+		flg = false;
 		break;
 	      }
 	    }
+	    if (flg) {
+	      find = true;
+	      pg_phase_spiders_pairs.push_back({idx_A_phase, idx_B_phase});
+	      pg_used_map[idx_A_phase] = 1;
+	      pg_used_map[idx_B_phase] = 1;
+	      break;
+	    }
 	  }
-	  if (find) break;
   	}
       }
-      if (find) break;
     }
   
     if (!find) break;
-  
-    uint32_t idx_C_phase = 0;
-    uint32_t idx_C_root = 0;
-  
-    Sharq::Phase p = nodes_[idx_A_phase].phase() + nodes_[idx_B_phase].phase();
-    idx_C_phase = append_node(ZXNode(ZXNodeKind::ZSpider, p));
-    idx_C_root = append_node(ZXNode(ZXNodeKind::ZSpider, Phase(0)), ZXEdge(ZXEdgeKind::Hadamard, idx_C_phase));
-    for (uint32_t i = 0; i < leafs_size; ++i) connect_nodes(idx_C_root, leafs_A[i], ZXEdgeKind::Hadamard);
-    remove_edges_of_node(idx_A_phase);
-    remove_edges_of_node(idx_A_root);
-    remove_edges_of_node(idx_B_phase);
-    remove_edges_of_node(idx_B_root);
+
+    for (auto it = pg_phase_spiders_pairs.begin(); it != pg_phase_spiders_pairs.end(); ++it) {
+      gfusion_one_time(it->first, it->second);
+    }
     
     remove_isolated_spiders();
   }
