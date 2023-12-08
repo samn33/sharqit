@@ -535,19 +535,17 @@ void Sharq::ZXDiagram::swap_nodes(uint32_t i, uint32_t j)
 
 void Sharq::ZXDiagram::remove_isolated_spiders()
 {
-  uint32_t cnt = 0;
-  bool find = true;
-  while (find) {
-    find = false;
-    for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
-      if (adj_mat_[i].size() == 0) {
-	remove_node(i);
+  uint32_t size = adj_mat_.size();
+  for (uint32_t i = 0; i < size; ++i) {
+    bool find = false;
+    for (uint32_t j = 0; j < adj_mat_.size(); ++j) {
+      if (adj_mat_[j].size() == 0) {
+	remove_node(j);
 	find = true;
 	break;
       }
     }
-    ++cnt;
-    if (cnt > adj_mat_.size()) break;
+    if (!find) break;
   }
 }
 
