@@ -61,7 +61,7 @@ prof:
 	make OPTION=-pg
 
 debug:
-	make OPTION=-g
+	make OPTION=-g CFLAG="-fPIC -Wall -std=c++17"
 
 install:
 	cp $(LIB_DYNAMIC) $(LIB_STATIC) $(INSTALL_LIB); cp $(INC) $(INSTALL_INC); cp $(PROG) $(INSTALL_BIN)
