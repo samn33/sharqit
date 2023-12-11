@@ -16,5 +16,8 @@ sample3: sample3.cpp
 sample4: sample4.cpp
 	$(CC) -o $@ $(CFLAG) $(IFLAG) $(LFLAG) $< -lsharq
 
+sample5: sample5.cpp
+	$(CC) -o $@ $(CFLAG) $(IFLAG) $(LFLAG) $< -lsharq
+
 clean:
 	rm -f sample1 sample2 sample3 sample4 sample5
