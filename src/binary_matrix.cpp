@@ -20,10 +20,11 @@ std::string Sharq::BinaryMatrix::to_string() const
   return s;
 }
 
-std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce()
+std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce(const uint32_t num_of_sum1)
 {
   std::vector<std::pair<uint32_t, uint32_t>> row_ops;
-
+  uint32_t sum1_count = 0;
+  
   /* foreward elimination */
   for (int32_t i = 0; i < (int32_t)row_num_ - 1; ++i) {
     if (i < (int32_t)col_num_ && elements_[i][i] == 0) {
@@ -46,8 +47,10 @@ std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce()
 
     for (int32_t k = i + 1; k < (int32_t)row_num_; ++k) {
       if (i < (int32_t)col_num_ && elements_[k][i] == 1) {
-	xor_rows(i, k);
+	uint32_t sum = xor_rows(i, k);
+	if (sum == 1) ++sum1_count;
 	row_ops.push_back({row_indexes_[i], row_indexes_[k]});
+	if (sum1_count >= num_of_sum1) return row_ops;
       }
     }
   }
@@ -57,8 +60,10 @@ std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce()
     if (i < (int32_t)col_num_ && elements_[i][i] == 0) continue;
     for (int32_t k = i - 1; k >= 0; --k) {
       if (i < (int32_t)col_num_ && elements_[k][i] == 1) {
-	xor_rows(i, k);
+	uint32_t sum = xor_rows(i, k);
+	if (sum == 1) ++sum1_count;
 	row_ops.push_back({row_indexes_[i], row_indexes_[k]});
+	if (sum1_count >= num_of_sum1) return row_ops;
       }
     }
   }
@@ -74,8 +79,10 @@ std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce()
 	}
 	if (sum == 1) {
 	  xor_rows(i, j);
+	  ++sum1_count;
 	  row_ops.push_back({row_indexes_[i], row_indexes_[j]});
-	  break;
+	  if (sum1_count >= num_of_sum1) return row_ops;
+	  else break;
 	}
       }
     }

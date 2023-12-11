@@ -307,14 +307,17 @@ namespace Sharq {
     void row_indexes(const std::vector<uint32_t>& row_indexes) { row_indexes_ = row_indexes; }
     /* member functions */
     std::string to_string() const;
-    void xor_rows(const uint32_t a, const uint32_t b)
+    uint32_t xor_rows(const uint32_t a, const uint32_t b)
     {
       if (a > row_num_ || b > row_num_) {
-	throw std::runtime_error("argument is too large.");
+    	throw std::runtime_error("argument is too large.");
       }
+      uint32_t sum = 0;
       for (uint32_t i = 0; i < col_num_; ++i) {
-	elements_[b][i] = (elements_[b][i] + elements_[a][i]) % 2; // XOR operation
+    	elements_[b][i] = (elements_[b][i] + elements_[a][i]) % 2; // XOR operation
+    	sum += elements_[b][i];
       }
+      return sum;
     }
     void swap_rows(const uint32_t a, const uint32_t b)
     {
@@ -351,7 +354,7 @@ namespace Sharq {
       }
       return ans;
     }
-    std::vector<std::pair<uint32_t, uint32_t>> gauss_reduce();
+    std::vector<std::pair<uint32_t, uint32_t>> gauss_reduce(const uint32_t num_of_sum1 = 1000);
     friend std::ostream& operator<<(std::ostream& ost, const BinaryMatrix& bmat) { ost << bmat.to_string(); return ost; }
   };
 

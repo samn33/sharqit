@@ -63,7 +63,7 @@ TEST(BinaryMatrix, GaussReduce01) {
 			    {0, 0, 1},
 			    {1, 1, 0}});
 
-  std::vector<std::pair<uint32_t, uint32_t>> row_ops = bmat.gauss_reduce();
+  std::vector<std::pair<uint32_t, uint32_t>> row_ops = bmat.gauss_reduce(1000);
   std::vector<std::vector<uint8_t>> elements = bmat.elements();
   std::vector<uint32_t> row_indexes = bmat.row_indexes();
 
@@ -97,7 +97,7 @@ TEST(BinaryMatrix, GaussReduce02) {
 			    {1, 0, 1},
 			    {1, 0, 1}});
 
-  std::vector<std::pair<uint32_t, uint32_t>> row_ops = bmat.gauss_reduce();
+  std::vector<std::pair<uint32_t, uint32_t>> row_ops = bmat.gauss_reduce(1000);
   std::vector<std::vector<uint8_t>> elements = bmat.elements();
   std::vector<uint32_t> row_indexes = bmat.row_indexes();
 
@@ -129,7 +129,7 @@ TEST(BinaryMatrix, GaussReduce03) {
 			    {0, 1, 1, 1},
 			    {1, 1, 0, 1}});
 
-  std::vector<std::pair<uint32_t, uint32_t>> row_ops = bmat.gauss_reduce();
+  std::vector<std::pair<uint32_t, uint32_t>> row_ops = bmat.gauss_reduce(1000);
   std::vector<std::vector<uint8_t>> elements = bmat.elements();
   std::vector<uint32_t> row_indexes = bmat.row_indexes();
 
@@ -170,7 +170,7 @@ TEST(BinaryMatrix, GaussReduce04) {
 			    {1, 1, 0},
     });
 
-  std::vector<std::pair<uint32_t, uint32_t>> row_ops = bmat.gauss_reduce();
+  std::vector<std::pair<uint32_t, uint32_t>> row_ops = bmat.gauss_reduce(1000);
   std::vector<std::vector<uint8_t>> elements = bmat.elements();
   std::vector<uint32_t> row_indexes = bmat.row_indexes();
 
