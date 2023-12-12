@@ -709,7 +709,18 @@ namespace Sharq {
     void xor_hadamard_edge(const uint32_t a, const uint32_t b);
     void xor_hadamard_edges(std::vector<uint32_t> node_indexes);
     ZXNodeKind remove_node(const uint32_t node_index);
-    void remove_edges_of_node(const uint32_t node_index) { adj_mat_[node_index].clear(); }
+    void remove_edges_of_node(const uint32_t node_index) {
+      adj_mat_[node_index].clear();
+      for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
+	if (i == node_index) continue;
+	for (auto it = adj_mat_[i].begin(); it != adj_mat_[i].end(); ++it) {
+	  if (it->to() == node_index) {
+	    it = adj_mat_[i].erase(it);
+	    --it;
+	  }
+	}
+      }
+    }
     uint32_t degree_of_node(const uint32_t node_index) { return adj_mat_[node_index].size(); }
     ZXNodeKind kind_of_node(const uint32_t node_index) { return nodes_[node_index].kind(); }
     void swap_nodes(uint32_t i, uint32_t j);

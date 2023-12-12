@@ -81,7 +81,7 @@ std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce(con
 	  xor_rows(i, j);
 	  ++sum1_count;
 	  row_ops.push_back({row_indexes_[i], row_indexes_[j]});
-	  if (sum1_count >= num_of_sum1) return row_ops;
+	  if (sum1_count >= 1) return row_ops;
 	  else break;
 	}
       }

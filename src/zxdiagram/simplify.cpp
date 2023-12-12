@@ -225,6 +225,8 @@ void Sharq::ZXDiagram::graph_like()
   kind(Sharq::ZXDiagramKind::GraphLike);
 }
 
+#ifdef USE_OLD_VERSION
+
 void Sharq::ZXDiagram::lcomp_one_time(const uint32_t idx_A)
 {
   /* node indexes of neighbours */
@@ -266,6 +268,79 @@ void Sharq::ZXDiagram::lcomp()
 
   id_removal();
 }
+
+#else
+
+void Sharq::ZXDiagram::lcomp_one_time(const uint32_t idx_A)
+{
+  /* node indexes of neighbours */
+  std::vector<uint32_t> idx_neighbours = adjacent_node_indexes(idx_A);
+  xor_hadamard_edges(idx_neighbours);
+
+  /* change phases of the edges */
+  for (uint32_t i = 0; i < idx_neighbours.size(); ++i) {
+    nodes_[idx_neighbours[i]].phase(nodes_[idx_neighbours[i]].phase() - nodes_[idx_A].phase());
+  }
+
+  /* remove edges around the target node */
+  remove_edges_of_node(idx_A);
+}
+
+void Sharq::ZXDiagram::lcomp()
+{
+  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+    throw std::runtime_error("can't execute local complementation for general ZX diagram. must be graph-like ZX diagram.");
+  }
+
+  std::vector<uint32_t> lc_cand_spiders; // proper clifford spiders
+  std::vector<uint32_t> lc_used_spiders; // flags of used spiders or not
+
+  while (true) {
+    update_node_places();
+    update_phase_gadget();
+
+    lc_cand_spiders.clear();
+    lc_used_spiders.assign(nodes_.size(), 0);
+
+    /* spiders of lcomp candidate */
+    bool find = false;
+    for (uint32_t i = 0; i < nodes_.size(); ++i) {
+      if (lc_used_spiders[i] == 1) continue;
+      if ((check_internal_node(i) && check_z_spider(i)) == false) continue;
+      if (check_pg_leaf_node(i)) continue;
+      if (nodes_[i].phase() == Sharq::Phase(1,2) ||
+	  nodes_[i].phase() == Sharq::Phase(3,2)) {
+	bool break_flg = false;
+	for (auto& e:adj_mat_[i]) {
+	  if (lc_used_spiders[e.to()] == 1) {
+	    break_flg = true;
+	    break;
+	  }
+	}
+	if (break_flg) continue;
+	
+	find = true;
+	lc_used_spiders[i] = 1;
+	lc_cand_spiders.push_back(i);
+	for (auto& e:adj_mat_[i]) {
+	  lc_used_spiders[e.to()] = 1;
+	}
+      }
+    }
+
+    if (!find) break;
+
+    /* execute lcomp */
+    for (auto& idx:lc_cand_spiders) {
+      lcomp_one_time(idx);
+    }
+    remove_isolated_spiders();
+  }
+
+  id_removal();
+}
+
+#endif
 
 void Sharq::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_B)
 {
