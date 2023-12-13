@@ -227,49 +227,146 @@ void Sharq::ZXDiagram::graph_like()
 
 #ifdef USE_OLD_VERSION
 
-void Sharq::ZXDiagram::lcomp_one_time(const uint32_t idx_A)
-{
-  /* node indexes of neighbours */
-  std::vector<uint32_t> idx_neighbours = adjacent_node_indexes(idx_A);
-  xor_hadamard_edges(idx_neighbours);
+//void Sharq::ZXDiagram::lcomp_one_time(const uint32_t idx_A) // old version
+//{
+//  /* node indexes of neighbours */
+//  std::vector<uint32_t> idx_neighbours = adjacent_node_indexes(idx_A);
+//  xor_hadamard_edges(idx_neighbours);
+//
+//  /* change phases of the edges */
+//  for (uint32_t i = 0; i < idx_neighbours.size(); ++i) {
+//    nodes_[idx_neighbours[i]].phase(nodes_[idx_neighbours[i]].phase() - nodes_[idx_A].phase());
+//  }
+//
+//  /* remove target node */
+//  remove_node(idx_A);
+//}
+//
+//void Sharq::ZXDiagram::lcomp() // old version
+//{
+//  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+//    throw std::runtime_error("can't execute local complementation for general ZX diagram. must be graph-like ZX diagram.");
+//  }
+//
+//  while(true) {
+//    update_node_places();
+//    update_phase_gadget();
+//    bool done = true;
+//    for (uint32_t i = 0; i < nodes_.size(); ++i) {
+//      if ((check_internal_node(i) && check_z_spider(i)) == false) continue;
+//      if (check_pg_leaf_node(i)) continue;
+//      /* only for intrenal Z spiders */
+//      if (nodes_[i].phase() == Sharq::Phase(1,2) ||
+//	  nodes_[i].phase() == Sharq::Phase(3,2)) {
+//	done = false;
+//	lcomp_one_time(i);
+//	break;
+//      }
+//    }
+//    if (done == true) break;
+//  }
+//
+//  id_removal();
+//}
+//
+//void Sharq::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_B) // old version
+//{
+//  std::vector<uint32_t> indexes_A = adjacent_node_indexes(idx_A);
+//  std::vector<uint32_t> indexes_B = adjacent_node_indexes(idx_B);
+//  for (auto it = indexes_A.begin(); it != indexes_A.end(); ++it) {
+//    if (check_input_node(*it) || check_output_node(*it)) {
+//      it = indexes_A.erase(it);
+//      --it;
+//    }
+//  }
+//  for (auto it = indexes_B.begin(); it != indexes_B.end(); ++it) {
+//    if (check_input_node(*it) || check_output_node(*it)) {
+//      it = indexes_B.erase(it);
+//      --it;
+//    }
+//  }
+//  
+//  std::vector<uint32_t> indexes_AandB;
+//  std::set_intersection(indexes_A.begin(), indexes_A.end(),
+//			indexes_B.begin(), indexes_B.end(),
+//			std::inserter(indexes_AandB, indexes_AandB.end()));
+//  std::vector<uint32_t> indexes_AorB;
+//  std::set_union(indexes_A.begin(), indexes_A.end(),
+//		 indexes_B.begin(), indexes_B.end(),
+//		 std::inserter(indexes_AorB, indexes_AorB.end()));
+//  std::vector<uint32_t> indexes_AB;
+//  std::set_difference(indexes_AorB.begin(), indexes_AorB.end(),
+//		      indexes_AandB.begin(), indexes_AandB.end(),
+//		      std::inserter(indexes_AB, indexes_AB.end()));
+//
+//  xor_hadamard_edges(indexes_A);
+//  xor_hadamard_edges(indexes_B);
+//  xor_hadamard_edges(indexes_AB);
+//
+//  /* add phase of idx_A to the phases of all indexes_B */
+//  Sharq::Phase phase_A = nodes_[idx_A].phase();
+//  for (auto& idx:indexes_B) {
+//    nodes_[idx].phase(nodes_[idx].phase() + phase_A);
+//  }
+//
+//  /* add phase of idx_A to the phases of all indexes_B */
+//  Sharq::Phase phase_B = nodes_[idx_B].phase();
+//  for (auto& idx:indexes_A) {
+//    nodes_[idx].phase(nodes_[idx].phase() + phase_B);
+//  }
+//
+//  /* add phase of PI to the phases of all indexes_AandB */
+//  for (auto& idx:indexes_AandB) {
+//    nodes_[idx].phase(nodes_[idx].phase() + Sharq::Phase(1));
+//  }
+//}
+//
+//void Sharq::ZXDiagram::pivot1() // old version
+//{
+//  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+//    throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
+//  }
+//
+//  while (true) {
+//  
+//    /* update node_places */
+//    update_node_places();
+//    update_phase_gadget();
+//
+//    /* find internal Pauli spiders pair */
+//    uint32_t idx_A = 0; // index of internal Pauli spider
+//    uint32_t idx_B = 0; // index of any internal spider adjacent to the Pauli spider
+//    std::vector<uint32_t> pauli_spiders; // list of internal pauli spider's indexes
+//
+//    /* internal pauli spiders */
+//    for (uint32_t i = 0; i < nodes_.size(); ++i) {
+//      if (check_pauli_spider(i) && check_internal_node(i)) pauli_spiders.push_back(i);
+//    }
+//  
+//    bool find = false;
+//    for (auto& idx:pauli_spiders) {
+//      for (auto& edge:adj_mat_[idx]) {
+//	if (check_pauli_spider(edge.to()) && check_internal_node(edge.to())) {
+//	  idx_A = idx;
+//	  idx_B = edge.to();
+//	  find = true;
+//	  break;
+//	}
+//      }
+//      if (find == true) break;
+//    }
+//
+//    if (find) {
+//      pivot1_one_time(idx_A, idx_B);
+//      remove_isolated_spiders();
+//    }
+//    else break;
+//  }
+//
+//  id_removal();
+//}
 
-  /* change phases of the edges */
-  for (uint32_t i = 0; i < idx_neighbours.size(); ++i) {
-    nodes_[idx_neighbours[i]].phase(nodes_[idx_neighbours[i]].phase() - nodes_[idx_A].phase());
-  }
-
-  /* remove target node */
-  remove_node(idx_A);
-}
-
-void Sharq::ZXDiagram::lcomp()
-{
-  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
-    throw std::runtime_error("can't execute local complementation for general ZX diagram. must be graph-like ZX diagram.");
-  }
-
-  while(true) {
-    update_node_places();
-    update_phase_gadget();
-    bool done = true;
-    for (uint32_t i = 0; i < nodes_.size(); ++i) {
-      if ((check_internal_node(i) && check_z_spider(i)) == false) continue;
-      if (check_pg_leaf_node(i)) continue;
-      /* only for intrenal Z spiders */
-      if (nodes_[i].phase() == Sharq::Phase(1,2) ||
-	  nodes_[i].phase() == Sharq::Phase(3,2)) {
-	done = false;
-	lcomp_one_time(i);
-	break;
-      }
-    }
-    if (done == true) break;
-  }
-
-  id_removal();
-}
-
-#else
+#endif
 
 void Sharq::ZXDiagram::lcomp_one_time(const uint32_t idx_A)
 {
@@ -340,8 +437,6 @@ void Sharq::ZXDiagram::lcomp()
   id_removal();
 }
 
-#endif
-
 void Sharq::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_B)
 {
   std::vector<uint32_t> indexes_A = adjacent_node_indexes(idx_A);
@@ -392,6 +487,10 @@ void Sharq::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_
   for (auto& idx:indexes_AandB) {
     nodes_[idx].phase(nodes_[idx].phase() + Sharq::Phase(1));
   }
+
+  /* remove edges of idx_A, idx_B */
+  remove_edges_of_node(idx_A);
+  remove_edges_of_node(idx_B);
 }
 
 void Sharq::ZXDiagram::pivot1()
@@ -400,40 +499,77 @@ void Sharq::ZXDiagram::pivot1()
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
   }
 
+  std::vector<uint32_t> pauli_spiders; // list of internal pauli spider's indexes
+  std::vector<std::pair<uint32_t, uint32_t>> p1_cand_spiders;
+  std::vector<uint32_t> p1_used_spiders;
+
   while (true) {
-  
-    /* update node_places */
     update_node_places();
     update_phase_gadget();
 
-    /* find internal Pauli spiders pair */
-    uint32_t idx_A = 0; // index of internal Pauli spider
-    uint32_t idx_B = 0; // index of any internal spider adjacent to the Pauli spider
-    std::vector<uint32_t> pauli_spiders; // list of internal pauli spider's indexes
-
-    /* internal pauli spiders */
+    pauli_spiders.clear();
     for (uint32_t i = 0; i < nodes_.size(); ++i) {
       if (check_pauli_spider(i) && check_internal_node(i)) pauli_spiders.push_back(i);
     }
-  
+
+    p1_cand_spiders.clear();
+    p1_used_spiders.assign(nodes_.size(), 0);
+    uint32_t idx_A = 0;
+    uint32_t idx_B = 0;
     bool find = false;
+
     for (auto& idx:pauli_spiders) {
-      for (auto& edge:adj_mat_[idx]) {
-	if (check_pauli_spider(edge.to()) && check_internal_node(edge.to())) {
-	  idx_A = idx;
-	  idx_B = edge.to();
-	  find = true;
-	  break;
+      idx_A = idx;
+      if (p1_used_spiders[idx_A] == 1) continue;
+
+      bool break_flg = true; // true if idx_A,idx_B have found
+      for (auto& e:adj_mat_[idx_A]) {
+	if (check_pauli_spider(e.to()) && check_internal_node(e.to()) && p1_used_spiders[e.to()] == 0) {
+	  break_flg = true;
+	  idx_B = e.to();
+	  for (auto& e_A:adj_mat_[idx_A]) {
+	    if (p1_used_spiders[e_A.to()] == 1) {
+	      break_flg = false;
+	      break;
+	    }
+	  }
+	  if (!break_flg) continue;
+	  for (auto& e_B:adj_mat_[idx_B]) {
+	    if (p1_used_spiders[e_B.to()] == 1) {
+	      break_flg = false;
+	      break;
+	    }
+	  }
+	  if (!break_flg) continue;
+	  else {
+	    p1_cand_spiders.push_back({idx_A, idx_B});
+	    break;
+	  }
+	}
+	else {
+	  break_flg = false;
 	}
       }
-      if (find == true) break;
+
+      if (!break_flg) continue;
+
+      find = true;
+      p1_used_spiders[idx_A] = 1;
+      p1_used_spiders[idx_B] = 1;
+      for (auto& e_A:adj_mat_[idx_A]) {
+	p1_used_spiders[e_A.to()] = 1;
+      }
+      for (auto& e_B:adj_mat_[idx_B]) {
+	p1_used_spiders[e_B.to()] = 1;
+      }
     }
 
-    if (find) {
-      pivot1_one_time(idx_A, idx_B);
-      remove_isolated_spiders();
+    if (!find) break;
+
+    for (auto it = p1_cand_spiders.begin(); it != p1_cand_spiders.end(); ++it) {
+      pivot1_one_time(it->first, it->second);
     }
-    else break;
+    remove_isolated_spiders();
   }
 
   id_removal();
