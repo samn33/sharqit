@@ -438,13 +438,16 @@ Sharq::ZXNodeKind Sharq::ZXDiagram::remove_node(const uint32_t idx)
 {
   adj_mat_.erase(adj_mat_.begin() + idx);
   for (auto& node:adj_mat_) {
-    for (auto it = node.begin(); it != node.end(); ++it) {
+    for (auto it = node.begin(); it != node.end();) {
       if (it->to() == idx) {
   	it = node.erase(it);
-  	--it;
       }
       else if (it->to() > idx) {
   	it->to(it->to() - 1);
+	++it;
+      }
+      else {
+	++it;
       }
     }
   }
