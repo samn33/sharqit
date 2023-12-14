@@ -20,7 +20,11 @@ void eval_sharq(const std::string& name, const std::string& path_in, const std::
     auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
     double proc_time = msec / 1000.;
 
-    std::cout << name << "," << std::to_string(proc_time) << "," << qc_in.t_count() << ","<< qc_out.t_count() << std::endl;
+    //std::cout << name << "," << std::to_string(proc_time) << "," << qc_in.t_count() << ","<< qc_out.t_count() << std::endl;
+    std::cout << name << "," << std::to_string(proc_time) << ",";
+    std::cout << qc_in.t_count() << "," << qc_out.t_count() << ",";
+    std::cout << qc_in.cx_count() << "," << qc_out.cx_count() << ",";
+    std::cout << qc_in.gate_count() << "," << qc_out.gate_count() << std::endl;
   }
   catch (std::runtime_error& e) {
     std::cerr << "runtime_error: " << e.what() << std::endl;
@@ -36,7 +40,7 @@ int main(int argc, char** argv)
   }
 
   std::string str;
-  std::cout << "name,time[sec],T-count<in>,T-count<out>" << std::endl;
+  std::cout << "name,time[sec],T-count<in>,T-count<out>,CX-count<in>,CX-count<out>,gate_count<in>,gate_count<out>" << std::endl;
   while (std::getline(ifs, str)) {
     std::vector<std::string> svec = Sharq::split(str, ' ');
     std::string name = svec[0];
