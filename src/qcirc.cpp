@@ -185,7 +185,7 @@ std::string Sharq::QCirc::to_string(const uint32_t width) const
       uint32_t t = qgate.qid()[1];
       for (uint32_t i = 0; i < qubit_num_; ++i) {
 	if (i == c) str_list[i] += "*--";
-	else if (i == t) str_list[i] += "X--";
+	else if (i == t && qgate.kind() == Sharq::QGateKind::CX) str_list[i] += "X--";
 	else if (c < t && c < i && i < t) str_list[i] += "|--";
 	else if (t < c && t < i && i < c) str_list[i] += "|--";
 	else str_list[i] += "---";
@@ -263,7 +263,7 @@ Sharq::QCirc& Sharq::QCirc::add_qcirc(const QCirc& other)
   *                       {"RZ(1/4)", 1},});
   */
 Sharq::QCirc& Sharq::QCirc::add_random(const uint32_t qubit_num, const uint32_t qgate_num,
-			      const nlohmann::json& probs)
+				       const nlohmann::json& probs)
 {
   if (qubit_num == 0 || qgate_num == 0) {
     throw std::runtime_error("qubit_num is zero, or qgate_num is zero.");
