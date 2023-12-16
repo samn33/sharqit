@@ -24,7 +24,65 @@ void Sharq::ZXDiagram::permutation_as_swap(Sharq::QCirc& qc)
   }
 }
 
-bool Sharq::ZXDiagram::update_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc)
+std::vector<std::pair<uint32_t, uint32_t>> Sharq::ZXDiagram::extract_2q_connects(std::vector<uint32_t>& frontier) const
+{
+  /* first element is related to CX gate, others are relate to CZ gate */
+  std::vector<std::pair<uint32_t, uint32_t>> connects;
+
+  /* adjacent matrix for frontier nodes connection */
+  uint32_t size = frontier.size();
+  std::vector<std::vector<uint32_t>> adj_matrix(size, std::vector<uint32_t>(size, 0));
+
+  for (uint32_t i = 0; i < frontier.size(); ++i) {
+    for (uint32_t j = i + 1; j < frontier.size(); ++j) {
+      if (check_connect(frontier[i], frontier[j])) {
+	adj_matrix[i][j] = 1;
+	adj_matrix[j][i] = 1;
+      }
+    }
+  }
+
+  uint32_t max_inp = 0; // max of inner product of two rows of the adj_matrix
+  std::pair<uint32_t, uint32_t> max_qid;
+  std::pair<uint32_t, uint32_t> max_id;
+  for (uint32_t i = 0; i < size; ++i) {
+    for (uint32_t j = i + 1; j < size; ++j) {
+      uint32_t inp = 0;
+      for (uint32_t k = 0; k < size; ++k) {
+	if (adj_matrix[i][k] != 0 && adj_matrix[j][k] != 0) ++inp;
+      }
+      if (inp > max_inp) {
+	max_inp = inp;
+	if (frontier[i] < frontier[j]) {
+	  max_qid = {frontier[i], frontier[j]};
+	  max_id = {i, j};
+	}
+	else {
+	  max_qid = {frontier[j], frontier[i]};
+	  max_id = {j, i};
+	}
+      }
+    }
+  }
+
+  if (max_inp == 0) return connects;
+
+  std::vector<uint32_t> overlap_qid;
+  for (uint32_t k = 0; k < size; ++k) {
+    if (adj_matrix[max_id.first][k] != 0 && adj_matrix[max_id.second][k] != 0) {
+      overlap_qid.push_back(frontier[k]);
+    }
+  }
+  
+  connects.push_back(max_qid);
+  for (auto& q:overlap_qid) {
+    connects.push_back({max_qid.second, q});
+  }
+
+  return connects;
+}
+
+bool Sharq::ZXDiagram::update_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz)
 {
   /* frontier adjacent to input node or root of phase gadget */
   std::vector<uint8_t> frontier_prohibit;
@@ -115,11 +173,27 @@ bool Sharq::ZXDiagram::update_frontier(std::vector<uint32_t>& frontier, Sharq::Q
   }
 
   /* extract CZ gates */
+  if (opt_cz) {
+    std::vector<std::pair<uint32_t, uint32_t>> connects;
+    while (true) {
+      connects = extract_2q_connects(frontier);
+      if (connects.size() <= 3) break;
+      auto top = connects.begin();
+      qc.cx(nodes_[top->first].q(), nodes_[top->second].q());
+      for (auto it = connects.begin() + 1; it != connects.end(); ++it) {
+	qc.cz(nodes_[it->first].q(), nodes_[it->second].q());
+	remove_edge(it->first, it->second);
+	remove_edge(top->first, it->second);
+      }
+      qc.cx(nodes_[top->first].q(), nodes_[top->second].q());
+    }
+  }
+
   for (uint32_t i = 0; i < frontier.size(); ++i) {
     for (uint32_t j = i + 1; j < frontier.size(); ++j) {
       if (check_connect(frontier[i], frontier[j])) {
-      	qc.cz(nodes_[frontier[i]].q(), nodes_[frontier[j]].q());
-      	remove_edge(frontier[i], frontier[j]);
+	qc.cz(nodes_[frontier[i]].q(), nodes_[frontier[j]].q());
+	remove_edge(frontier[i], frontier[j]);
       }
     }
   }
@@ -227,7 +301,7 @@ bool Sharq::ZXDiagram::update_frontier_pg(std::vector<uint32_t>& frontier, Sharq
   return false;
 }
 
-void Sharq::ZXDiagram::process_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc)
+void Sharq::ZXDiagram::process_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz)
 {
   std::vector<uint32_t> frontier_pre = frontier;
   for (uint32_t i = 0; i < frontier.size(); ++i) {
@@ -249,6 +323,22 @@ void Sharq::ZXDiagram::process_frontier(std::vector<uint32_t>& frontier, Sharq::
     remove_edge(frontier_pre[i], frontier[i]);
   }
 
+  /* extract CZ gates */
+  if (opt_cz) {
+    std::vector<std::pair<uint32_t, uint32_t>> connects;
+    while (true) {
+      connects = extract_2q_connects(frontier);
+      if (connects.size() <= 3) break;
+      auto top = connects.begin();
+      qc.cx(nodes_[top->first].q(), nodes_[top->second].q());
+      for (auto it = connects.begin() + 1; it != connects.end(); ++it) {
+	qc.cz(nodes_[it->first].q(), nodes_[it->second].q());
+	remove_edge(it->first, it->second);
+	remove_edge(top->first, it->second);
+      }
+      qc.cx(nodes_[top->first].q(), nodes_[top->second].q());
+    }
+  }
   for (uint32_t i = 0; i < frontier.size(); ++i) {
     for (uint32_t j = i + 1; j < frontier.size(); ++j) {
       if (check_connect(frontier[i], frontier[j])) {
@@ -292,14 +382,14 @@ Sharq::QCirc Sharq::ZXDiagram::extract_qcirc()
   /* first step */
   Sharq::QCirc qc;
   std::vector<uint32_t> frontier = outputs_;
-  process_frontier(frontier, qc);
+  process_frontier(frontier, qc, false);
 
   /* update frontier */
   while (true) {
 
     std::vector<uint32_t> frontier_ori = frontier;
 
-    if (update_frontier(frontier, qc)) {
+    if (update_frontier(frontier, qc, false)) {
       break;
     }
   }

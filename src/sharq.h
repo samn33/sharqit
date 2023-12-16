@@ -354,7 +354,7 @@ namespace Sharq {
       }
       return ans;
     }
-    std::vector<std::pair<uint32_t, uint32_t>> gauss_reduce(const uint32_t num_of_sum1 = 5);
+    std::vector<std::pair<uint32_t, uint32_t>> gauss_reduce(const uint32_t num_of_sum1 = 1);
     friend std::ostream& operator<<(std::ostream& ost, const BinaryMatrix& bmat) { ost << bmat.to_string(); return ost; }
   };
 
@@ -731,14 +731,15 @@ namespace Sharq {
     void fuse_spiders();
     void remove_parallel_selfloops_hadamard_edges();
     void permutation_as_swap(QCirc& qc);
-    void process_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc);
-    bool update_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc);
+    void process_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz = false);
+    bool update_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz = false);
     bool update_frontier_pg(std::vector<uint32_t>& frontier, Sharq::QCirc& qc);
     void lcomp_one_time(const uint32_t idx_A);
     void pivot1_one_time(const uint32_t idx_A, const uint32_t idx_B);
     void pivot2_one_time(const uint32_t idx_A, const uint32_t idx_B);
     void pivot3_one_time(const uint32_t idx_A, const uint32_t idx_B);
     void gfusion_one_time(const uint32_t idx_A_phase, const uint32_t idx_B_phase);
+    std::vector<std::pair<uint32_t, uint32_t>> extract_2q_connects(std::vector<uint32_t>& frontier) const;
   public:
     ZXDiagram(uint32_t qubit_num = 1);
     ZXDiagram(const ZXDiagram& zx)
