@@ -10,7 +10,7 @@ import pyzx as zx
 #  cx q[2], q[0];
 #  s q[0];
 #  cx q[0], q[1];
-#  cx q[1], q[0];
+#  cz q[1], q[0];
 #  h q[2];
 #
 ## == OUTPUT: sample.sqc ==
@@ -20,7 +20,7 @@ import pyzx as zx
 #  CX 2 0
 #  S 0
 #  CX 0 1
-#  CX 1 0
+#  CZ 1 0
 #  H 2
 
 def gate_str(gate):
@@ -42,6 +42,8 @@ def gate_str(gate):
         gstr = "H " + str(gate.target)
     elif gate.name == "CNOT":
         gstr = "CX " + str(gate.control) + " " + str(gate.target)
+    elif gate.name == "CZ":
+        gstr = "CZ " + str(gate.control) + " " + str(gate.target)
 
     return gstr
 

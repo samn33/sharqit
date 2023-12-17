@@ -437,14 +437,17 @@ void Sharq::ZXDiagram::xor_hadamard_edges(std::vector<uint32_t> node_indexes)
 Sharq::ZXNodeKind Sharq::ZXDiagram::remove_node(const uint32_t idx)
 {
   adj_mat_.erase(adj_mat_.begin() + idx);
-  for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
-    for (auto it = adj_mat_[i].begin(); it != adj_mat_[i].end(); ++it) {
+  for (auto& node:adj_mat_) {
+    for (auto it = node.begin(); it != node.end();) {
       if (it->to() == idx) {
-	it = adj_mat_[i].erase(it);
-	--it;
+  	it = node.erase(it);
       }
       else if (it->to() > idx) {
-	it->to(it->to() - 1);
+  	it->to(it->to() - 1);
+	++it;
+      }
+      else {
+	++it;
       }
     }
   }
@@ -535,19 +538,17 @@ void Sharq::ZXDiagram::swap_nodes(uint32_t i, uint32_t j)
 
 void Sharq::ZXDiagram::remove_isolated_spiders()
 {
-  uint32_t cnt = 0;
-  bool find = true;
-  while (find) {
-    find = false;
-    for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
-      if (adj_mat_[i].size() == 0) {
-	remove_node(i);
+  uint32_t size = adj_mat_.size();
+  for (uint32_t i = 0; i < size; ++i) {
+    bool find = false;
+    for (uint32_t j = 0; j < adj_mat_.size(); ++j) {
+      if (adj_mat_[j].size() == 0) {
+	remove_node(j);
 	find = true;
 	break;
       }
     }
-    ++cnt;
-    if (cnt > adj_mat_.size()) break;
+    if (!find) break;
   }
 }
 

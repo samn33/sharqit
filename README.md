@@ -45,8 +45,8 @@ Add following lines to your ~/.bashrc. (If you are using another shell, replace 
     int main()
     {
       Sharq::QCirc qc_in;
-      // random circuit (qubit-num=5, gate-num=20, X:T:CX=4:5:3)
-      qc_in.add_random(5, 20, {{"X", 4},{"T", 5},{"CX", 3}});
+      // random circuit (qubit-num=5, gate-num=20, X:T:CX:CZ=4:5:3:1)
+      qc_in.add_random(5, 20, {{"X", 4},{"T", 5},{"CX", 3},{"CZ", 1}});
     
       qc_in.show(); // show the circuit
       qc_in.save("in.sqc"); // save to text file
@@ -145,10 +145,10 @@ Sharq supports a simple file format for quantum circuits as follows.
     T+ 2
     ...
 
-Supported quantum gates are X,Z,H,S,S+,T,T+,CX,RZ.
+Supported quantum gates are X,Z,H,S,S+,T,T+,RZ,CX,CZ.
 S+ and T+ are Hermitian conjugates of S and T respectively.
 RZ gate have a phase factor denoted by fraction brackled in parentheses.
-The unit of phase factor is radian, so 3/4 means 3PI/4, 1 means PI, and so on.
+The unit of phase factor is PI radian, so 3/4 means 3PI/4, 1 means PI, and so on.
 
 ### How to convert from other file format
 
@@ -157,7 +157,7 @@ Sample code converting from qasm file is [here](benchmarks/qasm_to_sqc.py).
 
 ## Benchmarks
 
-Processing time and T-count of 'sharq' are compared with [PyZX](https://github.com/Quantomatic/pyzx). The operating environment is Intel Core i5-3320M CPU @2.60GHz, 16GB RAM.
+Processing time, T-count, 2Q-count, Gate-count of 'sharq' are compared with [PyZX](https://github.com/Quantomatic/pyzx). The operating environment is Intel Core i5-3320M CPU @2.60GHz, 16GB RAM.
 
 ![benchmarks](/benchmarks/plot.png)
 
@@ -176,6 +176,9 @@ Papers about quantum circuit optimization using ZX-calculus.
 "Reducing T-count with the ZX-calculus",
 [arXiv:1903.10477](https://arxiv.org/abs/1903.10477)
 
+3. Miriam Backens, Hector Miller-Bakewell, Giovanni de Felice, Leo Lobski, John van de Wetering,
+"There and back again: A circuit extraction tale",
+[arXiv:2003.01664](https://arxiv.org/abs/2003.01664)
 
 ## Requirements
 

@@ -5,8 +5,8 @@ PROG = eval_sharq
 PROG_OBJ = eval_sharq.o
 PROG_SRC = eval_sharq.cpp
 
-IFLAG = -I ~/include -I /usr/include/eigen3
-LFLAG = -L ~/lib
+IFLAG = -I . -I ~/include -I /usr/include/eigen3
+LFLAG = -L . -L ~/lib
 
 $(PROG): $(PROG_OBJ)
 	$(CC) -o $@ $(CFLAG) $(IFLAG) $(LFLAG) $(PROG_OBJ) -lsharq

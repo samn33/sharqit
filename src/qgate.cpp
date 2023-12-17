@@ -32,6 +32,7 @@ Sharq::QGate::QGate(const Sharq::QGateKind kind, const std::vector<uint32_t>& qi
     }
     break;
   case Sharq::QGateKind::CX:
+  case Sharq::QGateKind::CZ:
     if (qid.size() != 2) {
       throw std::runtime_error("related qubit number must be 2.");
     }
@@ -115,6 +116,12 @@ std::vector<std::vector<std::complex<double>>> Sharq::QGate::kind_to_op(const Sh
 	  {0.0, 0.0, 0.0, 1.0},
 	  {0.0, 0.0, 1.0, 0.0}};
     break;
+  case Sharq::QGateKind::CZ:
+    op = {{1.0, 0.0, 0.0, 0.0},
+	  {0.0, 1.0, 0.0, 0.0},
+	  {0.0, 0.0, 1.0, 0.0},
+	  {0.0, 0.0, 0.0, -1.0}};
+    break;
   default:
     throw std::runtime_error("unknown QGateKind.");
   }
@@ -123,7 +130,7 @@ std::vector<std::vector<std::complex<double>>> Sharq::QGate::kind_to_op(const Sh
 
 std::string Sharq::QGate::name(bool pi_str) const
 {
-  std::vector<std::string> s = { "X", "Z", "S", "S+", "T", "T+", "H", "RZ", "CX", "Id" };
+  std::vector<std::string> s = { "X", "Z", "S", "S+", "T", "T+", "H", "RZ", "CX", "CZ", "Id" };
   Phase p = phase_;
   std::string p_str = "";
   if (kind_ == QGateKind::RZ) p_str = "(" + p.to_string(pi_str) + ")";
@@ -198,6 +205,10 @@ std::tuple<Sharq::QGateKind, Sharq::Phase> Sharq::QGate::kind_phase(const std::s
     kind = Sharq::QGateKind::CX;
     phase = Sharq::Phase(0);
   }
+  else if (str == "CZ") {
+    kind = Sharq::QGateKind::CZ;
+    phase = Sharq::Phase(0);
+  }
   else if (str.find("RZ") == 0) {
     phase = Sharq::Phase(str.substr(3, str.size() - 4));
     phase.mod_2pi();
@@ -265,6 +276,11 @@ Sharq::QGate Sharq::QGate::inverse() const
     qgate_inv.qid(qid_);
     qgate_inv.op(kind_to_op(Sharq::QGateKind::CX));
     break;
+  case Sharq::QGateKind::CZ:
+    qgate_inv.kind(Sharq::QGateKind::CZ);
+    qgate_inv.qid(qid_);
+    qgate_inv.op(kind_to_op(Sharq::QGateKind::CZ));
+    break;
   default:
     throw std::runtime_error("unknown QGateKind.");
   }
@@ -301,8 +317,10 @@ bool Sharq::QGate::mergeable(const Sharq::QGate& other) const
     if (kind_ == other.kind()) return true;
     else if (is_RZ_gate() && other.is_RZ_gate()) return true;
   }
-  else if (qid_.size() == 2 && other.qid().size() == 2) {
-    if (kind_ == other.kind() && qid_[0] == other.qid()[0] && qid_[1] == other.qid()[1]) return true;
+  else if (qid_.size() == 2 && other.qid().size() == 2 && kind_ == other.kind()) {
+    if (kind_ == Sharq::QGateKind::CX && qid_[0] == other.qid()[0] && qid_[1] == other.qid()[1]) return true;
+    else if (kind_ == Sharq::QGateKind::CZ && qid_[0] == other.qid()[0] && qid_[1] == other.qid()[1]) return true;
+    else if (kind_ == Sharq::QGateKind::CZ && qid_[0] == other.qid()[1] && qid_[1] == other.qid()[0]) return true;
   }
   return false;
 }
@@ -324,18 +342,31 @@ bool Sharq::QGate::commutable(const Sharq::QGate& other) const
   }
   if (!overlap) return true;
 
-  /* single qubit gate and CNOT gate */
-  if (qid_.size() == 1 && other.qid().size() == 2) {
+  if (qid_.size() == 1 && other.qid().size() == 2 && other.kind() == Sharq::QGateKind::CX) {
     if (is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
   }
-  if (qid_.size() == 2 && other.qid().size() == 1) {
-    if (other.is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
-  }  
-  if (qid_.size() == 2 && other.qid().size() == 2) {
-    if (kind_ == other.kind() &&
-	((qid_[0] == other.qid()[0]) || (qid_[1] == other.qid()[1]))) return true;
+  if (qid_.size() == 1 && other.qid().size() == 2 && other.kind() == Sharq::QGateKind::CZ) {
+    if (is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
+    else if (is_RZ_gate() && (qid_[0] == other.qid()[1])) return true;
   }
 
+  if (qid_.size() == 2 && other.qid().size() == 1 && kind_ == Sharq::QGateKind::CX) {
+    if (other.is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
+  }  
+  if (qid_.size() == 2 && other.qid().size() == 1 && kind_ == Sharq::QGateKind::CZ) {
+    if (other.is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
+    else if (other.is_RZ_gate() && (qid_[1] == other.qid()[0])) return true;
+  }  
+
+  if (qid_.size() == 2 && other.qid().size() == 2) {
+    if (kind_ == other.kind() && kind_ == Sharq::QGateKind::CX &&
+	((qid_[0] == other.qid()[0]) || (qid_[1] == other.qid()[1]))) return true;
+    else if (kind_ == other.kind() && kind_ == Sharq::QGateKind::CZ &&
+	((qid_[0] == other.qid()[0]) || (qid_[1] == other.qid()[1]))) return true;
+    else if (kind_ == other.kind() && kind_ == Sharq::QGateKind::CZ &&
+	((qid_[0] == other.qid()[1]) || (qid_[1] == other.qid()[0]))) return true;
+  }
+  
   return false;
 }
 

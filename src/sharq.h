@@ -25,7 +25,7 @@
 
 namespace Sharq {
 
-  constexpr char VERSION[] = "v0.0.3";
+  constexpr char VERSION[] = "v0.0.4";
   constexpr double EPS = 1.0e-8;
 
   class Fraction;
@@ -58,13 +58,33 @@ namespace Sharq {
     void denominator(const int32_t denominator) { denominator_ = denominator; reduce(); }
     /* member functions */
     std::string to_string() const;
-    Fraction add(const Fraction& other) const;
+    Fraction add(const Fraction& other) const
+    {
+      int32_t n = numerator_ * other.denominator() + other.numerator() * denominator_;
+      int32_t d = denominator_ * other.denominator();
+      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+    }
     Fraction add(const int32_t other) const { return add(Fraction(other)); }
-    Fraction sub(const Fraction& other) const;
+    Fraction sub(const Fraction& other) const
+    {
+      int n = numerator_ * other.denominator() - other.numerator() * denominator_;
+      int d = denominator_ * other.denominator();
+      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+    }
     Fraction sub(const int32_t other) const { return sub(Fraction(other)); }
-    Fraction mul(const Fraction& other) const;
+    Fraction mul(const Fraction& other) const
+    {
+      int n = numerator_ * other.numerator();
+      int d = denominator_ * other.denominator();
+      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+    }
     Fraction mul(const int32_t other) const { return mul(Fraction(other)); }
-    Fraction div(const Fraction& other) const;
+    Fraction div(const Fraction& other) const
+    {
+      int n = numerator_ * other.denominator();
+      int d = denominator_ * other.numerator();
+      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+    }
     Fraction div(const int32_t other) const { return div(Fraction(other)); }
     bool is_zero() const { return numerator_ == 0; }
     bool is_positive() const { return numerator_ * denominator_ > 0; }
@@ -84,7 +104,18 @@ namespace Sharq {
 	denominator_ /= fac;
       }
     }
-    static int32_t gcd(const int32_t n, const int32_t d);
+    static int32_t gcd(const int32_t n, const int32_t d)
+    {
+      int32_t remainder;
+      int32_t nn = std::abs(n);
+      int32_t dd = std::abs(d);
+      while (dd != 0) {
+	remainder = nn % dd;
+	nn = dd;
+	dd = remainder;
+      }
+      return nn;
+    }
     Fraction operator+() const { return *this; }
     Fraction operator-() const { return mul(-1); }
     Fraction& operator+=(const Fraction& rhs)
@@ -161,7 +192,20 @@ namespace Sharq {
     bool is_positive() const { return frac_.is_positive(); }
     bool is_negative() const { return frac_.is_negative(); }
     void reduce() { frac_.reduce(); }
-    void mod_2pi();
+    void mod_2pi()
+    {
+      frac_.reduce();
+      if (frac_.is_positive()) {
+    	int32_t rounds = frac_.numerator() / (frac_.denominator() * 2);
+    	frac_.numerator(frac_.numerator() - 2 * rounds * frac_.denominator());
+      }
+      else if (frac_.is_negative()) {
+    	int32_t nume = -frac_.numerator();
+    	int32_t deno_2 = frac_.denominator() * 2;
+    	int32_t rounds = (nume + deno_2 - 1 ) / deno_2;
+    	frac_.numerator(2 * rounds * frac_.denominator() + frac_.numerator());
+      }
+    }
     Phase operator+() const { return *this; }
     Phase operator-() const { return Phase(-frac_); }
     Phase& operator+=(const Phase& rhs) { frac_ += rhs.frac(); return *this; }
@@ -263,17 +307,60 @@ namespace Sharq {
     void row_indexes(const std::vector<uint32_t>& row_indexes) { row_indexes_ = row_indexes; }
     /* member functions */
     std::string to_string() const;
-    void xor_rows(const uint32_t a, const uint32_t b);
-    void swap_rows(const uint32_t a, const uint32_t b);
-    void swap_cols(const uint32_t a, const uint32_t b);
-    bool feasible() const;
-    std::vector<std::pair<uint32_t, uint32_t>> gauss_reduce();
+    uint32_t xor_rows(const uint32_t a, const uint32_t b)
+    {
+      if (a > row_num_ || b > row_num_) {
+    	throw std::runtime_error("argument is too large.");
+      }
+      uint32_t sum = 0;
+      for (uint32_t i = 0; i < col_num_; ++i) {
+    	elements_[b][i] = (elements_[b][i] + elements_[a][i]) % 2; // XOR operation
+    	sum += elements_[b][i];
+      }
+      return sum;
+    }
+    void swap_rows(const uint32_t a, const uint32_t b)
+    {
+      if (a > row_num_ || b > row_num_) {
+	throw std::runtime_error("argument is too large.");
+      }
+      for (uint32_t i = 0; i < col_num_; ++i) {
+	std::swap(elements_[a][i], elements_[b][i]);
+      }
+      std::swap(row_indexes_[a], row_indexes_[b]);
+    }
+    void swap_cols(const uint32_t a, const uint32_t b)
+    {
+      if (a > col_num_ || b > col_num_) {
+	throw std::runtime_error("argument is too large.");
+      }
+      for (uint32_t i = 0; i < row_num_; ++i) {
+	std::swap(elements_[i][a], elements_[i][b]);
+      }
+    }
+    bool feasible() const
+    {
+      bool ans = false;
+      for (auto& row:elements_) {
+	uint32_t sum = 0;
+	for (auto& e:row) {
+	  sum += (uint32_t)e;
+	  if (sum > 1) break;
+	}
+	if (sum == 1) {
+	  ans = true;
+	  break;
+	}
+      }
+      return ans;
+    }
+    std::vector<std::pair<uint32_t, uint32_t>> gauss_reduce(const uint32_t num_of_sum1 = 1);
     friend std::ostream& operator<<(std::ostream& ost, const BinaryMatrix& bmat) { ost << bmat.to_string(); return ost; }
   };
 
   /* Quantum Gate */
 
-  enum QGateKind { X, Z, S, Sdg, T, Tdg, H, RZ, CX, Id };
+  enum QGateKind { X, Z, S, Sdg, T, Tdg, H, RZ, CX, CZ, Id };
 
   class QGate
   {
@@ -328,6 +415,7 @@ namespace Sharq {
       return ans;
     }
     bool is_CX_gate() const { return (kind_ == QGateKind::CX); }
+    bool is_CZ_gate() const { return (kind_ == QGateKind::CZ); }
     bool is_RZ_gate() const { return (kind_ == QGateKind::Z || kind_ == QGateKind::S || kind_ == QGateKind::Sdg ||
 				      kind_ == QGateKind::T || kind_ == QGateKind::Tdg || kind_ == QGateKind::RZ ||
 				      kind_ == QGateKind::Id); }
@@ -374,8 +462,10 @@ namespace Sharq {
     uint32_t h_count() const;
     uint32_t s_count() const;
     uint32_t t_count() const;
-    uint32_t cx_count() const;
     uint32_t rz_count() const;
+    uint32_t cx_count() const;
+    uint32_t cz_count() const;
+    uint32_t twoq_count() const { return (cx_count() + cz_count()); }
     uint32_t depth() const;
     std::string to_string(const uint32_t width = 100) const;
     void show(const uint32_t width = 100) const { std::cout << to_string(width); }
@@ -405,6 +495,7 @@ namespace Sharq {
     QCirc& h(const uint32_t q) { return add_qgate(QGateKind::H, {q}); }
     QCirc& rz(const uint32_t q, const Phase& phase) { return add_qgate(QGateKind::RZ, {q}, phase); }
     QCirc& cx(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::CX, {c, t}); }
+    QCirc& cz(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::CZ, {c, t}); }
     /* compound gates */
     QCirc& rx(const uint32_t q, const Phase& phase) { h(q); rz(q,phase); h(q); return *this; }
     QCirc& y(const uint32_t q) { x(q); z(q); return *this; }
@@ -414,7 +505,6 @@ namespace Sharq {
     { rx(q, Phase(1,2)); rz(q, phase); rx(q, Phase(-1,2)); return *this; }
     QCirc& p(const uint32_t q, const Phase& phase) { rz(q,phase); return *this; }
     QCirc& cy(const uint32_t con, const uint32_t tar) { cz(con,tar); cx(con,tar); s(con); return *this; }
-    QCirc& cz(const uint32_t con, const uint32_t tar) { h(tar); cx(con,tar); h(tar); return *this; }
     QCirc& cxr(const uint32_t con, const uint32_t tar) { crx(con,tar,Phase(1,2)); t(con); return *this; }
     QCirc& cxrdg(const uint32_t con, const uint32_t tar) { tdg(con); crx(con,tar,Phase(-1,2)); return *this; }
     QCirc& ch(const uint32_t con, const uint32_t tar)
@@ -622,7 +712,18 @@ namespace Sharq {
     void xor_hadamard_edge(const uint32_t a, const uint32_t b);
     void xor_hadamard_edges(std::vector<uint32_t> node_indexes);
     ZXNodeKind remove_node(const uint32_t node_index);
-    void remove_edges_of_node(const uint32_t node_index) { adj_mat_[node_index].clear(); }
+    void remove_edges_of_node(const uint32_t node_index) {
+      adj_mat_[node_index].clear();
+      for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
+	if (i == node_index) continue;
+	for (auto it = adj_mat_[i].begin(); it != adj_mat_[i].end(); ++it) {
+	  if (it->to() == node_index) {
+	    it = adj_mat_[i].erase(it);
+	    --it;
+	  }
+	}
+      }
+    }
     uint32_t degree_of_node(const uint32_t node_index) { return adj_mat_[node_index].size(); }
     ZXNodeKind kind_of_node(const uint32_t node_index) { return nodes_[node_index].kind(); }
     void swap_nodes(uint32_t i, uint32_t j);
@@ -633,13 +734,15 @@ namespace Sharq {
     void fuse_spiders();
     void remove_parallel_selfloops_hadamard_edges();
     void permutation_as_swap(QCirc& qc);
-    void process_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc);
-    bool update_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc);
+    void process_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz = false);
+    bool update_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz = false);
     bool update_frontier_pg(std::vector<uint32_t>& frontier, Sharq::QCirc& qc);
     void lcomp_one_time(const uint32_t idx_A);
     void pivot1_one_time(const uint32_t idx_A, const uint32_t idx_B);
     void pivot2_one_time(const uint32_t idx_A, const uint32_t idx_B);
     void pivot3_one_time(const uint32_t idx_A, const uint32_t idx_B);
+    void gfusion_one_time(const uint32_t idx_A_phase, const uint32_t idx_B_phase);
+    std::vector<std::pair<uint32_t, uint32_t>> extract_2q_connects(std::vector<uint32_t>& frontier) const;
   public:
     ZXDiagram(uint32_t qubit_num = 1);
     ZXDiagram(const ZXDiagram& zx)

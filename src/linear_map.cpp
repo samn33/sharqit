@@ -93,7 +93,7 @@ Sharq::LinearMap& Sharq::LinearMap::operate_qgate(const QGate& qgate)
     throw std::runtime_error("invalid row_num or col_num.");
   }
 
-  if (qgate.kind() != Sharq::QGateKind::CX) {
+  if ((qgate.kind() != Sharq::QGateKind::CX) && (qgate.kind() != Sharq::QGateKind::CZ)) {
   
     uint32_t nn = qnum - qgate.qid()[0] - 1;
 

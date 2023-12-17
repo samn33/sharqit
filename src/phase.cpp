@@ -82,19 +82,3 @@ std::string Sharq::Phase::to_string(bool pi_str) const
   }
   return str;
 }
-
-void Sharq::Phase::mod_2pi() // to be positive and mode 2PI
-{
-  frac_.reduce();
-  if (frac_.is_positive() == true) {
-    Sharq::Fraction tmp = frac_ / 2;
-    tmp = Fraction(std::abs(tmp.numerator()) / std::abs(tmp.denominator()));
-    frac_ = frac_ - (tmp * 2);
-  }
-  else if (frac_.is_negative() == true) {
-    Sharq::Fraction tmp = frac_ / 2;
-    tmp = Fraction((std::abs(tmp.numerator()) + std::abs(tmp.denominator()) - 1) / std::abs(tmp.denominator()));
-    frac_ = (tmp * 2) + frac_;
-  }
-}
-

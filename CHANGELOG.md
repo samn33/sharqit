@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.0.4] - 2023-12-17
+### Changed
+- improve the processing time for optimization
+- add CZ gate as a basic gate
+
 ## [0.0.3] - 2023-11-30
 ### Added
 - sharq command - to execute optimization, random circuit generation, print stats, show circuit diagram etc

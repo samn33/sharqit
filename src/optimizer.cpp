@@ -21,6 +21,7 @@ std::string Sharq::Optimizer::to_string() const
   ss << "T-count  = " << stats_in["t_count"] << " -> " << stats_out["t_count"] << std::endl;
   ss << "RZ-count = " << stats_in["rz_count"] << " -> " << stats_out["rz_count"] << std::endl;
   ss << "CX-count = " << stats_in["cx_count"] << " -> " << stats_out["cx_count"] << std::endl;
+  ss << "2Q-count = " << stats_in["2q_count"] << " -> " << stats_out["2q_count"] << std::endl;
   ss << "gate-count = " << stats_in["gate_count"] << " -> " << stats_out["gate_count"] << std::endl;
   ss << "depth      = " << stats_in["depth"] << " -> " << stats_out["depth"] << std::endl;
   ss << "qubit_num  = " << stats_in["qubit_num"] << " -> " << stats_out["qubit_num"] << std::endl;

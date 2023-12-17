@@ -35,13 +35,17 @@ def pyzx_qcirc(lines):
                 p_nume = int(pstr_frac[0])
                 p_deno = int(pstr_frac[1])
             qid = [int(token[1])]
-
         elif len(token) == 3 and token[0] == "CX":
+            gstr = token[0]
+            qid = [int(token[1]), int(token[2])]
+        elif len(token) == 3 and token[0] == "CZ":
             gstr = token[0]
             qid = [int(token[1]), int(token[2])]
 
         if gstr == "CX":
             qc.add_gate("CNOT", qid[0], qid[1])
+        elif gstr == "CZ":
+            qc.add_gate("CZ", qid[0], qid[1])
         elif gstr == "RZ":
             if p_deno is None:
                 qc.add_gate("ZPhase", qid[0], phase=Fraction(p_nume))
