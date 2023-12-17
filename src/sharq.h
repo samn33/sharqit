@@ -360,7 +360,7 @@ namespace Sharq {
 
   /* Quantum Gate */
 
-  enum QGateKind { X, Z, S, Sdg, T, Tdg, H, RZ, CX, Id };
+  enum QGateKind { X, Z, S, Sdg, T, Tdg, H, RZ, CX, CZ, Id };
 
   class QGate
   {
@@ -415,6 +415,7 @@ namespace Sharq {
       return ans;
     }
     bool is_CX_gate() const { return (kind_ == QGateKind::CX); }
+    bool is_CZ_gate() const { return (kind_ == QGateKind::CZ); }
     bool is_RZ_gate() const { return (kind_ == QGateKind::Z || kind_ == QGateKind::S || kind_ == QGateKind::Sdg ||
 				      kind_ == QGateKind::T || kind_ == QGateKind::Tdg || kind_ == QGateKind::RZ ||
 				      kind_ == QGateKind::Id); }
@@ -461,8 +462,10 @@ namespace Sharq {
     uint32_t h_count() const;
     uint32_t s_count() const;
     uint32_t t_count() const;
-    uint32_t cx_count() const;
     uint32_t rz_count() const;
+    uint32_t cx_count() const;
+    uint32_t cz_count() const;
+    uint32_t twoq_count() const { return (cx_count() + cz_count()); }
     uint32_t depth() const;
     std::string to_string(const uint32_t width = 100) const;
     void show(const uint32_t width = 100) const { std::cout << to_string(width); }
@@ -492,6 +495,7 @@ namespace Sharq {
     QCirc& h(const uint32_t q) { return add_qgate(QGateKind::H, {q}); }
     QCirc& rz(const uint32_t q, const Phase& phase) { return add_qgate(QGateKind::RZ, {q}, phase); }
     QCirc& cx(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::CX, {c, t}); }
+    QCirc& cz(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::CZ, {c, t}); }
     /* compound gates */
     QCirc& rx(const uint32_t q, const Phase& phase) { h(q); rz(q,phase); h(q); return *this; }
     QCirc& y(const uint32_t q) { x(q); z(q); return *this; }
@@ -501,7 +505,6 @@ namespace Sharq {
     { rx(q, Phase(1,2)); rz(q, phase); rx(q, Phase(-1,2)); return *this; }
     QCirc& p(const uint32_t q, const Phase& phase) { rz(q,phase); return *this; }
     QCirc& cy(const uint32_t con, const uint32_t tar) { cz(con,tar); cx(con,tar); s(con); return *this; }
-    QCirc& cz(const uint32_t con, const uint32_t tar) { h(tar); cx(con,tar); h(tar); return *this; }
     QCirc& cxr(const uint32_t con, const uint32_t tar) { crx(con,tar,Phase(1,2)); t(con); return *this; }
     QCirc& cxrdg(const uint32_t con, const uint32_t tar) { tdg(con); crx(con,tar,Phase(-1,2)); return *this; }
     QCirc& ch(const uint32_t con, const uint32_t tar)

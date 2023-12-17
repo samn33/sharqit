@@ -42,6 +42,7 @@ std::map<std::string, uint32_t> Sharq::QCirc::stats() const
   sts["s_count"] = s_count();
   sts["t_count"] = t_count();
   sts["cx_count"] = cx_count();
+  sts["2q_count"] = twoq_count();
   sts["rz_count"] = rz_count();
   sts["gate_count"] = gate_count();
   sts["depth"] = depth();
@@ -59,6 +60,7 @@ void Sharq::QCirc::print_stats() const
   std::cout << "T_count  = " << sts["t_count"] << std::endl;
   std::cout << "RZ_count = " << sts["rz_count"] << std::endl;
   std::cout << "CX_count = " << sts["cx_count"] << std::endl;
+  std::cout << "2Q_count = " << sts["2q_count"] << std::endl;
   std::cout << "gate_count = " << sts["gate_count"] << std::endl;
   std::cout << "depth      = " << sts["depth"] << std::endl;
   std::cout << "qubit_num  = " << sts["qubit_num"] << std::endl;
@@ -106,6 +108,13 @@ uint32_t Sharq::QCirc::t_count() const
   return cnt;
 }
 
+uint32_t Sharq::QCirc::rz_count() const
+{
+  uint32_t cnt = 0;
+  for (auto& qgate:qgates_) if (qgate.is_RZ_gate()) ++cnt;
+  return cnt;
+}
+
 uint32_t Sharq::QCirc::cx_count() const
 {
   uint32_t cnt = 0;
@@ -113,10 +122,10 @@ uint32_t Sharq::QCirc::cx_count() const
   return cnt;
 }
 
-uint32_t Sharq::QCirc::rz_count() const
+uint32_t Sharq::QCirc::cz_count() const
 {
   uint32_t cnt = 0;
-  for (auto& qgate:qgates_) if (qgate.is_RZ_gate()) ++cnt;
+  for (auto& qgate:qgates_) if (qgate.is_CZ_gate()) ++cnt;
   return cnt;
 }
 
@@ -167,7 +176,7 @@ std::string Sharq::QCirc::to_string(const uint32_t width) const
   std::vector<uint32_t> qid;
   std::string name;
   for (auto qgate:qgates_) {
-    if (qgate.kind() != Sharq::QGateKind::CX) {
+    if ((qgate.kind() != Sharq::QGateKind::CX) && (qgate.kind() != Sharq::QGateKind::CZ)) {
       name = qgate.name(false);
       qid = qgate.qid();
       str_list[qid[0]] += name + "--";
@@ -186,6 +195,7 @@ std::string Sharq::QCirc::to_string(const uint32_t width) const
       for (uint32_t i = 0; i < qubit_num_; ++i) {
 	if (i == c) str_list[i] += "*--";
 	else if (i == t && qgate.kind() == Sharq::QGateKind::CX) str_list[i] += "X--";
+	else if (i == t && qgate.kind() == Sharq::QGateKind::CZ) str_list[i] += "*--";
 	else if (c < t && c < i && i < t) str_list[i] += "|--";
 	else if (t < c && t < i && i < c) str_list[i] += "|--";
 	else str_list[i] += "---";
@@ -260,6 +270,7 @@ Sharq::QCirc& Sharq::QCirc::add_qcirc(const QCirc& other)
   *                       {"H", 1},
   *                       {"Sdg", 1},
   *                       {"CX", 3},
+  *                       {"CZ", 2},
   *                       {"RZ(1/4)", 1},});
   */
 Sharq::QCirc& Sharq::QCirc::add_random(const uint32_t qubit_num, const uint32_t qgate_num,
@@ -293,6 +304,9 @@ Sharq::QCirc& Sharq::QCirc::add_random(const uint32_t qubit_num, const uint32_t 
     if (std::get<0>(kp) == Sharq::QGateKind::CX && qubit_num == 1) {
       throw std::runtime_error("not allowed CX gate for qubit_num = 1.");
     }
+    if (std::get<0>(kp) == Sharq::QGateKind::CZ && qubit_num == 1) {
+      throw std::runtime_error("not allowed CZ gate for qubit_num = 1.");
+    }
   }
   uint32_t prob_list_num = prob_list.size();
   if (prob_list[prob_list_num - 1] != 1.0) prob_list[prob_list_num - 1];
@@ -322,7 +336,7 @@ Sharq::QCirc& Sharq::QCirc::add_random(const uint32_t qubit_num, const uint32_t 
     Sharq::QGateKind kind = kind_list[prob_idx];
     Sharq::Phase phase = phase_list[prob_idx];
     std::vector<uint32_t> qid = {q_list[i]};
-    if (kind_list[prob_idx] == Sharq::QGateKind::CX) {
+    if (kind_list[prob_idx] == Sharq::QGateKind::CX || kind_list[prob_idx] == Sharq::QGateKind::CZ) {
       uint32_t t = (qid[0] + 1 + engine() % (qubit_num - 1)) % qubit_num;
       qid.push_back(t);
     }
@@ -460,7 +474,7 @@ void Sharq::QCirc::to_dot_file(const std::string& file_name) const
   for (uint32_t i = 0; i < qgates_.size(); ++i) {
     uint32_t offset = 2 * qubit_num_;
     Sharq::QGate qgate = qgates_[i];
-    if (qgate.kind() != Sharq::QGateKind::CX) {
+    if ((qgate.kind() != Sharq::QGateKind::CX) && (qgate.kind() != Sharq::QGateKind::CZ)) {
       label = qgate.name();
       shape = "box";
       width = "0.5";
@@ -500,13 +514,24 @@ void Sharq::QCirc::to_dot_file(const std::string& file_name) const
       ++cnt;
       
       /* target */
-      label = "+";
-      shape = "circle";
-      color = "black";
-      fillcolor = "white";
-      fontcolor = "black";
-      width = "0.2";
-      height = "0.2";
+      if (qgate.kind() == Sharq::QGateKind::CX) {
+	label = "+";
+	shape = "circle";
+	width = "0.2";
+	height = "0.2";
+	color = "black";
+	fillcolor = "white";
+	fontcolor = "black";
+      }
+      else {
+	label = "";
+	shape = "circle";
+	width = "0.1";
+	height = "0.1";
+	color = "black";
+	fillcolor = "black";
+	fontcolor = "black";
+      }
 
       nodes.push_back("node_" + std::to_string(cnt + offset));
       edges.push_back({lasts[qgate.qid()[1]], "node_"+ std::to_string(cnt + offset)});
@@ -582,7 +607,16 @@ Sharq::ZXDiagram Sharq::QCirc::to_zxdiagram() const
 {
   ZXDiagram zx(qubit_num_);
   for (auto qgate:qgates_) {
-    zx.add_qgate(qgate);
+    if (qgate.is_CZ_gate()) {
+      uint32_t c = qgate.qid()[0];
+      uint32_t t = qgate.qid()[1];
+      zx.add_qgate(Sharq::QGate(Sharq::QGateKind::H, {t}));
+      zx.add_qgate(Sharq::QGate(Sharq::QGateKind::CX, {c,t}));
+      zx.add_qgate(Sharq::QGate(Sharq::QGateKind::H, {t}));
+    }
+    else {
+      zx.add_qgate(qgate);
+    }
   }
   return zx;
 }

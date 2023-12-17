@@ -89,7 +89,8 @@ bool test_random(int qubit_num, int gate_num) {
 		      {"H", 1},
 		      {"S", 1},
 		      {"T", 1},
-		      {"CX", 1}});
+		      {"CX", 1},
+		      {"CZ", 1}});
 
     qc_in.save("sandbox/hoge.sqc");
 

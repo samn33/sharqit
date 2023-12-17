@@ -3,8 +3,8 @@
 int main()
 {
   Sharq::QCirc qc_in;
-  // random circuit (qubit-num=5, gate-num=20, X:T:CX=4:5:3)
-  qc_in.add_random(5, 20, {{"X", 4},{"T", 5},{"CX", 3}});
+  // random circuit (qubit-num=5, gate-num=20, X:T:CX:CZ=4:5:3:1)
+  qc_in.add_random(5, 20, {{"X", 4},{"T", 5},{"CX", 3},{"CZ", 1}});
 
   qc_in.show(); // show the circuit
   qc_in.save("in.sqc"); // save to text file
