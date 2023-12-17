@@ -16,8 +16,8 @@ def main():
     time_sharq = []
     tcount_pyzx = []
     tcount_sharq = []
-    cxcount_pyzx = []
-    cxcount_sharq = []
+    twoqcount_pyzx = []
+    twoqcount_sharq = []
     gcount_pyzx = []
     gcount_sharq = []
     for line_pyzx, line_sharq in zip(lines_pyzx[1:], lines_sharq[1:]):
@@ -26,11 +26,11 @@ def main():
         names.append(token_pyzx[0])
         time_pyzx.append(float(token_pyzx[1]))
         tcount_pyzx.append(int(token_pyzx[3]))
-        cxcount_pyzx.append(int(token_pyzx[5]))
+        twoqcount_pyzx.append(int(token_pyzx[5]))
         gcount_pyzx.append(int(token_pyzx[7]))
         time_sharq.append(float(token_sharq[1]))
         tcount_sharq.append(int(token_sharq[3]))
-        cxcount_sharq.append(int(token_sharq[5]))
+        twoqcount_sharq.append(int(token_sharq[5]))
         gcount_sharq.append(int(token_sharq[7]))
 
     fig = plt.figure(figsize=[10,12])
@@ -65,10 +65,11 @@ def main():
     # 2Q-Count plot
     
     ax3 = fig.add_subplot(2, 2, 3)
-    ax3.set_ylabel("CNOT-Count", fontsize=14)
-    g1 = ax3.bar(names, cxcount_pyzx, label=PYZX_LABEL, align='edge', width=-0.3)
-    g2 = ax3.bar(names, cxcount_sharq, label=SHARQ_LABEL, align='edge', width=0.3)
+    ax3.set_ylabel("2Q-Count", fontsize=14)
+    g1 = ax3.bar(names, twoqcount_pyzx, label=PYZX_LABEL, align='edge', width=-0.3)
+    g2 = ax3.bar(names, twoqcount_sharq, label=SHARQ_LABEL, align='edge', width=0.3)
 
+    ax3.set_ylim(0, 2500)
     ax3.set_xticks(range(len(names)))
     ax3.set_xticklabels(names, rotation=90)
     ax3.legend(handles=[g1,g2], loc='upper left', fontsize=10)

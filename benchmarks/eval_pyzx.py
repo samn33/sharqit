@@ -17,7 +17,8 @@ def eval_pyzx(file_in):
 
     stats_in = qc_in.stats_dict()
     stats_out = qc_out.to_basic_gates().stats_dict()
-    return (ptime, stats_in['tcount'], stats_out['tcount'], stats_in['cnot'], stats_out['cnot'], stats_in['gates'], stats_out['gates'])
+    return (ptime, stats_in['tcount'], stats_out['tcount'],
+            stats_in['twoqubit'], stats_out['twoqubit'], stats_in['gates'], stats_out['gates'])
     
 if __name__ == '__main__':
 
@@ -32,7 +33,7 @@ if __name__ == '__main__':
         name_list.append(name)
         path_list.append(path)
     
-    print("name,time[sec],T-count<in>,T-count<out>")
+    print("name,time[sec],T-count<in>,T-count<out>,2q-count<in>,2q-count<out>,gate-count<in>,gate-count<out>")
     for n,p in zip(name_list, path_list):
         (ptime, tcount_in, tcount_out, cxcount_in, cxcount_out, gcount_in, gcount_out) = eval_pyzx(p)
         s = "{},{},{},{},{},{},{},{}".format(n, ptime, tcount_in, tcount_out, cxcount_in, cxcount_out, gcount_in, gcount_out)
