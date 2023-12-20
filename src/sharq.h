@@ -354,7 +354,7 @@ namespace Sharq {
       }
       return ans;
     }
-    std::vector<std::pair<uint32_t, uint32_t>> gauss_reduce(const uint32_t num_of_sum1 = 1);
+    std::vector<std::pair<uint32_t, uint32_t>> gauss_reduce(const uint32_t num_of_sum1 = 5);
     friend std::ostream& operator<<(std::ostream& ost, const BinaryMatrix& bmat) { ost << bmat.to_string(); return ost; }
   };
 
@@ -769,6 +769,7 @@ namespace Sharq {
     std::map<std::string, uint32_t> stats() const;
     void to_dot_file(const std::string& file_name) const;
     void to_svg_file(const std::string& file_name) const;
+    uint32_t spider_count() const { return (nodes_.size() - inputs_.size() - outputs_.size()); }
     uint32_t non_clifford_count() const
     {
       uint32_t cnt = 0;
@@ -785,12 +786,12 @@ namespace Sharq {
     void update_node_places();
     void update_phase_gadget();
     void graph_like();
-    void lcomp();
-    void pivot1();
-    void pivot2();
-    void pivot3();
+    uint32_t lcomp();
+    uint32_t pivot1();
+    uint32_t pivot2();
+    uint32_t pivot3();
+    uint32_t gfusion();
     void id_removal();
-    void gfusion();
     void simplify();
     QCirc extract_qcirc();
     friend std::ostream& operator<<(std::ostream& ost, const ZXDiagram& zx) { ost << zx.to_string(); return ost; }

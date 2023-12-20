@@ -157,7 +157,6 @@ void Sharq::ZXDiagram::update_phase_gadget()
 	if (e.to() == i) continue;
 	nodes_[e.to()].pg_leaf(true);
       }
-
     }
   }
 }
@@ -240,7 +239,7 @@ void Sharq::ZXDiagram::lcomp_one_time(const uint32_t idx_A)
   remove_edges_of_node(idx_A);
 }
 
-void Sharq::ZXDiagram::lcomp()
+uint32_t Sharq::ZXDiagram::lcomp()
 {
   if (kind() != Sharq::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. must be graph-like ZX diagram.");
@@ -249,49 +248,47 @@ void Sharq::ZXDiagram::lcomp()
   std::vector<uint32_t> lc_cand_spiders; // proper clifford spiders
   std::vector<uint32_t> lc_used_spiders; // flags of used spiders or not
 
-  while (true) {
-    update_node_places();
-    update_phase_gadget();
+  update_node_places();
+  update_phase_gadget();
 
-    lc_cand_spiders.clear();
-    lc_used_spiders.assign(nodes_.size(), 0);
+  lc_cand_spiders.clear();
+  lc_used_spiders.assign(nodes_.size(), 0);
 
-    /* spiders of lcomp candidate */
-    bool find = false;
-    for (uint32_t i = 0; i < nodes_.size(); ++i) {
-      if (lc_used_spiders[i] == 1) continue;
-      if ((check_internal_node(i) && check_z_spider(i)) == false) continue;
-      if (check_pg_leaf_node(i)) continue;
-      if (nodes_[i].phase() == Sharq::Phase(1,2) ||
-	  nodes_[i].phase() == Sharq::Phase(3,2)) {
-	bool break_flg = false;
-	for (auto& e:adj_mat_[i]) {
-	  if (lc_used_spiders[e.to()] == 1) {
-	    break_flg = true;
-	    break;
-	  }
-	}
-	if (break_flg) continue;
-	
-	find = true;
-	lc_used_spiders[i] = 1;
-	lc_cand_spiders.push_back(i);
-	for (auto& e:adj_mat_[i]) {
-	  lc_used_spiders[e.to()] = 1;
+  /* spiders of lcomp candidate */
+  bool find = false;
+  for (uint32_t i = 0; i < nodes_.size(); ++i) {
+    if (lc_used_spiders[i] == 1) continue;
+    if ((check_internal_node(i) && check_z_spider(i)) == false) continue;
+    if (check_pg_leaf_node(i)) continue;
+    if (nodes_[i].phase() == Sharq::Phase(1,2) ||
+	nodes_[i].phase() == Sharq::Phase(3,2)) {
+      bool break_flg = false;
+      for (auto& e:adj_mat_[i]) {
+	if (lc_used_spiders[e.to()] == 1) {
+	  break_flg = true;
+	  break;
 	}
       }
+      if (break_flg) continue;
+	
+      find = true;
+      lc_used_spiders[i] = 1;
+      lc_cand_spiders.push_back(i);
+      for (auto& e:adj_mat_[i]) {
+	lc_used_spiders[e.to()] = 1;
+      }
     }
-
-    if (!find) break;
-
-    /* execute lcomp */
-    for (auto& idx:lc_cand_spiders) {
-      lcomp_one_time(idx);
-    }
-    remove_isolated_spiders();
   }
 
-  id_removal();
+  if (!find) return 0;
+
+  /* execute lcomp */
+  for (auto& idx:lc_cand_spiders) {
+    lcomp_one_time(idx);
+  }
+  remove_isolated_spiders();
+
+  return lc_cand_spiders.size();
 }
 
 void Sharq::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_B)
@@ -350,7 +347,7 @@ void Sharq::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_
   remove_edges_of_node(idx_B);
 }
 
-void Sharq::ZXDiagram::pivot1()
+uint32_t Sharq::ZXDiagram::pivot1()
 {
   if (kind() != Sharq::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
@@ -360,76 +357,74 @@ void Sharq::ZXDiagram::pivot1()
   std::vector<std::pair<uint32_t, uint32_t>> p1_cand_spiders;
   std::vector<uint32_t> p1_used_spiders;
 
-  while (true) {
-    update_node_places();
-    update_phase_gadget();
+  update_node_places();
+  update_phase_gadget();
 
-    pauli_spiders.clear();
-    for (uint32_t i = 0; i < nodes_.size(); ++i) {
-      if (check_pauli_spider(i) && check_internal_node(i)) pauli_spiders.push_back(i);
-    }
+  pauli_spiders.clear();
+  for (uint32_t i = 0; i < nodes_.size(); ++i) {
+    if (check_pauli_spider(i) && check_internal_node(i)) pauli_spiders.push_back(i);
+  }
 
-    p1_cand_spiders.clear();
-    p1_used_spiders.assign(nodes_.size(), 0);
-    uint32_t idx_A = 0;
-    uint32_t idx_B = 0;
-    bool find = false;
+  p1_cand_spiders.clear();
+  p1_used_spiders.assign(nodes_.size(), 0);
+  uint32_t idx_A = 0;
+  uint32_t idx_B = 0;
+  bool find = false;
 
-    for (auto& idx:pauli_spiders) {
-      idx_A = idx;
-      if (p1_used_spiders[idx_A] == 1) continue;
+  for (auto& idx:pauli_spiders) {
+    idx_A = idx;
+    if (p1_used_spiders[idx_A] == 1) continue;
 
-      bool break_flg = true; // true if idx_A,idx_B have found
-      for (auto& e:adj_mat_[idx_A]) {
-	if (check_pauli_spider(e.to()) && check_internal_node(e.to()) && p1_used_spiders[e.to()] == 0) {
-	  break_flg = true;
-	  idx_B = e.to();
-	  for (auto& e_A:adj_mat_[idx_A]) {
-	    if (p1_used_spiders[e_A.to()] == 1) {
-	      break_flg = false;
-	      break;
-	    }
-	  }
-	  if (!break_flg) continue;
-	  for (auto& e_B:adj_mat_[idx_B]) {
-	    if (p1_used_spiders[e_B.to()] == 1) {
-	      break_flg = false;
-	      break;
-	    }
-	  }
-	  if (!break_flg) continue;
-	  else {
-	    p1_cand_spiders.push_back({idx_A, idx_B});
+    bool break_flg = true; // true if idx_A,idx_B have found
+    for (auto& e:adj_mat_[idx_A]) {
+      if (check_pauli_spider(e.to()) && check_internal_node(e.to()) && p1_used_spiders[e.to()] == 0) {
+	break_flg = true;
+	idx_B = e.to();
+	for (auto& e_A:adj_mat_[idx_A]) {
+	  if (p1_used_spiders[e_A.to()] == 1) {
+	    break_flg = false;
 	    break;
 	  }
 	}
+	if (!break_flg) continue;
+	for (auto& e_B:adj_mat_[idx_B]) {
+	  if (p1_used_spiders[e_B.to()] == 1) {
+	    break_flg = false;
+	    break;
+	  }
+	}
+	if (!break_flg) continue;
 	else {
-	  break_flg = false;
+	  p1_cand_spiders.push_back({idx_A, idx_B});
+	  break;
 	}
       }
-
-      if (!break_flg) continue;
-
-      find = true;
-      p1_used_spiders[idx_A] = 1;
-      p1_used_spiders[idx_B] = 1;
-      for (auto& e_A:adj_mat_[idx_A]) {
-	p1_used_spiders[e_A.to()] = 1;
-      }
-      for (auto& e_B:adj_mat_[idx_B]) {
-	p1_used_spiders[e_B.to()] = 1;
+      else {
+	break_flg = false;
       }
     }
 
-    if (!find) break;
+    if (!break_flg) continue;
 
-    for (auto it = p1_cand_spiders.begin(); it != p1_cand_spiders.end(); ++it) {
-      pivot1_one_time(it->first, it->second);
+    find = true;
+    p1_used_spiders[idx_A] = 1;
+    p1_used_spiders[idx_B] = 1;
+    for (auto& e_A:adj_mat_[idx_A]) {
+      p1_used_spiders[e_A.to()] = 1;
     }
-    remove_isolated_spiders();
+    for (auto& e_B:adj_mat_[idx_B]) {
+      p1_used_spiders[e_B.to()] = 1;
+    }
   }
 
-  id_removal();
+  if (!find) return 0;
+
+  for (auto it = p1_cand_spiders.begin(); it != p1_cand_spiders.end(); ++it) {
+    pivot1_one_time(it->first, it->second);
+  }
+  remove_isolated_spiders();
+
+  return p1_cand_spiders.size();
 }
 
 void Sharq::ZXDiagram::pivot2_one_time(const uint32_t idx_A, const uint32_t idx_B)
@@ -512,7 +507,7 @@ void Sharq::ZXDiagram::pivot2_one_time(const uint32_t idx_A, const uint32_t idx_
   remove_edges_of_node(idx_B);
 }
 
-void Sharq::ZXDiagram::pivot2()
+uint32_t Sharq::ZXDiagram::pivot2()
 {
   if (kind() != Sharq::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
@@ -522,77 +517,75 @@ void Sharq::ZXDiagram::pivot2()
   std::vector<std::pair<uint32_t, uint32_t>> p2_cand_spiders;
   std::vector<uint32_t> p2_used_spiders;
 
-  while (true) {
-    update_node_places();
-    update_phase_gadget();
+  update_node_places();
+  update_phase_gadget();
 
-    pauli_spiders.clear();
-    for (uint32_t i = 0; i < nodes_.size(); ++i) {
-      if (check_pauli_spider(i) && check_internal_node(i) && !check_phase_gadget_node(i))
-  	pauli_spiders.push_back(i);
-    }
+  pauli_spiders.clear();
+  for (uint32_t i = 0; i < nodes_.size(); ++i) {
+    if (check_pauli_spider(i) && check_internal_node(i) && !check_phase_gadget_node(i))
+      pauli_spiders.push_back(i);
+  }
     
-    p2_cand_spiders.clear();
-    p2_used_spiders.assign(nodes_.size(), 0);
-    uint32_t idx_A = 0;
-    uint32_t idx_B = 0;
-    bool find = false;
+  p2_cand_spiders.clear();
+  p2_used_spiders.assign(nodes_.size(), 0);
+  uint32_t idx_A = 0;
+  uint32_t idx_B = 0;
+  bool find = false;
 
-    for (auto& idx:pauli_spiders) {
-      idx_A = idx;
-      if (p2_used_spiders[idx_A] == 1) continue;
+  for (auto& idx:pauli_spiders) {
+    idx_A = idx;
+    if (p2_used_spiders[idx_A] == 1) continue;
 
-      bool break_flg = true; // true if idx_A,idx_B have found
-      for (auto& e:adj_mat_[idx_A]) {
-	if (check_internal_node(e.to()) && check_non_clifford_spider(e.to()) && !check_phase_gadget_node(e.to())) {
-	  break_flg = true;
-	  idx_B = e.to();
-	  for (auto& e_A:adj_mat_[idx_A]) {
-	    if (p2_used_spiders[e_A.to()] == 1) {
-	      break_flg = false;
-	      break;
-	    }
-	  }
-	  if (!break_flg) continue;
-	  for (auto& e_B:adj_mat_[idx_B]) {
-	    if (p2_used_spiders[e_B.to()] == 1) {
-	      break_flg = false;
-	      break;
-	    }
-	  }
-	  if (!break_flg) continue;
-	  else {
-	    p2_cand_spiders.push_back({idx_A, idx_B});
+    bool break_flg = true; // true if idx_A,idx_B have found
+    for (auto& e:adj_mat_[idx_A]) {
+      if (check_internal_node(e.to()) && check_non_clifford_spider(e.to()) && !check_phase_gadget_node(e.to())) {
+	break_flg = true;
+	idx_B = e.to();
+	for (auto& e_A:adj_mat_[idx_A]) {
+	  if (p2_used_spiders[e_A.to()] == 1) {
+	    break_flg = false;
 	    break;
 	  }
 	}
+	if (!break_flg) continue;
+	for (auto& e_B:adj_mat_[idx_B]) {
+	  if (p2_used_spiders[e_B.to()] == 1) {
+	    break_flg = false;
+	    break;
+	  }
+	}
+	if (!break_flg) continue;
 	else {
-	  break_flg = false;
+	  p2_cand_spiders.push_back({idx_A, idx_B});
+	  break;
 	}
       }
-
-      if (!break_flg) continue;
-
-      find = true;
-      p2_used_spiders[idx_A] = 1;
-      p2_used_spiders[idx_B] = 1;
-      for (auto& e_A:adj_mat_[idx_A]) {
-	p2_used_spiders[e_A.to()] = 1;
-      }
-      for (auto& e_B:adj_mat_[idx_B]) {
-	p2_used_spiders[e_B.to()] = 1;
+      else {
+	break_flg = false;
       }
     }
 
-    if (!find) break;
+    if (!break_flg) continue;
 
-    for (auto it = p2_cand_spiders.begin(); it != p2_cand_spiders.end(); ++it) {
-      pivot2_one_time(it->first, it->second);
+    find = true;
+    p2_used_spiders[idx_A] = 1;
+    p2_used_spiders[idx_B] = 1;
+    for (auto& e_A:adj_mat_[idx_A]) {
+      p2_used_spiders[e_A.to()] = 1;
     }
-    remove_isolated_spiders();
+    for (auto& e_B:adj_mat_[idx_B]) {
+      p2_used_spiders[e_B.to()] = 1;
+    }
   }
 
-  id_removal();
+  if (!find) return 0;
+
+  for (auto it = p2_cand_spiders.begin(); it != p2_cand_spiders.end(); ++it) {
+    pivot2_one_time(it->first, it->second);
+  }
+  remove_isolated_spiders();
+
+  return p2_cand_spiders.size();
 }
 
 void Sharq::ZXDiagram::pivot3_one_time(const uint32_t idx_A, const uint32_t idx_B)
@@ -695,7 +688,7 @@ void Sharq::ZXDiagram::pivot3_one_time(const uint32_t idx_A, const uint32_t idx_
   remove_edges_of_node(idx_B);
 }
 
-void Sharq::ZXDiagram::pivot3()
+uint32_t Sharq::ZXDiagram::pivot3()
 {
   if (kind() != Sharq::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
@@ -705,87 +698,85 @@ void Sharq::ZXDiagram::pivot3()
   std::vector<std::pair<uint32_t, uint32_t>> p3_cand_spiders;
   std::vector<uint32_t> p3_used_spiders;
 
-  while (true) {
-    update_node_places();
-    update_phase_gadget();
+  update_node_places();
+  update_phase_gadget();
 
-    pauli_spiders.clear();
-    for (uint32_t i = 0; i < nodes_.size(); ++i) {
-      if (check_pauli_spider(i) && check_internal_node(i) && !check_phase_gadget_node(i))
-  	pauli_spiders.push_back(i);
-    }
+  pauli_spiders.clear();
+  for (uint32_t i = 0; i < nodes_.size(); ++i) {
+    if (check_pauli_spider(i) && check_internal_node(i) && !check_phase_gadget_node(i))
+      pauli_spiders.push_back(i);
+  }
     
-    p3_cand_spiders.clear();
-    p3_used_spiders.assign(nodes_.size(), 0);
-    uint32_t idx_A = 0;
-    uint32_t idx_B = 0;
-    bool find = false;
+  p3_cand_spiders.clear();
+  p3_used_spiders.assign(nodes_.size(), 0);
+  uint32_t idx_A = 0;
+  uint32_t idx_B = 0;
+  bool find = false;
 
-    for (auto& idx:pauli_spiders) {
-      idx_A = idx;
-      if (p3_used_spiders[idx_A] == 1) continue;
+  for (auto& idx:pauli_spiders) {
+    idx_A = idx;
+    if (p3_used_spiders[idx_A] == 1) continue;
 
-      bool break_flg = true; // true if idx_A,idx_B have found
-      for (auto& e:adj_mat_[idx_A]) {
-	if (check_boundary_node(e.to()) && check_non_clifford_spider(e.to()) && !check_phase_gadget_node(e.to())) {
-	  break_flg = true;
-	  idx_B = e.to();
-	  for (auto& e_A:adj_mat_[idx_A]) {
-	    if (p3_used_spiders[e_A.to()] == 1) {
-	      break_flg = false;
-	      break;
-	    }
-	  }
-	  if (!break_flg) continue;
-	  for (auto& e_B:adj_mat_[idx_B]) {
-	    if (p3_used_spiders[e_B.to()] == 1) {
-	      break_flg = false;
-	      break;
-	    }
-	  }
-
-	  if (!break_flg) continue;
-	  else if (check_connect_input_node(idx_B) && check_connect_output_node(idx_B)) {
+    bool break_flg = true; // true if idx_A,idx_B have found
+    for (auto& e:adj_mat_[idx_A]) {
+      if (check_boundary_node(e.to()) && check_non_clifford_spider(e.to()) && !check_phase_gadget_node(e.to())) {
+	break_flg = true;
+	idx_B = e.to();
+	for (auto& e_A:adj_mat_[idx_A]) {
+	  if (p3_used_spiders[e_A.to()] == 1) {
 	    break_flg = false;
-	    continue;
-	  }
-	  else if ((check_connect_phase_gadget(idx_A) || check_connect_phase_gadget(idx_B))) {
-	    break_flg = false;
-	    continue;
-	  }
-	  else {
-	    break_flg = true;
-	    p3_cand_spiders.push_back({idx_A, idx_B});
 	    break;
 	  }
 	}
-	else {
+	if (!break_flg) continue;
+	for (auto& e_B:adj_mat_[idx_B]) {
+	  if (p3_used_spiders[e_B.to()] == 1) {
+	    break_flg = false;
+	    break;
+	  }
+	}
+
+	if (!break_flg) continue;
+	else if (check_connect_input_node(idx_B) && check_connect_output_node(idx_B)) {
 	  break_flg = false;
+	  continue;
+	}
+	else if ((check_connect_phase_gadget(idx_A) || check_connect_phase_gadget(idx_B))) {
+	  break_flg = false;
+	  continue;
+	}
+	else {
+	  break_flg = true;
+	  p3_cand_spiders.push_back({idx_A, idx_B});
+	  break;
 	}
       }
-
-      if (!break_flg) continue;
-
-      find = true;
-      p3_used_spiders[idx_A] = 1;
-      p3_used_spiders[idx_B] = 1;
-      for (auto& e_A:adj_mat_[idx_A]) {
-	p3_used_spiders[e_A.to()] = 1;
-      }
-      for (auto& e_B:adj_mat_[idx_B]) {
-	p3_used_spiders[e_B.to()] = 1;
+      else {
+	break_flg = false;
       }
     }
 
-    if (!find) break;
+    if (!break_flg) continue;
 
-    for (auto it = p3_cand_spiders.begin(); it != p3_cand_spiders.end(); ++it) {
-      pivot3_one_time(it->first, it->second);
+    find = true;
+    p3_used_spiders[idx_A] = 1;
+    p3_used_spiders[idx_B] = 1;
+    for (auto& e_A:adj_mat_[idx_A]) {
+      p3_used_spiders[e_A.to()] = 1;
     }
-    remove_isolated_spiders();
+    for (auto& e_B:adj_mat_[idx_B]) {
+      p3_used_spiders[e_B.to()] = 1;
+    }
   }
 
-  id_removal();
+  if (!find) return 0;
+
+  for (auto it = p3_cand_spiders.begin(); it != p3_cand_spiders.end(); ++it) {
+    pivot3_one_time(it->first, it->second);
+  }
+  remove_isolated_spiders();
+
+  return p3_cand_spiders.size();
 }
 
 void Sharq::ZXDiagram::id_removal()
@@ -851,7 +842,7 @@ void Sharq::ZXDiagram::gfusion_one_time(const uint32_t idx_A_phase, const uint32
   remove_edges_of_node(idx_B_root);
 }
 
-void Sharq::ZXDiagram::gfusion()
+uint32_t Sharq::ZXDiagram::gfusion()
 {
   if (kind() != Sharq::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
@@ -875,124 +866,137 @@ void Sharq::ZXDiagram::gfusion()
   std::map<uint32_t, uint32_t> pg_used_map;
   std::vector<std::pair<uint32_t, uint32_t>> pg_phase_spiders_pairs;
 
-  while(true) {
+  update_node_places();
+  update_phase_gadget();
 
-    update_node_places();
-    update_phase_gadget();
-
-    /* get phase spiders of phase gadget, initialize used array */
-    pg_phase_spiders.clear();
-    pg_used_map.clear();
-    uint32_t max_degree = 0;
-    for (uint32_t i = 0; i < nodes_.size(); ++i) {
-      if (check_pg_phase_node(i)) {
-	pg_phase_spiders.push_back(i);
-	pg_used_map[i] = 0;
-	if (degree_of_node(adj_mat_[i][0].to()) > max_degree) {
-	  max_degree = degree_of_node(adj_mat_[i][0].to());
-	}
+  /* get phase spiders of phase gadget, initialize used array */
+  pg_phase_spiders.clear();
+  pg_used_map.clear();
+  uint32_t max_degree = 0;
+  for (uint32_t i = 0; i < nodes_.size(); ++i) {
+    if (check_pg_phase_node(i)) {
+      pg_phase_spiders.push_back(i);
+      pg_used_map[i] = 0;
+      if (degree_of_node(adj_mat_[i][0].to()) > max_degree) {
+	max_degree = degree_of_node(adj_mat_[i][0].to());
       }
     }
+  }
   
-    /* find 2 phase gadget that have same leaf nodes */
+  /* find 2 phase gadget that have same leaf nodes */
 
-    pg_phase_spiders_pairs.clear();    
+  pg_phase_spiders_pairs.clear();    
 
-    if (max_degree > max_degree_pre) {
-      leafs_A.resize(max_degree);
-      leafs_B.resize(max_degree);
-      max_degree_pre = max_degree;
+  if (max_degree > max_degree_pre) {
+    leafs_A.resize(max_degree);
+    leafs_B.resize(max_degree);
+    max_degree_pre = max_degree;
+  }
+
+  uint32_t leafs_A_size = 0;
+  uint32_t leafs_B_size = 0;
+  uint32_t leafs_size = 0;
+
+  uint32_t leafs_A_xor = 0;
+  uint32_t leafs_B_xor = 0;
+
+  uint32_t idx_A_phase = 0; // phase gadget (phase node)
+  uint32_t idx_B_phase = 0; // phase gadget (phase node)
+  uint32_t idx_A_root = 0; // phase gadget (root node)
+  uint32_t idx_B_root = 0; // phase gadget (root node)
+  std::vector<uint32_t> leafs;
+
+  bool find = false;
+
+  for (uint32_t i = 0; i < pg_phase_spiders.size(); ++i) {
+
+    idx_A_phase = pg_phase_spiders[i];
+    idx_A_root = adj_mat_[idx_A_phase][0].to();
+
+    if (pg_used_map[idx_A_phase] == 1) continue;
+
+    leafs_A_xor = 0;
+    leafs_A_size = 0;
+    for (uint32_t k = 0; k < adj_mat_[idx_A_root].size(); ++k) {
+      if (adj_mat_[idx_A_root][k].to() == idx_A_phase) continue;
+      leafs_A[leafs_A_size] = adj_mat_[idx_A_root][k].to();
+      leafs_A_xor ^= rand_table[adj_mat_[idx_A_root][k].to()];
+      ++leafs_A_size;
     }
 
-    uint32_t leafs_A_size = 0;
-    uint32_t leafs_B_size = 0;
-    uint32_t leafs_size = 0;
+    for (uint32_t j = i + 1; j < pg_phase_spiders.size(); ++j) {
 
-    uint32_t leafs_A_xor = 0;
-    uint32_t leafs_B_xor = 0;
+      idx_B_phase = pg_phase_spiders[j];
+      idx_B_root = adj_mat_[idx_B_phase][0].to();
 
-    uint32_t idx_A_phase = 0; // phase gadget (phase node)
-    uint32_t idx_B_phase = 0; // phase gadget (phase node)
-    uint32_t idx_A_root = 0; // phase gadget (root node)
-    uint32_t idx_B_root = 0; // phase gadget (root node)
-    std::vector<uint32_t> leafs;
+      if (pg_used_map[idx_B_phase] == 1) continue;
 
-    bool find = false;
+      if (adj_mat_[idx_A_root].size() == adj_mat_[idx_B_root].size()) {
+	leafs_B_xor = 0;
+	leafs_B_size = 0;
+	for (uint32_t l = 0; l < adj_mat_[idx_B_root].size(); ++l) {
+	  if (adj_mat_[idx_B_root][l].to() == idx_B_phase) continue;
+	  leafs_B[leafs_B_size] = adj_mat_[idx_B_root][l].to();
+	  leafs_B_xor ^= rand_table[adj_mat_[idx_B_root][l].to()];
+	  ++leafs_B_size;
+	}
+	leafs_size = leafs_A_size;
 
-    for (uint32_t i = 0; i < pg_phase_spiders.size(); ++i) {
-
-      idx_A_phase = pg_phase_spiders[i];
-      idx_A_root = adj_mat_[idx_A_phase][0].to();
-
-      if (pg_used_map[idx_A_phase] == 1) continue;
-
-      leafs_A_xor = 0;
-      leafs_A_size = 0;
-      for (uint32_t k = 0; k < adj_mat_[idx_A_root].size(); ++k) {
-	if (adj_mat_[idx_A_root][k].to() == idx_A_phase) continue;
-	leafs_A[leafs_A_size] = adj_mat_[idx_A_root][k].to();
-	leafs_A_xor ^= rand_table[adj_mat_[idx_A_root][k].to()];
-	++leafs_A_size;
-      }
-
-      for (uint32_t j = i + 1; j < pg_phase_spiders.size(); ++j) {
-
-  	idx_B_phase = pg_phase_spiders[j];
-  	idx_B_root = adj_mat_[idx_B_phase][0].to();
-
-	if (pg_used_map[idx_B_phase] == 1) continue;
-
-  	if (adj_mat_[idx_A_root].size() == adj_mat_[idx_B_root].size()) {
-	  leafs_B_xor = 0;
-	  leafs_B_size = 0;
-	  for (uint32_t l = 0; l < adj_mat_[idx_B_root].size(); ++l) {
-	    if (adj_mat_[idx_B_root][l].to() == idx_B_phase) continue;
-	    leafs_B[leafs_B_size] = adj_mat_[idx_B_root][l].to();
-	    leafs_B_xor ^= rand_table[adj_mat_[idx_B_root][l].to()];
-	    ++leafs_B_size;
-	  }
-	  leafs_size = leafs_A_size;
-
-	  if (leafs_A_xor == leafs_B_xor) {
-	    std::sort(leafs_A.begin(), leafs_A.begin() + leafs_A_size);
-	    std::sort(leafs_B.begin(), leafs_B.begin() + leafs_B_size);
-	    bool flg = true;
-	    for (uint32_t m = 0; m < leafs_size; ++m) {
-	      if (leafs_A[m] != leafs_B[m]) {
-		flg = false;
-		break;
-	      }
-	    }
-	    if (flg) {
-	      find = true;
-	      pg_phase_spiders_pairs.push_back({idx_A_phase, idx_B_phase});
-	      pg_used_map[idx_A_phase] = 1;
-	      pg_used_map[idx_B_phase] = 1;
+	if (leafs_A_xor == leafs_B_xor) {
+	  std::sort(leafs_A.begin(), leafs_A.begin() + leafs_A_size);
+	  std::sort(leafs_B.begin(), leafs_B.begin() + leafs_B_size);
+	  bool flg = true;
+	  for (uint32_t m = 0; m < leafs_size; ++m) {
+	    if (leafs_A[m] != leafs_B[m]) {
+	      flg = false;
 	      break;
 	    }
 	  }
-  	}
+	  if (flg) {
+	    find = true;
+	    pg_phase_spiders_pairs.push_back({idx_A_phase, idx_B_phase});
+	    pg_used_map[idx_A_phase] = 1;
+	    pg_used_map[idx_B_phase] = 1;
+	    break;
+	  }
+	}
       }
     }
-  
-    if (!find) break;
-
-    for (auto it = pg_phase_spiders_pairs.begin(); it != pg_phase_spiders_pairs.end(); ++it) {
-      gfusion_one_time(it->first, it->second);
-    }
-    
-    remove_isolated_spiders();
   }
+  
+  if (!find) return 0;
 
-  id_removal();
+  for (auto it = pg_phase_spiders_pairs.begin(); it != pg_phase_spiders_pairs.end(); ++it) {
+    gfusion_one_time(it->first, it->second);
+  }
+    
+  remove_isolated_spiders();
+
+  return pg_phase_spiders_pairs.size();
 }
 
 void Sharq::ZXDiagram::simplify()
 {
   graph_like();
-  lcomp();
-  pivot1();
-  pivot2();
-  pivot3();
-  gfusion();
+
+  while (true) {
+    uint32_t l = lcomp();
+    uint32_t p1 = pivot1();
+    if (l + p1 == 0) break;
+  }
+  id_removal();
+
+  while (true) {
+    uint32_t spider_num = spider_count();
+    while (true) {
+      uint32_t l = lcomp();
+      uint32_t p1 = pivot1();
+      uint32_t p2 = pivot2();
+      uint32_t p3 = pivot3();
+      uint32_t gf = gfusion();
+      if (l + p1 + p2 + p3 + gf == 0) break;
+    }
+    id_removal();
+    if (spider_num == spider_count()) break;
+  }
 }
