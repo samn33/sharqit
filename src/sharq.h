@@ -425,6 +425,7 @@ namespace Sharq {
     bool is_non_clifford_gate() const { return !(is_clifford_gate()); }
     QGate inverse() const;
     bool is_identical(QGate& other) const;
+    bool overlap(const Sharq::QGate& other) const;
     bool mergeable(const QGate& other) const;
     bool commutable(const QGate& other) const;
     void merge(QGate other);
