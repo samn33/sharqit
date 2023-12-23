@@ -1,4 +1,4 @@
-#include "sharq.h"
+#include "qgate.h"
 
 /**
  *  member functions
@@ -300,7 +300,7 @@ bool Sharq::QGate::is_identical(QGate& other) const
   return true;
 }
 
-bool Sharq::QGate::mergeable(const Sharq::QGate& other) const
+bool Sharq::QGate::overlap(const Sharq::QGate& other) const
 {
   bool overlap = false;
   for (auto& q_this:qid_) {
@@ -311,7 +311,13 @@ bool Sharq::QGate::mergeable(const Sharq::QGate& other) const
       }
     }
   }
-  if (!overlap) return false;
+  return overlap;
+}
+
+bool Sharq::QGate::mergeable(const Sharq::QGate& other) const
+{
+  bool ov = overlap(other);
+  if (!ov) return false;
 
   if (qid_.size() == 1 && other.qid().size() == 1) {
     if (kind_ == other.kind()) return true;
@@ -331,16 +337,8 @@ bool Sharq::QGate::commutable(const Sharq::QGate& other) const
   if (Sharq::QGate::mergeable(other)) return true;
 
   /* not overlap -> commutable */
-  bool overlap = false;
-  for (auto& q_this:qid_) {
-    for (auto& q_other:other.qid()) {
-      if (q_this == q_other) {
-	overlap = true;
-	break;
-      }
-    }
-  }
-  if (!overlap) return true;
+  bool ov = overlap(other);
+  if (!ov) return true;
 
   if (qid_.size() == 1 && other.qid().size() == 2 && other.kind() == Sharq::QGateKind::CX) {
     if (is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
