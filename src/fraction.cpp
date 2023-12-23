@@ -1,4 +1,4 @@
-#include "sharq.h"
+#include "fraction.h"
 
 /**
  *  member functions

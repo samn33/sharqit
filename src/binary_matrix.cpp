@@ -1,4 +1,4 @@
-#include "sharq.h"
+#include "binary_matrix.h"
 
 std::string Sharq::BinaryMatrix::to_string() const
 {

@@ -1,4 +1,4 @@
-#include "sharq.h"
+#include "qgate.h"
 
 /**
  *  member functions

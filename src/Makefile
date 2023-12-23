@@ -1,7 +1,7 @@
-VPATH = .:./zxdiagram
+VPATH = .:./zx
 
-INC = sharq.h
-
+INC = sharq.h util.h fraction.h phase.h binary_matrix.h linear_map.h qgate.h \
+	qcirc.h zx.h optimizer.h
 LIB_SRC = fraction.cpp phase.cpp binary_matrix.cpp qgate.cpp qcirc.cpp zxnode.cpp \
 	zxdiagram.cpp simplify.cpp extract_qcirc.cpp optimizer.cpp linear_map.cpp
 LIB_OBJ = $(LIB_SRC:%.cpp=%.o)
@@ -67,13 +67,18 @@ install:
 	cp $(LIB_DYNAMIC) $(LIB_STATIC) $(INSTALL_LIB); cp $(INC) $(INSTALL_INC); cp $(PROG) $(INSTALL_BIN)
 
 tags:
-	etags *.cpp *.h
+	find . \( -name '*.[ch]' -or -name '*.cpp' \) -print | etags -
 
 clean:
 	rm -f $(LIB_OBJ) $(PROG_OBJ) $(LIB) $(LIB_STATIC)
 
 cleanall:
 	rm -f $(LIB_OBJ) $(PROG_OBJ) $(PROG) $(LIB_DYNAMIC) $(LIB_STATIC)
+
+uninstall:
+	cd $(INSTALL_LIB); rm -f $(LIB_DYNAMIC) $(LIB_STATIC); \
+	cd $(INSTALL_BIN); rm -f $(PROG); \
+	cd $(INSTALL_INC); rm -f $(INC)
 
 .SUFFIXES: .o .cpp
 .cpp.o:

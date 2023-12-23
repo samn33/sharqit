@@ -1,4 +1,4 @@
-#include "sharq.h"
+#include "qcirc.h"
 
 /**
  *  member functions
