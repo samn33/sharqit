@@ -1,8 +1,9 @@
 # Change Log
 
-## [0.0.5-beta] - 2023-xx-xx
+## [0.0.5] - 2023-12-23
 ### Changed
 - improve the T-count, 2Q-count, Gate-count reduction
+- refactoring
 
 ## [0.0.4] - 2023-12-17
 ### Changed

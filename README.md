@@ -31,7 +31,7 @@ Add following lines to your ~/.bashrc. (If you are using another shell, replace 
 
 ## Uninstall
 
-    $ rm ~/lib/libsharq.so ~/include/sharq.h ~/bin/sharq
+    $ make uninstall
 
 ## Usage
 
