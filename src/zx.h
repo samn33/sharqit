@@ -201,7 +201,7 @@ namespace Sharq {
     void gfusion_one_time(const uint32_t idx_A_phase, const uint32_t idx_B_phase);
     std::vector<std::pair<uint32_t, uint32_t>> extract_2q_connects(std::vector<uint32_t>& frontier) const;
   public:
-    ZXDiagram(uint32_t qubit_num = 1);
+    ZXDiagram(const uint32_t qubit_num = 1);
     ZXDiagram(const ZXDiagram& zx)
       : kind_(zx.kind_), qubit_num_(zx.qubit_num_), nodes_(zx.nodes_),
     	inputs_(zx.inputs_), outputs_(zx.outputs_), adj_mat_(zx.adj_mat_),
@@ -216,9 +216,9 @@ namespace Sharq {
     /* setters */
     void kind(const ZXDiagramKind kind) { kind_ = kind; }
     void qubit_num(const uint32_t qubit_num) { qubit_num_ = qubit_num; }
-    void nodes(const std::vector<ZXNode> nodes) { nodes_ = nodes; }
-    void inputs(const std::vector<uint32_t> inputs) { inputs_ = inputs; }
-    void outputs(const std::vector<uint32_t> outputs) { outputs_ = outputs; }
+    void nodes(const std::vector<ZXNode>& nodes) { nodes_ = nodes; }
+    void inputs(const std::vector<uint32_t>& inputs) { inputs_ = inputs; }
+    void outputs(const std::vector<uint32_t>& outputs) { outputs_ = outputs; }
     void adj_mat(std::vector<std::vector<ZXEdge>>& adj_mat) { adj_mat_ = adj_mat; }
     /* member functions */
     std::string to_string() const;
