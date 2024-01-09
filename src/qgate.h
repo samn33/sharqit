@@ -10,7 +10,7 @@
 
 namespace Sharq {
 
-  enum QGateKind { X, Z, S, Sdg, T, Tdg, H, RZ, CX, CZ, Id };
+  enum QGateKind { X, Z, S, Sdg, T, Tdg, H, RZ, CX, CZ, Id, Id2 };
 
   class QGate
   {
@@ -21,7 +21,7 @@ namespace Sharq {
     std::vector<std::vector<std::complex<double>>> op_;
     static std::vector<std::vector<std::complex<double>>> kind_to_op(const QGateKind kind, const Phase& phase = 0);
   public:
-    QGate(const QGateKind kind = QGateKind::X, const std::vector<uint32_t>& qid = {0}, const Phase& phase = 0);
+    QGate(const QGateKind kind = QGateKind::Id, const std::vector<uint32_t>& qid = {0}, const Phase& phase = 0);
     QGate(const std::string& qgate_str);
     QGate(const QGate& qgate) : kind_(qgate.kind_), qid_(qgate.qid_), phase_(qgate.phase_), op_(qgate.op_) {}
     /* getters */
@@ -37,7 +37,9 @@ namespace Sharq {
     /* member functions */
     std::string name(bool pi_str = true) const;
     std::string to_string(bool pi_str = true) const;
+    uint32_t qubit_num() const { return qid_.size(); }
     bool is_Id_gate() const { return (kind_ == QGateKind::Id); }
+    bool is_Id2_gate() const { return (kind_ == QGateKind::Id2); }
     bool is_X_gate() const { return (kind_ == QGateKind::X); }
     bool is_Z_gate() const
     {
@@ -53,6 +55,20 @@ namespace Sharq {
 	if (phase_ == Phase(1,2) || phase_ == Phase(-1,2)) ans = true;
       }
       else if (kind_ == QGateKind::S || kind_ == QGateKind::Sdg) { ans = true; }
+      return ans;
+    }
+    bool is_S1_gate() const
+    {
+      bool ans = false;
+      if (kind_ == QGateKind::RZ && phase_ == Phase(1,2)) ans = true;
+      else if (kind_ == QGateKind::S) ans = true;
+      return ans;
+    }
+    bool is_S3_gate() const
+    {
+      bool ans = false;
+      if (kind_ == QGateKind::RZ && phase_ == Phase(3,2)) ans = true;
+      else if (kind_ == QGateKind::Sdg) ans = true;
       return ans;
     }
     bool is_T_gate() const
@@ -78,7 +94,7 @@ namespace Sharq {
     bool overlap(const Sharq::QGate& other) const;
     bool mergeable(const QGate& other) const;
     bool commutable(const QGate& other) const;
-    void merge(QGate other);
+    void merge(const QGate& other);
     static std::tuple<QGateKind, Phase> kind_phase(const std::string& str);
     friend std::ostream& operator<<(std::ostream& ost, const QGate& qgate) { ost << qgate.to_string(); return ost; }
   };

@@ -8,10 +8,11 @@
 #include "qgate.h"
 #include "qcirc.h"
 #include "zx.h"
+#include "dag.h"
 #include "optimizer.h"
 
 namespace Sharq {
-  constexpr char VERSION[] = "v0.0.5";
+  constexpr char VERSION[] = "v0.0.6";
 }
 
 #endif

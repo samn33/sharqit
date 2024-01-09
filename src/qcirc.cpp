@@ -194,6 +194,7 @@ std::string Sharq::QCirc::to_string(const uint32_t width) const
       uint32_t t = qgate.qid()[1];
       for (uint32_t i = 0; i < qubit_num_; ++i) {
 	if (i == c) str_list[i] += "*--";
+	else if (i == t && qgate.kind() == Sharq::QGateKind::Id2) str_list[i] += "I--";
 	else if (i == t && qgate.kind() == Sharq::QGateKind::CX) str_list[i] += "X--";
 	else if (i == t && qgate.kind() == Sharq::QGateKind::CZ) str_list[i] += "*--";
 	else if (c < t && c < i && i < t) str_list[i] += "|--";
@@ -628,6 +629,12 @@ Sharq::LinearMap Sharq::QCirc::to_linearmap() const
     lmap.operate_qgate(qgate);
   }
   return lmap;
+}
+
+Sharq::DAGCirc Sharq::QCirc::to_dagcirc() const
+{
+  Sharq::DAGCirc dc(*this);
+  return dc;
 }
 
 void Sharq::QCirc::gate_cancel_one_time()

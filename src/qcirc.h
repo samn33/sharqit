@@ -12,10 +12,12 @@
 #include "linear_map.h"
 #include "qgate.h"
 #include "zx.h"
+#include "dag.h"
 
 namespace Sharq {
 
   class ZXDiagram;
+  class DAGCirc;
   
   class QCirc
   {
@@ -66,6 +68,7 @@ namespace Sharq {
     void to_svg_file(const std::string& file_name) const;
     ZXDiagram to_zxdiagram() const;
     LinearMap to_linearmap() const;
+    DAGCirc to_dagcirc() const;
     void gate_cancel();
     /* fundamental gates */
     QCirc& id(const uint32_t q) { return add_qgate(QGateKind::Id, {q}); }
@@ -77,6 +80,7 @@ namespace Sharq {
     QCirc& tdg(const uint32_t q) { return add_qgate(QGateKind::Tdg, {q}); }
     QCirc& h(const uint32_t q) { return add_qgate(QGateKind::H, {q}); }
     QCirc& rz(const uint32_t q, const Phase& phase) { return add_qgate(QGateKind::RZ, {q}, phase); }
+    QCirc& id2(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::Id2, {c, t}); }
     QCirc& cx(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::CX, {c, t}); }
     QCirc& cz(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::CZ, {c, t}); }
     /* compound gates */
