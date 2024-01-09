@@ -108,8 +108,6 @@ namespace Sharq {
     uint32_t append_node(const Sharq::DAGNode node);
     uint32_t prev_node(const uint32_t idx, const uint32_t q);
     uint32_t next_node(const uint32_t idx, const uint32_t q);
-    std::vector<uint32_t> next_nodes(const uint32_t idx);
-    std::vector<uint32_t> prev_nodes(const uint32_t idx);
     void connect_nodes(const uint32_t a, const uint32_t b, const uint32_t q);
     void remove_node(const uint32_t idx);
     void remove_edge(const uint32_t a, const uint32_t b);
@@ -119,6 +117,7 @@ namespace Sharq {
     QCirc to_qcirc() const;
     void id_removal();
     void cx_to_cz_gate();
+    void cz_to_cx_gate();
     void hadamard_gate_reduction();
     void single_qubit_gate_cancellation();
     void two_qubit_gate_cancellation();
