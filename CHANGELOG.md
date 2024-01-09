@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.0.6-beta] - 2024-xx-xx
+### Added
+- rule based gate reduction
+
 ## [0.0.5] - 2023-12-23
 ### Changed
 - improve the T-count, 2Q-count, Gate-count reduction
