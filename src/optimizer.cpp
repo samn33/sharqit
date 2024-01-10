@@ -4,19 +4,26 @@
  *  member functions
  */
 
-#define ZX_CALCULUS
-//#define RULE_BASED
-
 std::string Sharq::Optimizer::to_string() const
 {
   std::map<std::string, uint32_t> stats_in = stats_in_;
   std::map<std::string, uint32_t> stats_out = stats_out_;
+  std::map<std::string, uint32_t> zx_stats_in = zx_stats_in_;
+  std::map<std::string, uint32_t> zx_stats_out = zx_stats_out_;
   std::stringstream ss;
 
   if (stats_in["gate_count"] == 0 && stats_out["gate_count"] == 0) {
     return "Optimization has not executed yet.";
   }
 
+  ss << "[zx diagram]" << std::endl;
+  ss << "xspider       = " << zx_stats_in["xspider"] << " -> " << zx_stats_out["xspider"] << std::endl;
+  ss << "zspider       = " << zx_stats_in["zspider"] << " -> " << zx_stats_out["zspider"] << std::endl;
+  ss << "clifford      = " << zx_stats_in["clifford"] << " -> " << zx_stats_out["clifford"] << std::endl;
+  ss << "non-clifford  = " << zx_stats_in["non-clifford"] << " -> " << zx_stats_out["non-clifford"] << std::endl;
+  ss << "hadamard      = " << zx_stats_in["hadamard"] << " -> " << zx_stats_out["hadamard"] << std::endl;
+
+  ss << "[quantum circuit]" << std::endl;
   ss << "X-count  = " << stats_in["x_count"] << " -> " << stats_out["x_count"] << std::endl;
   ss << "Z-count  = " << stats_in["z_count"] << " -> " << stats_out["z_count"] << std::endl;
   ss << "H-count  = " << stats_in["h_count"] << " -> " << stats_out["h_count"] << std::endl;
@@ -35,8 +42,6 @@ std::string Sharq::Optimizer::to_string() const
   return s;
 }
 
-#ifdef ZX_CALCULUS
-
 Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in)
 {
   std::ofstream ofs;
@@ -52,9 +57,11 @@ Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in)
 
   /* convert to ZX-Diagram */
   Sharq::ZXDiagram zx = qc.to_zxdiagram();
+  zx_stats_in_ = zx.stats();
 
   /* simplify */
   zx.simplify();
+  zx_stats_out_ = zx.stats();
 
   /* extract circuit */
   Sharq::QCirc qc_out = zx.extract_qcirc();
@@ -74,33 +81,3 @@ Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in)
 
   return qc_out;
 }
-
-#endif
-
-#ifdef RULE_BASED
-
-Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in)
-{
-  std::ofstream ofs;
-  auto start = std::chrono::system_clock::now();
-
-  /* stats (in) */
-  stats_in_ = qc_in.stats();
-  
-  /* rule-based gate reduction */
-  Sharq::DAGCirc dc = qc_in.to_dagcirc();
-  dc.rule_based_gate_reduction();
-  Sharq::QCirc qc_out = dc.to_qcirc();
-
-  /* stats (out) */
-  stats_out_ = qc_out.stats();
-  
-  auto end = std::chrono::system_clock::now();
-  auto dur = end - start;
-  auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
-  proc_time_ = msec / 1000.;
-
-  return qc_out;
-}
-
-#endif
