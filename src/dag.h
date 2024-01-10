@@ -81,6 +81,8 @@ namespace Sharq {
     std::vector<uint32_t> outputs_;
     std::vector<std::vector<DAGEdge>> adj_mat_;
     /* member functions */
+    void cx_to_cz_gate();
+    void cz_to_cx_gate();
     void hadamard_gate_reduction_1();
     void hadamard_gate_reduction_2();
     void hadamard_gate_reduction_3();
@@ -116,8 +118,6 @@ namespace Sharq {
     DAGCirc& add_qgate(const QGate& qgate);
     QCirc to_qcirc() const;
     void id_removal();
-    void cx_to_cz_gate();
-    void cz_to_cx_gate();
     void hadamard_gate_reduction();
     void single_qubit_gate_cancellation();
     void two_qubit_gate_cancellation();
