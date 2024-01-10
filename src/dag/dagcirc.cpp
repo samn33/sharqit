@@ -341,7 +341,6 @@ void Sharq::DAGCirc::cz_to_cx_gate()
     uint32_t idx_con_n = 0;
     uint32_t idx_tar_p = 0; 
     uint32_t idx_tar_n = 0;
-    bool match = false;
     if (nodes_[i].qgate().is_CZ_gate()) {
       con = nodes_[i].qgate().qid()[0];
       tar = nodes_[i].qgate().qid()[1];
@@ -508,6 +507,8 @@ void Sharq::DAGCirc::hadamard_gate_reduction_3()
 
 void Sharq::DAGCirc::hadamard_gate_reduction()
 {
+  cx_to_cz_gate();
+  cz_to_cx_gate();
   hadamard_gate_reduction_1();
   hadamard_gate_reduction_2();
   hadamard_gate_reduction_3();
@@ -588,16 +589,10 @@ void Sharq::DAGCirc::two_qubit_gate_cancellation()
 
 void Sharq::DAGCirc::rule_based_gate_reduction()
 {
-  cx_to_cz_gate();
-  cz_to_cx_gate();
-
   hadamard_gate_reduction();
   two_qubit_gate_cancellation();
   single_qubit_gate_cancellation();
   two_qubit_gate_cancellation();
   hadamard_gate_reduction();
   single_qubit_gate_cancellation();
-
-  cx_to_cz_gate();
-  cz_to_cx_gate();
 }
