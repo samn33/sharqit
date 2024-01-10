@@ -382,7 +382,8 @@ Sharq::QCirc Sharq::ZXDiagram::extract_qcirc()
   /* first step */
   Sharq::QCirc qc;
   std::vector<uint32_t> frontier = outputs_;
-  process_frontier(frontier, qc, false);
+  //process_frontier(frontier, qc, false);
+  process_frontier(frontier, qc, true);
 
   /* update frontier */
   while (true) {
