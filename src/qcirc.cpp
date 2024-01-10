@@ -25,6 +25,10 @@ void Sharq::QCirc::load(const std::string& file_name)
 
   std::string str;
   while (std::getline(ifs, str)) {
+    if (str[0] == '#') continue;
+    if (str.find('#') != std::string::npos) {
+      str = Sharq::split(str, '#')[0];
+    }
     Sharq::QGate qgate(str);
     add_qgate(qgate);
   }
