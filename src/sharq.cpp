@@ -7,15 +7,19 @@ void print_help()
   ss << "[usage]" << std::endl;
   ss << "  sharq [option] ([file]..)([params]) (> [file])" << std::endl;
   ss << "[option]" << std::endl;
-  ss << "  --opt FILE          : optimize the circuit file, output to stdout." << std::endl;
-  ss << "  --rand PARAMS       : generate a random circuit file, output to stdout." << std::endl;
-  ss << "  --eq FILE1 FILE2    : verify two circuits are equal. (can't execute that have too many qubits)" << std::endl;
-   ss << "  --stats FILE        : print stats of the circut file." << std::endl;
-  ss << "  --show FILE         : print the circuit diagram as ascii text." << std::endl;
-  ss << "  --help              : print help message." << std::endl;
-  ss << "  --version           : print version." << std::endl;
+  ss << "  --opt(=kind) FILE  : optimize the circuit file, output to stdout." << std::endl;
+  ss << "                       --opt=zx: T-count reduction using ZX-calculus" << std::endl;
+  ss << "                       --opt=pp: T-count, 2Q-count reduction using Phase Polynomials" << std::endl;
+  ss << "  --rand PARAMS      : generate a random circuit file, output to stdout." << std::endl;
+  ss << "  --eq FILE1 FILE2   : verify two circuits are equal. (can't execute that have too many qubits)" << std::endl;
+  ss << "  --stats FILE       : print stats of the circut file." << std::endl;
+  ss << "  --show FILE        : print the circuit diagram as ascii text." << std::endl;
+  ss << "  --help             : print help message." << std::endl;
+  ss << "  --version          : print version." << std::endl;
   ss << "[examples]" << std::endl;
   ss << "  $ sharq --opt foo.sqc > bar.sqc" << std::endl;
+  ss << "  $ sharq --opt=zx foo.sqc > bar.sqc" << std::endl;
+  ss << "  $ sharq --opt=pp foo.sqc > bar.sqc" << std::endl;
   ss << "  $ sharq --eq foo.sqc bar.sqc" << std::endl;
   ss << "  $ sharq --rand 3,100,\"X\":1,\"H\":2,\"T\":3.5,\"RZ(1/2)\":1.5 > bar.sqc # 3 qubits,100 gates" << std::endl;
   ss << "  $ sharq --stats foo.sqc" << std::endl;
@@ -23,26 +27,27 @@ void print_help()
   ss << "[file format]" << std::endl;
   ss << "  Sharq supports a simple file format for quantum circuits as follows." << std::endl;
   ss << "  $ cat foo.sqc" << std::endl;
+  ss << "  # comment" << std::endl;
   ss << "  H 0" << std::endl;
   ss << "  CX 0 1" << std::endl;
-  ss << "  RZ(1/2) 0" << std::endl;
+  ss << "  RZ(1/2) 0 # comment" << std::endl;
   ss << "  T+ 1" << std::endl;
   ss << "  RZ(1) 0" << std::endl;
   ss << "  ..." << std::endl;
-  ss << "  Supported quantum gates are X,Z,H,S,S+,T,T+,CX,RZ." << std::endl;
+  ss << "  Supported quantum gates are X,Z,H,S,S+,T,T+,RZ,CX,CZ." << std::endl;
   ss << "  S+ and T+ are Hermitian conjugate of S and T respectively." << std::endl;
   ss << "  RZ gate have one phase factor denoted by fraction brackled in parentheses." << std::endl;
   ss << "  The unit of phase factor is radian, so 3/4 means 3PI/4, 1 means PI, and so on." << std::endl;
   std::cerr << ss.str();
 }
 
-void optimize(std::string& fin)
+void optimize(std::string& fin, Sharq::OptimizerKind kind)
 {
   try {
     Sharq::Optimizer opt;
     Sharq::QCirc qc_in;
     qc_in.load(fin);
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharq::QCirc qc_out = opt.execute(qc_in, kind);
     qc_out.print_qcirc();
     std::cerr << opt << std::endl;
   }
@@ -117,6 +122,8 @@ void show_qcirc(std::string& fin)
 
 int main(int argc, char** argv)
 {
+  Sharq::OptimizerKind kind = Sharq::OptimizerKind::ZXCalculus;
+
   for (int n=1; n<argc; n++) {
     if (strcmp(argv[n],"--help") == 0) {
       print_help();
@@ -126,7 +133,7 @@ int main(int argc, char** argv)
       std::cerr << Sharq::VERSION << std::endl;
       break;
     }
-    else if (strcmp(argv[n],"--opt") == 0) {
+    else if (strncmp(argv[n],"--opt", 5) == 0) {
       if (argc - n <= 1) {
       	std::cerr << "You must specify a circuit file name." << std::endl;
       	exit(1);
@@ -135,8 +142,17 @@ int main(int argc, char** argv)
       	std::cerr << "Too many arguments." << std::endl;
       	exit(1);
       }
+      std::string opt_str = argv[n];
+      std::vector<std::string> token = Sharq::split(opt_str, '=');
+      if (token.size() == 1) kind = Sharq::OptimizerKind::ZXCalculus;
+      else if (token[1] == "zx") kind = Sharq::OptimizerKind::ZXCalculus;
+      else if (token[1] == "pp") kind = Sharq::OptimizerKind::PhasePolynomial;
+      else {
+      	std::cerr << "Invalid kind of optimizer." << std::endl;
+      	exit(1);
+      }
       std::string fin = argv[++n];
-      optimize(fin);
+      optimize(fin, kind);
       break;
     }
     else if (strcmp(argv[n],"--eq") == 0) {
