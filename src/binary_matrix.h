@@ -42,9 +42,23 @@ namespace Sharq {
     void row_indexes(const std::vector<uint32_t>& row_indexes) { row_indexes_ = row_indexes; }
     /* member functions */
     std::string to_string() const;
+    void set_identity()
+    {
+      for (uint32_t i = 0; i < row_num_; ++i) {
+	for (uint32_t j = 0; j < col_num_; ++j) {
+	  elements_[i][j] = 0;
+	}
+      }
+      for (uint32_t i = 0; i < std::min(row_num_, col_num_); ++i) elements_[i][i] = 1;
+    }
+    void reverse_element(const uint32_t i, const uint32_t j)
+    {
+      if (i >= row_num_ || j >= col_num_) throw std::runtime_error("argument is too large.");
+      elements_[i][j] = (elements_[i][j] + 1) % 2;
+    }
     uint32_t xor_rows(const uint32_t a, const uint32_t b)
     {
-      if (a > row_num_ || b > row_num_) {
+      if (a >= row_num_ || b >= row_num_) {
     	throw std::runtime_error("argument is too large.");
       }
       uint32_t sum = 0;
@@ -56,7 +70,7 @@ namespace Sharq {
     }
     void swap_rows(const uint32_t a, const uint32_t b)
     {
-      if (a > row_num_ || b > row_num_) {
+      if (a >= row_num_ || b >= row_num_) {
 	throw std::runtime_error("argument is too large.");
       }
       for (uint32_t i = 0; i < col_num_; ++i) {
@@ -66,7 +80,7 @@ namespace Sharq {
     }
     void swap_cols(const uint32_t a, const uint32_t b)
     {
-      if (a > col_num_ || b > col_num_) {
+      if (a >= col_num_ || b >= col_num_) {
 	throw std::runtime_error("argument is too large.");
       }
       for (uint32_t i = 0; i < row_num_; ++i) {
