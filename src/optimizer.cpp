@@ -16,12 +16,14 @@ std::string Sharq::Optimizer::to_string() const
     return "Optimization has not executed yet.";
   }
 
-  ss << "[zx diagram]" << std::endl;
-  ss << "xspider       = " << zx_stats_in["xspider"] << " -> " << zx_stats_out["xspider"] << std::endl;
-  ss << "zspider       = " << zx_stats_in["zspider"] << " -> " << zx_stats_out["zspider"] << std::endl;
-  ss << "clifford      = " << zx_stats_in["clifford"] << " -> " << zx_stats_out["clifford"] << std::endl;
-  ss << "non-clifford  = " << zx_stats_in["non-clifford"] << " -> " << zx_stats_out["non-clifford"] << std::endl;
-  ss << "hadamard      = " << zx_stats_in["hadamard"] << " -> " << zx_stats_out["hadamard"] << std::endl;
+  if (kind_ == Sharq::OptimizerKind::ZXCalculus) {
+    ss << "[zx diagram]" << std::endl;
+    ss << "xspider       = " << zx_stats_in["xspider"] << " -> " << zx_stats_out["xspider"] << std::endl;
+    ss << "zspider       = " << zx_stats_in["zspider"] << " -> " << zx_stats_out["zspider"] << std::endl;
+    ss << "clifford      = " << zx_stats_in["clifford"] << " -> " << zx_stats_out["clifford"] << std::endl;
+    ss << "non-clifford  = " << zx_stats_in["non-clifford"] << " -> " << zx_stats_out["non-clifford"] << std::endl;
+    ss << "hadamard      = " << zx_stats_in["hadamard"] << " -> " << zx_stats_out["hadamard"] << std::endl;
+  }
 
   ss << "[quantum circuit]" << std::endl;
   ss << "X-count  = " << stats_in["x_count"] << " -> " << stats_out["x_count"] << std::endl;
@@ -35,41 +37,88 @@ std::string Sharq::Optimizer::to_string() const
   ss << "gate-count = " << stats_in["gate_count"] << " -> " << stats_out["gate_count"] << std::endl;
   ss << "depth      = " << stats_in["depth"] << " -> " << stats_out["depth"] << std::endl;
   ss << "qubit_num  = " << stats_in["qubit_num"] << " -> " << stats_out["qubit_num"] << std::endl;
-  ss << "proc time (sec) = " << std::to_string(proc_time_) << std::endl;
+
+  ss << "[info]" << std::endl;
+  ss << "proc time (sec)   = " << std::to_string(proc_time_) << std::endl;
+  ss << "kind of optimizer = " << name() << std::endl;
   
   std::string s = ss.str();
   s.pop_back();
   return s;
 }
 
-Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in)
+std::string Sharq::Optimizer::name() const
 {
-  std::ofstream ofs;
+  std::string kind_str;
+  if (kind_ == Sharq::OptimizerKind::ZXCalculus) kind_str = "ZX-calculus";
+  else if (kind_ == Sharq::OptimizerKind::PhasePolynomial) kind_str = "Phase Polynomial";
+  else {
+    throw std::runtime_error("invalid kind of optimizer.");
+  }
+  return kind_str;
+}
+
+Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in, const Sharq::OptimizerKind kind)
+{
   auto start = std::chrono::system_clock::now();
+
+  /* kind of optimizer */
+  kind_ = kind;
 
   /* stats (in) */
   stats_in_ = qc_in.stats();
 
-  /* rule-based gate reduction */
-  Sharq::DAGCirc dc_in = qc_in.to_dagcirc();
-  dc_in.rule_based_gate_reduction();
-  Sharq::QCirc qc = dc_in.to_qcirc();
+  Sharq::QCirc qc_out;
 
-  /* convert to ZX-Diagram */
-  Sharq::ZXDiagram zx = qc.to_zxdiagram();
-  zx_stats_in_ = zx.stats();
+  if (kind_ == Sharq::OptimizerKind::ZXCalculus) {
+    /* rule-based gate reduction */
+    Sharq::DAGCirc dc_in = qc_in.to_dagcirc();
+    dc_in.rule_based_gate_reduction();
+    Sharq::QCirc qc = dc_in.to_qcirc();
 
-  /* simplify */
-  zx.simplify();
-  zx_stats_out_ = zx.stats();
+    /* T-count,2Q-count reduction using phase polynomials */
+    qc = qc.merge_rotation();
 
-  /* extract circuit */
-  Sharq::QCirc qc_out = zx.extract_qcirc();
+    /* convert to ZX-Diagram */
+    Sharq::ZXDiagram zx = qc.to_zxdiagram();
+    zx_stats_in_ = zx.stats();
 
-  /* rule-based gate reduction */
-  Sharq::DAGCirc dc_out = qc_out.to_dagcirc();
-  dc_out.rule_based_gate_reduction();
-  qc_out = dc_out.to_qcirc();
+    /* T-count reduction using ZX-calculus */
+    zx.simplify();
+    zx_stats_out_ = zx.stats();
+
+    /* extract circuit */
+    qc_out = zx.extract_qcirc();
+  
+    /* T-count,2Q-count reduction using phase polynomials */
+    qc_out = qc_out.merge_rotation();
+
+    /* rule-based gate reduction */
+    Sharq::DAGCirc dc_out = qc_out.to_dagcirc();
+    dc_out.rule_based_gate_reduction();
+    qc_out = dc_out.to_qcirc();
+  }
+  else if (kind_ == Sharq::OptimizerKind::PhasePolynomial) {
+    //// test
+    //qc_out = qc_in;
+    //qc_out = qc_out.merge_rotation();
+    
+    /* rule-based gate reduction */
+    Sharq::DAGCirc dc_in = qc_in.to_dagcirc();
+    dc_in.rule_based_gate_reduction();
+    qc_out = dc_in.to_qcirc();
+    
+    /* T-count,2Q-count reduction using phase polynomials */
+    qc_out = qc_out.merge_rotation();
+    
+    /* rule-based gate reduction */
+    Sharq::DAGCirc dc_out = qc_out.to_dagcirc();
+    dc_out.rule_based_gate_reduction();
+    qc_out = dc_out.to_qcirc();
+  }
+  else {
+    throw std::runtime_error("Invalid kind of optimizer.");
+  }
 
   /* stats (out) */
   stats_out_ = qc_out.stats();
