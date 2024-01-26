@@ -697,3 +697,21 @@ void Sharq::QCirc::gate_cancel()
     if (qgates_.size() == qgate_num) break;
   }
 }
+
+void Sharq::QCirc::cz_to_cx()
+{
+  std::list<QGate> qgates_list(qgates_.begin(), qgates_.end());
+  for (auto it = qgates_list.begin(); it != qgates_list.end(); ++it) {
+    if (it->is_CZ_gate()) {
+      uint32_t tar = it->qid()[1];
+      it->kind(Sharq::QGateKind::CX);
+      it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::H, {tar}));
+      ++it; ++it;
+      it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::H, {tar}));
+      ++it;
+    }
+  }
+
+  std::vector<QGate> qgates_vec(qgates_list.begin(), qgates_list.end());
+  qgates_ = qgates_vec;
+}

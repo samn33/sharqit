@@ -6,7 +6,9 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <list>
 #include <random>
+#include <limits>
 #include <nlohmann/json.hpp>
 
 #include "linear_map.h"
@@ -18,13 +20,20 @@ namespace Sharq {
 
   class ZXDiagram;
   class DAGCirc;
+  class BinaryMatrix;
   
   class QCirc
   {
   private:
     uint32_t qubit_num_;
     std::vector<QGate> qgates_;
+    /* member functions */
     void gate_cancel_one_time();
+    void merge_rotation_one_time(const uint32_t start, const uint32_t end,
+				 const std::vector<uint32_t>& ppc_qid,
+				 const std::vector<std::pair<uint32_t, uint32_t>>& term_border,
+				 const std::vector<uint8_t>& cnot_objects);
+    bool is_termination_border(const uint32_t idx, const uint32_t q); // for merge_rotation
   public:
     QCirc(const uint32_t qubit_num = 0) : qubit_num_(qubit_num) {}
     QCirc(const QCirc& qc) : qubit_num_(qc.qubit_num_), qgates_(qc.qgates_) {}
@@ -36,9 +45,10 @@ namespace Sharq {
     void qubit_num(const uint32_t qubit_num) { qubit_num_ = qubit_num; }
     void qgates(const std::vector<QGate>& qgates) { qgates_ = qgates; }
     /* member functions */
-    uint32_t qgate_num() { return qgates_.size(); }
+    uint32_t qgate_num() const { return qgates_.size(); }
     void save(const std::string& file_name) const;
     void load(const std::string& file_name);
+    void clear() { qgates_.clear(); qubit_num_ = 0; }
     std::map<std::string, uint32_t> stats() const;
     uint32_t gate_count() const { return (qgates_.size() - id_count()); }
     uint32_t id_count() const;
@@ -69,6 +79,8 @@ namespace Sharq {
     ZXDiagram to_zxdiagram() const;
     LinearMap to_linearmap() const;
     DAGCirc to_dagcirc() const;
+    QCirc merge_rotation(); // merge rotation gates using phase polynomials
+    void cz_to_cx();
     void gate_cancel();
     /* fundamental gates */
     QCirc& id(const uint32_t q) { return add_qgate(QGateKind::Id, {q}); }

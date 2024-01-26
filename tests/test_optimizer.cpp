@@ -473,3 +473,58 @@ TEST(Optimizer, LoadExecute19) {
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
+
+TEST(Optimizer, LoadExecute20) {
+
+  Sharq::Optimizer opt;
+  Sharq::QCirc qc_in;
+  qc_in.load("data/20.sqc");
+
+  Sharq::QCirc qc_out = opt.execute(qc_in);
+  
+  EXPECT_EQ(qc_in.is_equal(qc_out), true);
+}
+
+TEST(Optimizer, LoadExecute21) {
+
+  Sharq::Optimizer opt;
+  Sharq::QCirc qc_in;
+  qc_in.load("data/21.sqc");
+
+  Sharq::QCirc qc_out = opt.execute(qc_in);
+  
+  EXPECT_EQ(qc_in.is_equal(qc_out), true);
+}
+
+TEST(Optimizer, LoadExecute22) {
+
+  Sharq::Optimizer opt;
+  Sharq::QCirc qc_in;
+  qc_in.load("data/22.sqc");
+
+  Sharq::QCirc qc_out = opt.execute(qc_in);
+  
+  EXPECT_EQ(qc_in.is_equal(qc_out), true);
+}
+
+TEST(Optimizer, LoadExecute23) {
+
+  Sharq::Optimizer opt;
+  Sharq::QCirc qc_in;
+  qc_in.load("data/23.sqc");
+
+  Sharq::QCirc qc_out = opt.execute(qc_in);
+  
+  EXPECT_EQ(qc_in.is_equal(qc_out), true);
+}
+
+TEST(Optimizer, LoadExecute24) {
+
+  Sharq::Optimizer opt;
+  Sharq::QCirc qc_in;
+  qc_in.load("data/24.sqc");
+
+  Sharq::QCirc qc_out = opt.execute(qc_in);
+  
+  EXPECT_EQ(qc_in.is_equal(qc_out), true);
+}
