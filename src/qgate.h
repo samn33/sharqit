@@ -19,6 +19,7 @@ namespace Sharq {
     std::vector<uint32_t> qid_;
     Phase phase_;
     std::vector<std::vector<std::complex<double>>> op_;
+    /* member functions */
     static std::vector<std::vector<std::complex<double>>> kind_to_op(const QGateKind kind, const Phase& phase = 0);
   public:
     QGate(const QGateKind kind = QGateKind::Id, const std::vector<uint32_t>& qid = {0}, const Phase& phase = 0);
@@ -80,6 +81,24 @@ namespace Sharq {
       else if (kind_ == QGateKind::T || kind_ == QGateKind::Tdg) { ans = true; }
       return ans;
     }
+    bool is_T1_gate() const // phase=1/4
+    {
+      bool ans = false;
+      if (kind_ == QGateKind::RZ) {
+	if (phase_ == Phase(1,4)) ans = true;
+      }
+      else if (kind_ == QGateKind::T) { ans = true; }
+      return ans;
+    }
+    bool is_T7_gate() const // phase=7/4=-1/4
+    {
+      bool ans = false;
+      if (kind_ == QGateKind::RZ) {
+	if (phase_ == Phase(7,4)) ans = true;
+      }
+      else if (kind_ == QGateKind::Tdg) { ans = true; }
+      return ans;
+    }
     bool is_CX_gate() const { return (kind_ == QGateKind::CX); }
     bool is_CZ_gate() const { return (kind_ == QGateKind::CZ); }
     bool is_RZ_gate() const { return (kind_ == QGateKind::Z || kind_ == QGateKind::S || kind_ == QGateKind::Sdg ||
@@ -89,6 +108,11 @@ namespace Sharq {
     bool is_proper_clifford_gate() const { return is_S_gate(); }
     bool is_clifford_gate() const{ return (is_pauli_gate() || is_H_gate() || is_CX_gate() || is_S_gate()); }
     bool is_non_clifford_gate() const { return !(is_clifford_gate()); }
+    bool is_included(const uint32_t q) const
+    {
+      for (auto& i:qid_) { if (i == q) return true; }
+      return false;
+    }
     QGate inverse() const;
     bool is_identical(QGate& other) const;
     bool overlap(const Sharq::QGate& other) const;
