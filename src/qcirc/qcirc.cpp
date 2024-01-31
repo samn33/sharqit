@@ -698,6 +698,7 @@ void Sharq::QCirc::gate_cancel()
   }
 }
 
+/* replace all cz gates with cnot gates and hadamard gates */
 void Sharq::QCirc::cz_to_cx()
 {
   std::list<QGate> qgates_list(qgates_.begin(), qgates_.end());
@@ -714,4 +715,45 @@ void Sharq::QCirc::cz_to_cx()
 
   std::vector<QGate> qgates_vec(qgates_list.begin(), qgates_list.end());
   qgates_ = qgates_vec;
+}
+
+/* remove Ids and RZ(0)s */
+void Sharq::QCirc::remove_id()
+{
+  std::list<QGate> qgates_list(qgates_.begin(), qgates_.end());
+  for (auto it = qgates_list.begin(); it != qgates_list.end();) {
+    if (it->is_Z_gate() || it->is_S_gate() || it->is_T_gate()) ++it;
+    else if (it->is_Id_gate()) it = qgates_list.erase(it);
+    else if (it->is_RZ_gate() && it->phase() == Sharq::Phase(0)) it = qgates_list.erase(it);
+    else ++it;
+  }
+  std::vector<QGate> qgates_vec(qgates_list.begin(), qgates_list.end());
+  qgates_ = qgates_vec;
+}
+
+/* replace Z,S,S+,T,T+ with RZ gates */
+void  Sharq::QCirc::replace_with_rz()
+{
+  for (auto& qgate:qgates_) {
+    if (qgate.is_Z_gate()) { // phase = 1
+      qgate.kind(Sharq::QGateKind::RZ);
+      qgate.phase(Sharq::Phase(1));
+    }
+    else if (qgate.is_S1_gate()) { // phase = 1/2
+      qgate.kind(Sharq::QGateKind::RZ);
+      qgate.phase(Sharq::Phase(1, 2));
+    }
+    else if (qgate.is_S3_gate()) { // phase = 3/2
+      qgate.kind(Sharq::QGateKind::RZ);
+      qgate.phase(Sharq::Phase(3, 2));
+    }
+    if (qgate.is_T1_gate()) { // phase = 1/4
+      qgate.kind(Sharq::QGateKind::RZ);
+      qgate.phase(Sharq::Phase(1, 4));
+    }
+    else if (qgate.is_T7_gate()) { // phase = 7/4
+      qgate.kind(Sharq::QGateKind::RZ);
+      qgate.phase(Sharq::Phase(7, 4));
+    }
+  }
 }

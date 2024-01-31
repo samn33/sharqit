@@ -42,13 +42,10 @@ void Sharq::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t 
   std::cerr << std::endl;
 #endif
 
-  //for (uint32_t i = start; i < end; ++i) {
   for (uint32_t i = start; i <= end; ++i) {
     if (qgates_[i].is_CX_gate() && cnot_objects[i] == 1) {
       uint32_t con = qgates_[i].qid()[0];
       uint32_t tar = qgates_[i].qid()[1];
-      //if ((term_border[con].first < i && i < term_border[con].second) &&
-      //	  (term_border[tar].first < i && i < term_border[tar].second)) {
       if ((term_border[con].first <= i && i <= term_border[con].second) &&
 	  (term_border[tar].first <= i && i <= term_border[tar].second)) {
 	B.xor_rows(qid_map[con], qid_map[tar]);
@@ -60,7 +57,6 @@ void Sharq::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t 
     }
     else if (qgates_[i].is_X_gate() && qid_flg[qgates_[i].qid()[0]] == 1) {
       uint32_t q = qgates_[i].qid()[0];
-      //if (term_border[q].first < i && i < term_border[q].second) {
       if (term_border[q].first <= i && i <= term_border[q].second) {
 	B.reverse_element(qid_map[q], ppc_qid.size());
 #ifdef DEBUG
@@ -106,34 +102,10 @@ void Sharq::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t 
 }
 
 /* merge rotation gates using phase polynomial representation */
-Sharq::QCirc Sharq::QCirc::merge_rotation()
+void Sharq::QCirc::merge_rotation()
 {
   /* CZ to CX */
   cz_to_cx();
-
-  /* Z,S,S+,T,T+ to RZ gates */
-  for (auto& qgate:qgates_) {
-    if (qgate.is_Z_gate()) { // phase = 1
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(1));
-    }
-    else if (qgate.is_S1_gate()) { // phase = 1/2
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(1, 2));
-    }
-    else if (qgate.is_S3_gate()) { // phase = 3/2
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(3, 2));
-    }
-    if (qgate.is_T1_gate()) { // phase = 1/4
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(1, 4));
-    }
-    else if (qgate.is_T7_gate()) { // phase = 7/4
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(7, 4));
-    }
-  }
 
   uint32_t pos = 0;
   uint32_t start = 0; // start of phase polynomial circuit
@@ -271,21 +243,10 @@ Sharq::QCirc Sharq::QCirc::merge_rotation()
 	  if ((((int32_t)term_border[q0].first <= j) && (j <= (int32_t)term_border[q0].second)) ||
 	      ((int32_t)term_border[q1].first <= j && (j <= (int32_t)term_border[q1].second))) {
 
-	  //if ((((int32_t)term_border[con].first <= j) && (j <= (int32_t)term_border[con].second)) ||
-	  //    ((int32_t)term_border[tar].first <= j && (j <= (int32_t)term_border[tar].second))) {
-
 	    if (std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[0]) == ppc_qid.end() &&
 		std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[1]) == ppc_qid.end()) continue; 
-
-	    //if (!qgates_[j].is_included(con) && !qgates_[j].is_included(tar)) continue;
-	    //else if (qgates_[j].is_included(con) && qgates_[j].is_included(tar)) continue;
-
-	    //else if (std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[0]) != ppc_qid.end() &&
-	    //	     std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[1]) != ppc_qid.end()) continue;
-
 	    else {
 	      cnot_visits[j] = 1;
-	      //cnot_anchor.push(j);
 	      if (std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[0]) == ppc_qid.end()) {
 		ppc_qid.push_back(qgates_[j].qid()[0]);
 		cnot_anchor.push(j);
@@ -299,7 +260,6 @@ Sharq::QCirc Sharq::QCirc::merge_rotation()
 	}
       }
 
-      //for (uint32_t j = cnot_idx + 1; j < end; ++j) { // scan forward
       for (uint32_t j = cnot_idx + 1; j <= end; ++j) { // scan forward
 	if (qgates_[j].is_CX_gate() && cnot_visits[j] == 0) {
 
@@ -307,21 +267,10 @@ Sharq::QCirc Sharq::QCirc::merge_rotation()
 	  uint32_t q1 = qgates_[j].qid()[1];
 	  if (((term_border[q0].first <= j) && (j <= term_border[q0].second)) ||
 	      (term_border[q1].first <= j && (j <= term_border[q1].second))) {
-	  //if (((term_border[con].first <= j) && (j <= term_border[con].second)) ||
-	  //    (term_border[tar].first <= j && (j <= term_border[tar].second))) {
-
 	    if (std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[0]) == ppc_qid.end() &&
 		std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[1]) == ppc_qid.end()) continue; 
-
-	    //if (!qgates_[j].is_included(con) && !qgates_[j].is_included(tar)) continue;
-	    //else if (qgates_[j].is_included(con) && qgates_[j].is_included(tar)) continue;
-
-	    //else if (std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[0]) != ppc_qid.end() &&
-	    //	     std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[1]) != ppc_qid.end()) continue;
-
 	    else {
 	      cnot_visits[j] = 1;
-	      //cnot_anchor.push(j);
 	      if (std::find(ppc_qid.begin(), ppc_qid.end(), qgates_[j].qid()[0]) == ppc_qid.end()) {
 		ppc_qid.push_back(qgates_[j].qid()[0]);
 		cnot_anchor.push(j);
@@ -398,107 +347,23 @@ Sharq::QCirc Sharq::QCirc::merge_rotation()
 
 
 #ifdef SHOW
-  //show();
   std::cerr << to_string() << std::endl;
   std::cerr << std::endl;
 #endif
 
-  
-  /* remove RZ(0)'s and Id's */
-  std::list<QGate> qgates_list(qgates_.begin(), qgates_.end());
-  for (auto it = qgates_list.begin(); it != qgates_list.end();) {
-    if (it->is_RZ_gate() && it->phase() == Sharq::Phase(0)) it = qgates_list.erase(it);
-    else if (it->is_Id_gate()) it = qgates_list.erase(it);
-    else ++it;
-  }
-
-  /* propagate X gates */
-  uint32_t q = 0;
-  std::vector<uint32_t> qid_buf;
-  auto it_x = qgates_list.begin();
-  while (true) {
-    qid_buf.clear();
-    bool x_find = false; // find X gate or not
-    bool x_prop = false; // propagate X gate or not
-    for (auto it = it_x; it != qgates_list.end(); ++it) {
-      if (!x_find && it->is_X_gate()) {
-	it_x = it;
-	q = it->qid()[0];
-	x_find = true;
-      }
-      else if (x_find && it->is_X_gate() && it->qid()[0] == q) {
-	it_x->kind(Sharq::QGateKind::Id);
-	it->kind(Sharq::QGateKind::Id);
-	++it_x;
-	x_prop = true;
-	break;
-      }
-      else if (x_find && it->is_RZ_gate() && it->qid()[0] == q) {
-	it_x->kind(Sharq::QGateKind::RZ);
-	it_x->phase(-it->phase());
-	it->kind(Sharq::QGateKind::X);
-	it->phase(Sharq::Phase(0));
-	++it_x;
-	x_prop = true;
-	break;
-      }
-      else if (x_find && it->is_CX_gate() && it->qid()[0] == q &&
-	       std::find(qid_buf.begin(), qid_buf.end(), it->qid()[0]) == qid_buf.end()) { // propagate
-	uint32_t con = it->qid()[0];
-	uint32_t tar = it->qid()[1];
-	it_x->kind(Sharq::QGateKind::Id);
-	it_x->qid({q});
-	++it;
-	it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::X, {con}));
-	++it;
-	it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::X, {tar}));
-	--it;
-	++it_x;
-	x_prop = true;
-	break;
-      }
-      else if (x_find && it->is_CX_gate() && it->qid()[1] == q &&
-	       std::find(qid_buf.begin(), qid_buf.end(), it->qid()[1]) == qid_buf.end()) { // commute
-	uint32_t tar = it->qid()[1];
-	it_x->kind(Sharq::QGateKind::Id);
-	it_x->qid({q});
-	++it;
-	it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::X, {tar}));
-	++it_x;
-	x_prop = true;
-	break;
-      }
-      else if (x_find && it->qid().size() == 1 && it->qid()[0] == q) {
-	break;
-      }
-      else if (x_find && it->qid().size() == 2 && (it->qid()[0] == q || it->qid()[1] == q)) {
-	break;
-      }
-      else if (x_find){
-	for (auto& i:it->qid()) qid_buf.push_back(i);
-      }
+  uint32_t maxq = 0;
+  for (auto& qgate:qgates_) {
+    for (auto& q:qgate.qid()) {
+      if (q > maxq) maxq = q;
     }
-    if (!x_prop) break;
   }
-
-  /* remove RZ(0)'s and Id's */
-  for (auto it = qgates_list.begin(); it != qgates_list.end();) {
-    if (it->is_RZ_gate() && it->phase() == Sharq::Phase(0)) it = qgates_list.erase(it);
-    else if (it->is_Id_gate()) it = qgates_list.erase(it);
-    else ++it;
-  }
-
-  std::vector<QGate> qgates_vec(qgates_list.begin(), qgates_list.end());
-
-  Sharq::QCirc qc = *this;
-  qc.qgates_ = qgates_vec; 
-
+  if (maxq < qubit_num_ - 1) id(qubit_num_ - 1); 
 
 #ifdef SHOW
-  //qc.show();
   std::cerr << qc.to_string() << std::endl;
   std::cerr << std::endl;
 #endif
 
-  return qc;
+  /* remove RZ(0)'s and Id's */
+  remove_id();
 }
