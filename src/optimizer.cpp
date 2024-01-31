@@ -58,7 +58,7 @@ std::string Sharq::Optimizer::name() const
   return kind_str;
 }
 
-Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in, const Sharq::OptimizerKind kind)
+Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in, const OptimizerKind kind)
 {
   auto start = std::chrono::system_clock::now();
 
@@ -72,15 +72,12 @@ Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in, const Sharq::O
 
   if (kind_ == Sharq::OptimizerKind::ZXCalculus) {
     /* rule-based gate reduction */
-    Sharq::DAGCirc dc_in = qc_in.to_dagcirc();
-    dc_in.rule_based_gate_reduction();
-    Sharq::QCirc qc = dc_in.to_qcirc();
-
-    /* T-count,2Q-count reduction using phase polynomials */
-    qc = qc.merge_rotation();
+    Sharq::DAGCirc dc = qc_in.to_dagcirc();
+    dc.rule_based_gate_reduction();
+    qc_out = dc.to_qcirc();
 
     /* convert to ZX-Diagram */
-    Sharq::ZXDiagram zx = qc.to_zxdiagram();
+    Sharq::ZXDiagram zx = qc_out.to_zxdiagram();
     zx_stats_in_ = zx.stats();
 
     /* T-count reduction using ZX-calculus */
@@ -90,36 +87,31 @@ Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in, const Sharq::O
     /* extract circuit */
     qc_out = zx.extract_qcirc();
   
-    /* T-count,2Q-count reduction using phase polynomials */
-    qc_out = qc_out.merge_rotation();
-
     /* rule-based gate reduction */
-    Sharq::DAGCirc dc_out = qc_out.to_dagcirc();
-    dc_out.rule_based_gate_reduction();
-    qc_out = dc_out.to_qcirc();
+    dc = qc_out.to_dagcirc();
+    dc.rule_based_gate_reduction();
+    qc_out = dc.to_qcirc();
   }
   else if (kind_ == Sharq::OptimizerKind::PhasePolynomial) {
-    //// test
-    //qc_out = qc_in;
-    //qc_out = qc_out.merge_rotation();
-    
     /* rule-based gate reduction */
-    Sharq::DAGCirc dc_in = qc_in.to_dagcirc();
-    dc_in.rule_based_gate_reduction();
-    qc_out = dc_in.to_qcirc();
-    
+    Sharq::DAGCirc dc = qc_in.to_dagcirc();
+    dc.rule_based_gate_reduction();
+    qc_out = dc.to_qcirc();
+
     /* T-count,2Q-count reduction using phase polynomials */
-    qc_out = qc_out.merge_rotation();
+    qc_out.replace_with_rz();
+    qc_out.merge_rotation();
+    qc_out.propagate_pauli_x();
     
     /* rule-based gate reduction */
-    Sharq::DAGCirc dc_out = qc_out.to_dagcirc();
-    dc_out.rule_based_gate_reduction();
-    qc_out = dc_out.to_qcirc();
+    dc = qc_in.to_dagcirc();
+    dc.rule_based_gate_reduction();
+    qc_out = dc.to_qcirc();
   }
   else {
     throw std::runtime_error("Invalid kind of optimizer.");
   }
-
+    
   /* stats (out) */
   stats_out_ = qc_out.stats();
   

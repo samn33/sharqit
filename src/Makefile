@@ -2,7 +2,8 @@ VPATH = .:./qcirc:./zx:./dag:./qcirc
 
 INC = sharq.h util.h fraction.h phase.h binary_matrix.h linear_map.h qgate.h \
 	qcirc.h zx.h dag.h optimizer.h
-LIB_SRC = fraction.cpp phase.cpp binary_matrix.cpp qgate.cpp qcirc.cpp merge_rotation.cpp \
+LIB_SRC = fraction.cpp phase.cpp binary_matrix.cpp qgate.cpp qcirc.cpp \
+	merge_rotation.cpp propagate_pauli_x.cpp \
 	zxnode.cpp zxdiagram.cpp simplify.cpp extract_qcirc.cpp dagnode.cpp dagedge.cpp dagcirc.cpp \
 	optimizer.cpp linear_map.cpp
 LIB_OBJ = $(LIB_SRC:%.cpp=%.o)

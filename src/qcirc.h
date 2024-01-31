@@ -79,7 +79,10 @@ namespace Sharq {
     ZXDiagram to_zxdiagram() const;
     LinearMap to_linearmap() const;
     DAGCirc to_dagcirc() const;
-    QCirc merge_rotation(); // merge rotation gates using phase polynomials
+    void remove_id();
+    void replace_with_rz();
+    void merge_rotation(); // merge rotation gates using phase polynomials
+    void propagate_pauli_x(); // propagate pauli x gates after cnot gates
     void cz_to_cx();
     void gate_cancel();
     /* fundamental gates */
