@@ -81,7 +81,9 @@ Build and execute it.
     qc_in.tdg(4).cx(0,4).cx(0,1).t(4).t(0).tdg(1).cx(0,1).h(3).h(4);
     ...
     Sharq::Optimizer opt;
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharq::QCirc qc_out = opt.execute(qc_in); // default: ZXCalculus
+    //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::ZXCalculus);
+    //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::PhasePolynomial);
     ...
 
 #### Quantum circuit loaded from file
@@ -108,7 +110,9 @@ Use 'load' method to load the file.
     qc_in.load("in.sqc");
     ...
     Sharq::Optimizer opt;
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharq::QCirc qc_out = opt.execute(qc_in); // default: ZXCalculus
+    //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::ZXCalculus);
+    //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::PhasePolynomial);
     ...
 
 ### Sharq command
@@ -164,7 +168,7 @@ Sample code converting from qasm file is [here](benchmarks/qasm_to_sqc.py).
 
 ## Benchmarks
 
-Processing time, T-count, 2Q-count, Gate-count of 'sharq' are compared with [PyZX](https://github.com/Quantomatic/pyzx). The operating environment is Intel Core i5-3320M CPU @2.60GHz, 16GB RAM.
+Processing time, T-count, 2Q-count, Gate-count of 'sharq' are compared with [PyZX](https://github.com/Quantomatic/pyzx). The 'zx' means the metohd using ZXCalculus, the 'pp' means the method using PhasePolynomial. The operating environment is Intel Core i5-3320M CPU @2.60GHz, 16GB RAM.
 
 ![benchmarks](/benchmarks/plot.png)
 
