@@ -81,6 +81,9 @@ uint32_t Sharq::DAGCirc::prev_node(const uint32_t idx, const uint32_t q)
   if (!nodes_[idx].is_included(q)) {
     throw std::runtime_error("invalid node id or qubit id.");
   }
+  else if (nodes_[idx].is_innode()) {
+    throw std::runtime_error("previous node isn't exist because it's an input node.");
+  }
 
   uint32_t prev_idx = 0;
   for (auto& e:adj_mat_[idx]) {
@@ -96,6 +99,9 @@ uint32_t Sharq::DAGCirc::next_node(const uint32_t idx, const uint32_t q)
 {
   if (!nodes_[idx].is_included(q)) {
     throw std::runtime_error("invalid node id or qubit id.");
+  }
+  else if (nodes_[idx].is_outnode()) {
+    throw std::runtime_error("next node isn't exist because it's an output node.");
   }
 
   uint32_t next_idx = 0;
@@ -163,6 +169,24 @@ void Sharq::DAGCirc::remove_edge(const uint32_t a, const uint32_t b)
   }
   for (auto it = adj_mat_[b].begin(); it != adj_mat_[b].end(); ++it) {
     if (it->to() == a) {
+      it = adj_mat_[b].erase(it);
+      --it;
+    }
+  }
+}
+
+void Sharq::DAGCirc::remove_edge(const uint32_t a, const uint32_t b, const uint32_t q)
+{
+  if (a == b) return;
+  
+  for (auto it = adj_mat_[a].begin(); it != adj_mat_[a].end(); ++it) {
+    if (it->to() == b && it->q() == q) {
+      it = adj_mat_[a].erase(it);
+      --it;
+    }
+  }
+  for (auto it = adj_mat_[b].begin(); it != adj_mat_[b].end(); ++it) {
+    if (it->to() == a && it->q() == q) {
       it = adj_mat_[b].erase(it);
       --it;
     }
@@ -516,85 +540,94 @@ void Sharq::DAGCirc::hadamard_gate_reduction()
 
 void Sharq::DAGCirc::single_qubit_gate_cancellation()
 {
-  for (uint32_t i = 0; i < nodes_.size(); ++i) {
-    if (!nodes_[i].is_opnode() || nodes_[i].qubit_num() > 1) continue;
-    uint32_t q = nodes_[i].qid()[0];
-    uint32_t idx = next_node(i, q);
-    while (true) {
-      if (nodes_[idx].is_outnode()) break;
+  for (uint32_t q = 0; q < qubit_num_; ++q) {
 
-      if (nodes_[i].mergeable(nodes_[idx])) {
-	nodes_[idx].merge(nodes_[i]);
-	nodes_[i].qgate(Sharq::QGate(Sharq::QGateKind::Id, {q}));
-	break;
-      }
-      else if (nodes_[i].commutable(nodes_[idx])) {
-	idx = next_node(idx, q);
-	if (nodes_[idx].is_outnode()) break;
-      }
-      else {
-	break;
+    for (uint32_t ori = next_node(inputs_[q], q); !nodes_[ori].is_outnode(); ori = next_node(ori, q)) {
+
+      if (nodes_[ori].is_outnode()) break;
+      if (nodes_[ori].is_identity()) continue;
+
+      if (nodes_[ori].qubit_num() == 1) {
+	  
+	uint32_t pre = ori;
+	uint32_t now = ori;
+
+	do {
+	  now = next_node(now, q);
+	  if (!nodes_[now].is_outnode() && nodes_[ori].commutable(nodes_[now])) {
+	    pre = now;
+	    continue;
+	  }
+	  else if (ori == pre) {
+	    break;
+	  }
+	  else if (nodes_[ori].mergeable(nodes_[pre])) {
+	    nodes_[pre].merge(nodes_[ori]);
+	    nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id, {q}));
+	    break;
+	  }
+	  else if (nodes_[ori].is_rotation()) {
+	    DAGNode ins_node = nodes_[ori];
+	    uint32_t ins = append_node(ins_node);
+	    remove_edge(pre, now, q);
+	    connect_nodes(pre, ins, q);
+	    connect_nodes(ins, now, q);
+	    nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id, {q}));
+	    break;
+	  }
+	  else {
+	    break;
+	  }
+	} while (!nodes_[now].is_outnode());
+
       }
     }
   }
   id_removal();
 
-  /* RZ and phase polynomial commute */
-  for (uint32_t i = 0; i < nodes_.size(); ++i) {
-    if (!nodes_[i].is_opnode() || nodes_[i].qubit_num() > 1) continue;
-    if (!nodes_[i].qgate().is_RZ_gate()) continue;
-    uint32_t q = nodes_[i].qid()[0];
-    uint32_t con = 0;
-    uint32_t tar = 0;
-    uint32_t idx = next_node(i, q);
-    uint32_t idx_cnot_first = 0;
-    uint32_t idx_cnot_second = 0;
+  /* RZ and phase polynomial commute
+     ex)
+     q[0] ---------*---------*--
+     q[1] --RZ(1)--X--RZ(2)--X--
+     is equal to
+     q[0] --*---------*---------
+     q[1] --X--RZ(2)--X--RZ(1)--
+   */
+  for (uint32_t q = 0; q < qubit_num_; ++q) {
 
-    bool candidate = false;
-    while (true) {
-      if (nodes_[idx].is_outnode()) break;
-      if (nodes_[idx].qgate().is_CX_gate() && nodes_[idx].qgate().qid()[1] == q) {
-	idx_cnot_first = idx;
-	con = nodes_[idx].qgate().qid()[0];
-	tar = nodes_[idx].qgate().qid()[1];
-	idx = next_node(idx, tar);
-	if (nodes_[idx].qgate().is_RZ_gate()) {
-	  idx = next_node(idx, tar);
-	  if (nodes_[idx].qgate().is_CX_gate() &&
-	      nodes_[idx].qgate().qid()[0] == con && nodes_[idx].qgate().qid()[1] == tar) {
-	    idx_cnot_second = idx;
-	    idx = next_node(idx, tar);
-	    if (nodes_[i].mergeable(nodes_[idx])) {
-	      candidate = true;
-	      break;
+    for (uint32_t ori = next_node(inputs_[q], q); !nodes_[ori].is_outnode(); ori = next_node(ori, q)) {
+
+      if (nodes_[ori].is_outnode()) break;
+      if (nodes_[ori].is_identity()) continue;
+
+      if (nodes_[ori].is_rotation()) {
+
+	uint32_t tar = q;
+
+	for (uint32_t now_tar = next_node(ori, tar); !nodes_[now_tar].is_outnode(); now_tar = next_node(now_tar, tar)) {
+	  if (nodes_[ori].commutable(nodes_[now_tar])) {
+	    continue;
+	  }
+	  else if (nodes_[now_tar].is_cnot() && nodes_[now_tar].qgate().qid()[1] == tar) {
+	    uint32_t con = nodes_[now_tar].qgate().qid()[0];
+	    uint32_t now_con = now_tar;
+	    now_tar = next_node(now_tar, tar);
+	    if (!nodes_[now_tar].is_outnode() && nodes_[now_tar].is_rotation()) {
+	      now_tar = next_node(now_tar, tar);
+	      now_con = next_node(now_con, con);
+	      if (now_tar == now_con && nodes_[now_tar].is_cnot() && nodes_[now_tar].qgate().qid()[1] == tar) {
+		uint32_t next_tar = next_node(now_tar, tar);
+		DAGNode ins_node = nodes_[ori];
+		uint32_t ins = append_node(ins_node);
+		remove_edge(now_tar, next_tar, tar);
+		connect_nodes(now_tar, ins, tar);
+		connect_nodes(ins, next_tar, tar);
+		nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
+	      }
 	    }
 	  }
-	  else { break; }
+	  break;
 	}
-	else { break; }
-      }
-      else { break; }
-    }
-
-    if (!candidate) continue;
-
-    bool commute = true;
-    idx = idx_cnot_first;
-    idx = next_node(idx, con);
-    while (idx != idx_cnot_second) {
-      if (!nodes_[idx].qgate().is_RZ_gate()) {
-	commute = false;
-	break;
-      }
-      idx = next_node(idx, con);
-    }
-
-    if (!commute) continue;
-    else {
-      idx = next_node(idx, tar);
-      if (!nodes_[idx].is_outnode() && nodes_[i].mergeable(nodes_[idx])) {
-	nodes_[idx].merge(nodes_[i]);
-	nodes_[i].qgate(Sharq::QGate(Sharq::QGateKind::Id, {q}));
       }
     }
   }
@@ -603,44 +636,46 @@ void Sharq::DAGCirc::single_qubit_gate_cancellation()
 
 void Sharq::DAGCirc::two_qubit_gate_cancellation()
 {
-  for (uint32_t i = 0; i < nodes_.size(); ++i) {
-    if (!nodes_[i].is_opnode() || nodes_[i].qubit_num() <= 1) continue;
+  for (uint32_t q = 0; q < qubit_num_; ++q) {
 
-    uint32_t con = nodes_[i].qid()[0];
-    uint32_t tar = nodes_[i].qid()[1];
-    /* previous node id and next node id adjacent to control qubit of nodes_[i] */
-    uint32_t idx_con_prev = prev_node(i, con);
-    uint32_t idx_con_next = next_node(i, con);
-    /* previous node id and next node id adjacent to target qubit of nodes_[i] */
-    uint32_t idx_tar_prev = prev_node(i, tar);
-    uint32_t idx_tar_next = next_node(i, tar);
+    for (uint32_t ori = next_node(inputs_[q], q); !nodes_[ori].is_outnode(); ori = next_node(ori, q)) {
 
-    uint32_t idx_con = idx_con_next;
-    uint32_t idx_tar = idx_tar_next;
-    while (true) {
-      /* while loop is done if reach to the output nodes */
-      if (nodes_[idx_con].is_outnode() && nodes_[idx_tar].is_outnode()) break;
+      if (nodes_[ori].is_identity()) continue;
 
-      /* commute and merge */
-      if (nodes_[i].mergeable(nodes_[idx_con]) && nodes_[i].mergeable(nodes_[idx_tar])) {
-	nodes_[idx_tar].merge(nodes_[i]);
-	remove_edges_of_node(i);
-	connect_nodes(idx_con_prev, idx_con_next, con);
-	connect_nodes(idx_tar_prev, idx_tar_next, tar);
-      }
-      else if (nodes_[i].mergeable(nodes_[idx_con]) && nodes_[i].commutable(nodes_[idx_tar])) {
-	idx_tar = next_node(idx_tar, tar);
-      }
-      else if (nodes_[i].commutable(nodes_[idx_con]) && nodes_[i].mergeable(nodes_[idx_tar])) {
-	idx_con = next_node(idx_con, con);
-      }
-      else if (nodes_[i].commutable(nodes_[idx_con]) && nodes_[i].commutable(nodes_[idx_tar])) {
-	if (!nodes_[idx_con].is_outnode()) idx_con = next_node(idx_con, con);
-	if (!nodes_[idx_tar].is_outnode()) idx_tar = next_node(idx_tar, tar);
-	if (nodes_[idx_con].is_outnode() && nodes_[idx_tar].is_outnode()) break;
-      }
-      else { /* while loop is done if reach to a non-commutable node */
-	break;
+      if (nodes_[ori].qubit_num() > 1) {
+	  
+	uint32_t now_con = ori;
+	uint32_t now_tar = ori;
+	uint32_t con = nodes_[ori].qid()[0];
+	uint32_t tar = nodes_[ori].qid()[1];
+
+	now_con = next_node(now_con, con);
+	now_tar = next_node(now_tar, tar);
+	if (nodes_[now_con].is_outnode() || nodes_[now_tar].is_outnode()) continue;
+
+	do {
+	  if (nodes_[ori].mergeable(nodes_[now_con]) && nodes_[ori].mergeable(nodes_[now_tar])) {
+	    nodes_[now_con].merge(nodes_[ori]);
+	    nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id2, {con, tar}));
+	    break;
+	  }
+	  else if (nodes_[ori].commutable(nodes_[now_con]) && nodes_[ori].mergeable(nodes_[now_tar])) {
+	    now_con = next_node(now_con, con);
+	    continue;
+	  }
+	  else if (nodes_[ori].mergeable(nodes_[now_con]) && nodes_[ori].commutable(nodes_[now_tar])) {
+	    now_tar = next_node(now_tar, tar);
+	    continue;
+	  }
+	  else if (nodes_[ori].commutable(nodes_[now_con]) && nodes_[ori].commutable(nodes_[now_tar])) {
+	    now_con = next_node(now_con, con);
+	    now_tar = next_node(now_tar, tar);
+	    continue;
+	  }
+	  else {
+	    break;
+	  }
+	} while (!nodes_[now_con].is_outnode() && !nodes_[now_tar].is_outnode());
       }
     }
   }
@@ -655,33 +690,30 @@ void Sharq::DAGCirc::two_qubit_gate_cancellation()
       q[1] --H--*--H--X--
       q[2] -----X--------    
    */
-  for (uint32_t i = 0; i < nodes_.size(); ++i) {
-    if (!nodes_[i].is_opnode() || !nodes_[i].qgate().is_CX_gate()) continue;
+  for (uint32_t q = 0; q < qubit_num_; ++q) {
 
-    uint32_t con = nodes_[i].qid()[0];
-    uint32_t tar = nodes_[i].qid()[1];
-    uint32_t tar_other = 0;
-    uint32_t idx_cnot_1 = i;
-    uint32_t idx_h_1 = 0;
-    uint32_t idx_cnot_2 = 0;
-    uint32_t idx_h_2 = 0;
-    uint32_t idx = 0;
-    idx = next_node(idx_cnot_1, tar);
-    if (nodes_[idx].qgate().is_H_gate()) {
-      idx_h_1 = idx;
-      idx = next_node(idx_h_1, tar);
-      if (nodes_[idx].qgate().is_CX_gate() && nodes_[idx].qgate().qid()[0] == tar) {
-	idx_cnot_2 = idx;
-	tar_other = nodes_[idx].qgate().qid()[1];
-	idx = next_node(idx_cnot_2, tar);
-	if (nodes_[idx].qgate().is_H_gate()) {
-	  idx_h_2 = idx;
-	  idx = next_node(idx_h_2, tar);
-	  if (nodes_[idx].qgate().is_CX_gate() &&
-	      nodes_[idx].qgate().qid()[0] == con && nodes_[idx].qgate().qid()[1] == tar &&
-	      next_node(idx_cnot_1, con) == idx) {
-	    nodes_[idx_cnot_1].qgate(Sharq::QGate(Sharq::QGateKind::Id2, {con, tar}));
-	    nodes_[idx].qgate(Sharq::QGate(Sharq::QGateKind::Id2, {con, tar}));
+    for (uint32_t ori = next_node(inputs_[q], q); !nodes_[ori].is_outnode(); ori = next_node(ori, q)) {
+
+      if (nodes_[ori].is_outnode()) break;
+      if (nodes_[ori].is_identity()) continue;
+
+      if (nodes_[ori].is_cnot()) {
+	  
+	uint32_t con = nodes_[ori].qid()[0];
+	uint32_t tar = nodes_[ori].qid()[1];
+	uint32_t now_tar = next_node(ori, tar);
+
+	if (!nodes_[now_tar].is_outnode() && nodes_[now_tar].is_hadamard()) {
+	  now_tar = next_node(now_tar, tar);
+	  if (!nodes_[now_tar].is_outnode() && nodes_[now_tar].is_cnot() && nodes_[now_tar].qid()[0] == tar) {
+	    now_tar = next_node(now_tar, tar);
+	    if (!nodes_[now_tar].is_outnode() && nodes_[now_tar].is_hadamard()) {
+	      uint32_t now_con = next_node(ori, con);
+	      if (!nodes_[now_con].is_outnode() && now_con == now_tar && nodes_[now_con].mergeable(nodes_[ori])) {
+		nodes_[now_con].merge(nodes_[ori]);
+		nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id2, {con, tar}));
+	      }
+	    }
 	  }
 	}
       }
