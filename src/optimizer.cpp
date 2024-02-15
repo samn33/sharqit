@@ -104,7 +104,7 @@ Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in, const Optimize
     qc_out.propagate_pauli_x();
     
     /* rule-based gate reduction */
-    dc = qc_in.to_dagcirc();
+    dc = qc_out.to_dagcirc();
     dc.rule_based_gate_reduction();
     qc_out = dc.to_qcirc();
   }

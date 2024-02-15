@@ -397,7 +397,7 @@ void Sharq::QGate::merge(const Sharq::QGate& other)
     if (qubit_num() == 1) kind(Sharq::QGateKind::Id);
     else kind(Sharq::QGateKind::Id2);
   }
-  else {
+  else if (qubit_num() == 1) {
     Sharq::Phase p(0);
     if (kind_ == Sharq::QGateKind::Z) p += Sharq::Phase(1);
     else if (kind_ == Sharq::QGateKind::S) p += Sharq::Phase(1,2);
