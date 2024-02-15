@@ -5,7 +5,7 @@ Quantum Circuit Optimizer
 
 ## Feature
 
-- Reducing T-count using ZX-calculus
+- Support two types of gate-count reduction methods: 1) using ZX-calculus, 2) using Phase Polynomial 
 - Implemented in C++ language
 
 ## Install
@@ -53,8 +53,10 @@ Add following lines to your ~/.bashrc. (If you are using another shell, replace 
       std::cout << "T-count (in) = " << qc_in.t_count() << std::endl;
     
       Sharq::Optimizer opt;
-      Sharq::QCirc qc_out = opt.execute(qc_in); // circuit optimization
-    
+      Sharq::QCirc qc_out = opt.execute(qc_in); // circuit optimization using ZX-calculus (default)
+      //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::ZXCalculus); // using ZX-calculus
+      //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::PhasePolynomial); // using Phase Polynomial
+
       qc_out.show(); // show the circuit
       qc_out.save("out.sqc"); // save to text file
       std::cout << "T-count (out) = " << qc_out.t_count() << std::endl;
@@ -118,20 +120,25 @@ Print help message.
     [usage]
       sharq [option] ([file]..)([params]) (> [file])
     [option]
-      --opt FILE       : optimize the circuit file, output to stdout.
-      --rand PARAMS    : generate a random circuit file, output to stdout.
-      --eq FILE1 FILE2 : verify two circuits are equal. (can't execute that have too many qubits)
-      --stats FILE     : print stats of the circut file.
-      --show FILE      : print the circuit diagram as ascii text.
-      --help           : print help message.
-      --version        : print version.
+      --opt(=kind) FILE  : optimize the circuit file, output to stdout.
+                           --opt=zx: T-count reduction using ZX-calculus
+                           --opt=pp: gate-count reduction using Phase Polynomials
+      --rand PARAMS      : generate a random circuit file, output to stdout.
+      --eq FILE1 FILE2   : verify two circuits are equal. (can't execute that have too many qubits)
+      --stats FILE       : print stats of the circut file.
+      --show FILE        : print the circuit diagram as ascii text.
+      --help             : print help message.
+      --version          : print version.
     [examples]
       $ sharq --opt foo.sqc > bar.sqc
+      $ sharq --opt=zx foo.sqc > bar.sqc
+      $ sharq --opt=pp foo.sqc > bar.sqc
       $ sharq --eq foo.sqc bar.sqc
       $ sharq --rand 3,100,"X":1,"H":2,"T":3.5,"RZ(1/2)":1.5 > bar.sqc # 3 qubits,100 gates
       $ sharq --stats foo.sqc
       $ sharq --show foo.sqc
-    ...
+      ...
+  
 
 ## Quantum circuit file format
 
@@ -166,7 +173,7 @@ Quantum circuit data used in the benchmarks are from [optimizer: Benchmark quant
 
 ## References
 
-Papers about quantum circuit optimization using ZX-calculus.
+Papers about T-count reduction using ZX-calculus.
 
 1. Ross Duncan, Aleks Kissinger, Simon Perdrix, John van de Wetering,
 "Graph-theoretic Simplification of Quantum Circuits with the ZX-calculus",
@@ -179,6 +186,13 @@ Papers about quantum circuit optimization using ZX-calculus.
 3. Miriam Backens, Hector Miller-Bakewell, Giovanni de Felice, Leo Lobski, John van de Wetering,
 "There and back again: A circuit extraction tale",
 [arXiv:2003.01664](https://arxiv.org/abs/2003.01664)
+
+Papers about gate-count reduction using Phase Polynomial.
+
+4. Yunseong Nam, Neil J. Ross, Yuan Su, Andrew M. Childs, Dmitri Maslov,
+"Automated optimization of large quantum circuits with continuous parameters",
+[arXiv:1710.07345](https://arxiv.org/abs/1710.07345)
+
 
 ## Requirements
 

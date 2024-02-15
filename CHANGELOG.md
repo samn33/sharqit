@@ -1,9 +1,8 @@
 # Change Log
 
-## [0.0.6-beta] - 2024-xx-xx
+## [0.1.0-beta] - 2024-xx-xx
 ### Added
-- rule based gate reduction
-- merging rotation using phase polynomials and propagation of x gates
+- rule based gate reduction and rotation gate merging using phase polynomials
 
 ## [0.0.5] - 2023-12-23
 ### Changed
