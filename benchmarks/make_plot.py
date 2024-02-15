@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 PYZX_LABEL="pyzx-0.7.3"
-SHARQ_LABEL="sharq-0.0.6"
+SHARQ_LABEL="sharq-0.1.0"
 
 def main():
 

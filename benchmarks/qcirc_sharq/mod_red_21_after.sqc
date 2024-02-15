@@ -1,415 +1,439 @@
-CX 2 3
-CX 6 7
-CX 0 8
-CX 5 9
-CX 3 2
-CX 7 6
-CX 8 0
-CX 9 5
-CX 2 3
-CX 6 7
-CX 0 8
-CX 5 9
-CX 4 7
-H 0
-H 8
-H 9
-H 5
-CX 7 4
-CX 5 6
-CX 4 7
-RZ(7/4) 6
-CZ 1 7
-RZ(1) 4
-CX 5 6
-CX 1 2
-H 7
-H 4
-CX 7 2
-RZ(7/4) 2
-RZ(7/4) 7
-CX 1 2
-CX 1 7
-CZ 2 7
-RZ(3/4) 7
-RZ(7/4) 2
-H 7
-H 2
-CX 4 7
-CX 2 7
-CX 7 2
-CX 7 4
-RZ(1/4) 7
-CX 4 2
-H 7
-CX 7 9
-CX 9 7
-H 9
-H 7
-CX 4 7
-CX 4 9
-CX 7 2
-CZ 3 9
-CX 7 4
-CZ 1 9
-CZ 4 7
-RZ(3/4) 9
-CZ 3 4
-RZ(1/4) 7
-H 9
-CZ 1 4
-H 7
-RZ(3/4) 4
-CX 7 6
-H 4
-CX 4 9
-CX 9 6
-CX 9 7
-CX 7 5
-RZ(1/4) 7
-H 7
-CZ 6 7
-CZ 5 7
-RZ(7/4) 6
-H 7
-RZ(3/4) 5
-H 6
-RZ(1/4) 7
-H 5
-H 7
-CX 5 6
-CX 5 7
-CX 6 7
-CX 7 6
-CX 7 5
-H 6
-CX 5 4
-H 7
-RZ(5/4) 6
-RZ(3/4) 5
-RZ(1/4) 7
-H 6
-H 5
-H 7
-CX 0 6
 CX 4 5
-RZ(1/4) 7
-CX 4 9
-CX 5 9
+CX 8 9
+H 10
 CX 5 4
-H 4
-RZ(7/4) 4
-H 4
-CX 4 9
-H 4
-CZ 3 4
-RZ(1/4) 4
-H 4
-CX 5 4
-RZ(7/4) 4
-CX 6 5
-H 4
-CX 6 0
-CX 4 2
-RZ(7/4) 6
-CZ 1 4
-H 6
-H 4
-CZ 1 3
-CZ 6 10
-RZ(1/4) 4
-H 3
-H 10
-H 4
-CX 10 6
-CX 2 4
-CZ 0 10
-H 6
-CX 4 2
-H 10
-CX 0 6
-H 2
-RZ(1/4) 10
-CX 6 0
-H 10
-RZ(7/4) 6
-RZ(1/4) 0
-H 6
-H 0
-CX 3 6
-CX 10 6
-CX 0 6
-CX 6 5
-CX 6 3
-CX 8 5
-RZ(7/4) 6
+CX 9 8
+CX 4 5
+CX 8 9
 CX 3 4
-H 8
-H 6
-CX 6 5
-CZ 1 6
-CX 3 5
-H 6
-CX 3 10
-CX 3 0
-CX 3 6
-CX 0 6
-CX 3 8
-CX 0 8
-CX 8 6
-CX 8 0
-RZ(7/4) 6
-H 6
-CX 6 5
-CZ 3 6
-CZ 1 6
-H 6
-RZ(7/4) 6
-H 6
-CX 5 6
-CX 6 5
-CZ 3 5
-CZ 1 5
-CZ 0 5
-H 5
-CZ 3 5
-CZ 1 5
-CZ 0 5
-RZ(7/4) 5
-H 5
-CX 5 9
-CX 5 4
-CX 9 6
-RZ(3/4) 5
-H 9
-H 5
-CX 5 4
-CZ 2 5
-CZ 1 5
-H 5
-RZ(3/4) 5
-H 5
-CX 5 4
-CZ 1 5
-H 5
-CZ 3 5
-CZ 2 5
-CZ 2 3
-RZ(7/4) 5
-RZ(3/2) 2
-H 5
-H 2
-CX 5 9
-CX 2 9
 CX 2 5
-RZ(1/4) 9
-CX 5 4
+CX 7 8
+CX 0 9
+CX 4 3
+CX 5 2
+CX 8 7
+CX 9 0
+CX 3 4
+CX 2 5
+CX 7 8
+CX 0 9
+CX 1 2
+RZ(1) 5
+CX 6 7
+H 0
 H 9
-CX 6 9
-CX 9 6
-CZ 5 6
-H 6
-CZ 6 9
-CZ 5 9
-CZ 3 9
-H 9
-CZ 5 9
-CZ 1 9
-RZ(1/4) 5
-CZ 1 3
-RZ(3/4) 9
+CX 2 1
 H 5
-RZ(1/4) 3
+CX 7 6
+CX 1 2
+RZ(3/4) 5
+CX 6 7
+H 1
+H 5
+CZ 3 7
+H 6
+CX 1 2
+H 7
+CX 6 8
+RZ(7/4) 2
+CX 8 6
+CX 1 2
+RZ(7/4) 8
+CX 1 4
+RZ(7/4) 4
+CX 2 4
+CZ 3 4
+CZ 2 4
+CZ 1 2
+RZ(1/4) 4
+RZ(5/4) 1
+H 4
+H 1
+CX 7 4
+CX 1 4
+RZ(5/4) 7
+RZ(7/4) 4
+CX 3 4
+CX 3 7
+RZ(3/4) 4
+RZ(5/4) 7
+H 4
+H 7
+CX 6 7
+CX 4 7
+CX 6 8
+CX 7 8
+CX 7 6
+RZ(1/4) 8
+CX 7 4
+CX 6 8
+RZ(1/4) 6
+CX 7 8
+H 6
+CZ 2 8
+CZ 2 7
+RZ(7/4) 8
+RZ(7/4) 7
+H 8
+H 7
+CX 6 8
+CX 8 7
+H 6
+CX 7 1
+CX 0 8
+CZ 2 6
+RZ(7/4) 7
+RZ(1/4) 6
+H 7
+H 6
+CX 7 4
+CX 6 8
+CZ 3 7
+CX 8 6
+H 7
+RZ(7/4) 8
+CX 0 6
+RZ(5/4) 7
+H 8
+CX 1 6
+H 7
+CX 8 10
+CX 4 7
+CX 10 8
+CX 7 4
+H 10
+H 8
+H 4
+CX 0 10
+CX 8 10
+CX 8 7
+CZ 0 10
+CX 9 7
+RZ(5/4) 10
+CZ 4 9
+H 10
+CZ 4 8
 H 9
-H 3
-CX 3 5
-CX 9 5
+CZ 5 10
+CZ 0 8
+CZ 5 9
+RZ(7/4) 8
+RZ(5/4) 0
+H 8
+H 0
+CZ 5 8
+CZ 0 5
+H 5
+CX 0 8
+CZ 5 7
+CX 0 9
+CZ 4 7
+CX 10 9
+CZ 2 7
+CX 9 8
+CX 8 0
+CX 1 9
+CZ 0 7
+CX 8 9
+H 7
+CX 10 9
+CX 1 7
+CX 9 7
+CX 9 6
+RZ(1/4) 7
+CX 9 1
+H 6
+CX 0 7
+CZ 2 9
+CZ 3 7
+H 9
+CZ 3 5
+RZ(3/4) 7
+CZ 3 4
+CZ 2 5
+H 7
+CZ 2 4
+RZ(1/4) 5
+RZ(3/4) 4
+H 5
+H 4
+CX 4 7
 CX 5 7
-CX 5 3
+CX 7 9
+CX 7 5
+RZ(3/4) 9
+CX 7 9
+CX 4 9
+CZ 3 4
+CZ 2 9
+RZ(1/4) 4
+CZ 1 9
+H 4
+CZ 1 7
+RZ(7/4) 9
+RZ(5/4) 7
+H 9
+H 7
+CX 7 5
+CX 7 9
+CX 7 4
+CX 4 9
+CX 9 5
+H 4
+CX 9 7
+RZ(1/4) 7
+H 7
+CX 7 5
+CZ 2 7
+CZ 1 7
+H 7
+RZ(1/4) 7
+H 7
+CX 7 5
+CZ 2 7
+H 7
 RZ(7/4) 7
 H 7
-CX 7 9
-CZ 6 7
-CX 3 9
-H 7
-CX 9 3
-CZ 6 9
-H 9
-RZ(7/4) 9
-H 9
-CX 9 2
-CX 9 3
-H 9
-RZ(7/4) 9
-H 9
-CX 9 2
-CZ 5 9
-H 9
-CZ 7 9
-CZ 5 9
-CZ 5 7
-RZ(3/4) 9
-RZ(5/4) 7
-RZ(1/4) 5
-H 9
-H 7
+CX 5 7
+CX 7 5
+CZ 3 5
+CZ 2 5
+CZ 1 5
 H 5
-CX 7 9
-CX 5 9
-RZ(5/4) 9
-H 9
-CX 9 5
-CZ 6 9
-H 9
-RZ(7/4) 9
-H 9
-CX 9 5
-CX 9 3
-CZ 6 9
-H 9
-RZ(1) 6
-RZ(1/4) 9
-H 6
-H 9
-CX 6 9
-CX 9 6
-RZ(7/4) 9
-H 9
-CX 9 5
-H 9
-CX 3 5
-RZ(1/4) 9
-H 9
-CX 3 9
-CX 5 9
-CX 9 5
-CX 5 3
-CX 6 9
-H 3
-H 6
-CZ 3 9
-H 9
-CZ 6 9
-CZ 3 9
-CZ 3 6
-CZ 1 9
-RZ(7/4) 6
+CZ 3 5
+CZ 2 5
 CZ 1 3
-RZ(7/4) 9
+RZ(7/4) 5
+CZ 1 2
+CZ 3 6
+H 5
+RZ(1/4) 1
+H 1
+CX 1 5
+CX 5 1
+RZ(1/4) 5
+H 5
+CX 5 7
+CZ 2 5
+H 5
+CZ 2 6
+RZ(5/4) 6
 H 6
-RZ(5/4) 3
-H 9
-H 3
-CX 5 9
-CX 3 9
-CX 6 9
-CX 9 5
-RZ(1/4) 9
-H 9
-CX 9 2
-CX 9 4
-CZ 1 9
-H 9
-RZ(1/4) 9
-H 9
-CX 4 9
-CX 9 4
-CZ 1 4
-CX 9 2
-H 4
-CZ 4 9
-CZ 1 9
-H 9
-RZ(7/4) 9
-H 9
-CX 9 2
-CZ 4 9
-S 9
-RZ(7/4) 4
-H 9
-H 4
-S 9
-CX 4 9
-RZ(1/4) 9
-H 9
-CX 9 3
-H 9
-RZ(7/4) 9
-H 9
-CX 9 2
-RZ(5/4) 2
-CX 0 2
-CZ 0 1
-RZ(7/4) 2
-H 1
-H 2
-CX 2 1
-RZ(7/4) 1
-H 1
-CX 1 3
-CZ 0 1
-H 1
-RZ(1/4) 1
-CX 0 1
-RZ(1/4) 1
-H 1
-CX 1 3
-CZ 0 1
-CX 2 3
-H 1
-H 2
-CX 9 3
-RZ(1/4) 2
-H 9
-CX 0 2
-RZ(7/4) 9
-RZ(7/4) 2
-H 9
-H 2
-CX 3 9
-RZ(1) 2
-CX 9 3
-H 3
-CX 7 9
-RZ(1/4) 3
+RZ(1/4) 6
+CX 5 6
+CZ 6 7
+CZ 5 7
+CZ 2 7
 H 7
-CX 5 9
+RZ(7/4) 7
+CX 5 7
+RZ(7/4) 5
+CZ 3 7
+H 5
+CZ 3 6
+RZ(7/4) 7
+RZ(1/4) 6
+H 7
+H 6
+CX 6 7
+CX 7 5
+RZ(3/4) 5
+H 5
+CX 5 6
+CX 5 1
+CZ 3 5
+H 5
+CZ 2 3
+RZ(5/4) 5
+RZ(3/2) 3
+CZ 2 9
+H 5
 H 3
-CX 6 9
-CZ 0 9
+H 9
+CX 1 5
+RZ(1/4) 9
+CX 3 5
+H 9
+CX 5 3
+RZ(1/4) 5
+H 5
+CX 3 5
+CX 5 3
+CX 3 1
+H 3
+CX 1 5
+CX 5 6
+CX 1 4
+H 5
+CX 7 6
+RZ(7/4) 5
+CZ 3 6
+H 5
+H 6
+CZ 0 6
+CZ 0 3
+RZ(1/4) 6
+RZ(7/4) 3
+H 6
+H 3
+CX 3 5
+CX 5 4
+CX 6 4
 CX 6 5
-H 9
-RZ(1) 6
-RZ(1) 5
-CZ 7 9
+RZ(5/4) 4
+CX 5 1
+CX 6 3
+CX 1 4
+CX 6 9
+CX 3 9
+CX 9 3
+CX 3 6
 CZ 1 9
-CZ 0 7
-RZ(5/4) 9
-CZ 0 1
-RZ(3/4) 7
-H 9
+H 6
 RZ(7/4) 1
-H 7
 H 1
-CX 7 9
 CX 1 9
+CX 9 3
+CZ 6 9
+H 9
+CZ 4 6
+RZ(7/4) 9
+CZ 2 4
+H 9
+H 4
+CX 4 9
+CX 9 4
+RZ(1/4) 9
+H 4
+CX 6 9
 RZ(7/4) 9
 H 9
-CX 8 9
-CX 9 8
-H 8
+CX 9 1
+CX 9 3
+CZ 6 9
 H 9
-CZ 9 10
+CZ 6 9
+CZ 0 9
+RZ(1/4) 9
+CX 6 9
+CZ 1 6
+CZ 0 6
+RZ(1/4) 6
+H 6
+CX 6 1
+CX 1 3
+CZ 1 6
+RZ(3/4) 1
+H 1
+CX 1 6
+CX 6 3
+CZ 2 6
+H 6
+RZ(5/4) 6
+H 6
+CX 6 1
+CX 6 3
+CZ 2 6
+CZ 0 6
+H 6
+CZ 1 6
+RZ(1/4) 6
+CX 3 1
+H 6
+CX 6 1
+CX 1 3
+CZ 2 3
+H 3
+CZ 0 2
+RZ(7/4) 3
+H 2
+H 3
+CX 2 3
+CX 3 2
+RZ(1/4) 3
+H 3
+CX 3 6
+CX 3 1
+H 3
+CX 1 6
+RZ(7/4) 3
+CX 5 6
+CX 0 3
+CX 6 5
+RZ(3/4) 3
+H 3
+CX 1 3
+CX 3 1
+H 1
+CZ 0 3
+H 3
+CZ 3 5
+CZ 0 5
+CZ 3 6
+H 5
+CZ 0 6
+H 6
+CZ 0 9
+CZ 3 6
+RZ(7/4) 9
+CZ 3 5
+H 9
+CZ 3 4
+CZ 0 5
+CX 2 9
+CZ 1 3
+RZ(7/4) 5
+CX 7 9
+CZ 0 3
+H 5
+CZ 0 1
+RZ(5/4) 3
+CX 5 9
+RZ(5/4) 1
+H 3
+H 1
+CX 1 9
+CX 3 9
+CX 9 3
+RZ(1/4) 9
+CX 2 3
+H 9
+CX 7 3
+CX 8 9
+CX 5 3
+CX 9 8
+CX 1 3
+H 8
+RZ(1) 1
 CZ 8 10
 H 10
-RZ(1/4) 10
-CX 9 10
 RZ(7/4) 10
-CX 8 10
+H 10
+CX 10 9
+H 10
+RZ(7/4) 10
+H 10
+CX 9 10
+CX 10 9
+CZ 8 9
+H 9
 CZ 0 8
 CZ 9 10
+CZ 0 6
 RZ(1/4) 8
-CZ 0 7
+H 10
+RZ(1/2) 9
+CZ 0 4
+RZ(5/4) 6
 H 8
-CZ 0 1
-RZ(5/4) 0
+RZ(1) 10
+RZ(1/4) 4
+CZ 0 7
+H 6
+H 4
+CZ 0 5
+RZ(1) 7
+CZ 0 3
+CZ 0 2
+RZ(1) 3
+RZ(3/4) 0
