@@ -2,27 +2,29 @@
 
 #include "sharq.h"
 
-TEST(Optimizer, Execute01) {
+#define OPTIMIZER_KIND Sharq::OptimizerKind::ZXCalculus
+
+TEST(OptimizerZX, Execute01) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.h(0).cx(0,1);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute02) {
+TEST(OptimizerZX, Execute02) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.cx(1,0).cx(0,1).x(0);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute03) {
+TEST(OptimizerZX, Execute03) {
 
   Sharq::Optimizer opt;
   Sharq::Phase PI("PI");
@@ -31,11 +33,11 @@ TEST(Optimizer, Execute03) {
   qc_in.h(0);
   qc_in.s(0);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute04) {
+TEST(OptimizerZX, Execute04) {
 
   Sharq::Optimizer opt;
   Sharq::Phase PI("PI");
@@ -49,11 +51,11 @@ TEST(Optimizer, Execute04) {
   qc_in.cz(0,3);
   qc_in.h(1);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute05) {
+TEST(OptimizerZX, Execute05) {
 
   Sharq::Optimizer opt;
   Sharq::Phase PI("PI");
@@ -71,12 +73,12 @@ TEST(Optimizer, Execute05) {
   qc_in.h(0);
   qc_in.t(1);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute06) {
+TEST(OptimizerZX, Execute06) {
 
   Sharq::Optimizer opt;
   Sharq::Phase PI("PI");
@@ -102,12 +104,12 @@ TEST(Optimizer, Execute06) {
   qc_in.s(2);
   qc_in.x(3);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute07) {
+TEST(OptimizerZX, Execute07) {
 
   Sharq::Optimizer opt;
   Sharq::Phase PI("PI");
@@ -137,111 +139,111 @@ TEST(Optimizer, Execute07) {
   qc_in.s(3);
   qc_in.x(3);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute08) {
+TEST(OptimizerZX, Execute08) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.cx(1,0).h(0).cx(0,1).cx(1,0);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute09) {
+TEST(OptimizerZX, Execute09) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.h(0).h(1).t(0).t(1).x(0).cx(0,1).s(0).cx(1,0).t(1).cx(1,0);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute10) {
+TEST(OptimizerZX, Execute10) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.h(0).x(1).h(0).cx(1,0).h(0).x(1).x(0).s(1).cx(1,0).h(0);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute11) {
+TEST(OptimizerZX, Execute11) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.s(0).s(1).x(0).t(1).h(0).t(1).x(0).s(1).s(0).s(1);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute12) {
+TEST(OptimizerZX, Execute12) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.cx(0,1).cx(0,1).cx(1,0).cx(1,0).h(0).h(1).cx(0,1).s(1);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute13) {
+TEST(OptimizerZX, Execute13) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.cx(1,0).h(0).h(1).cx(0,1).cx(1,0).cx(0,1).s(1).cx(0,1);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute14) {
+TEST(OptimizerZX, Execute14) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.cx(0,1).t(1).s(0).x(1).t(1).cx(1,0).h(1).s(1);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute15) {
+TEST(OptimizerZX, Execute15) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.cx(0,1).cx(0,1).cx(0,1).h(0).t(0).cx(1,0).cx(1,0);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute16) {
+TEST(OptimizerZX, Execute16) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.x(0).h(1).h(0).s(1).cx(1,0).h(0).s(1).x(0).s(1).s(0).s(1).cx(1,0).s(0).s(1).s(0).h(0).cx(1,0).t(0);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, Execute17) {
+TEST(OptimizerZX, Execute17) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
@@ -249,282 +251,282 @@ TEST(Optimizer, Execute17) {
   qc_in.h(2).cx(0,1).h(0).t(1).h(2).h(1).t(2).s(1).s(2).t(1).h(2).t(2).h(2).cx(0,1).cx(1,0);
   qc_in.t(0).s(1).t(2).s(0).h(0).t(0).cx(1,0).cx(2,1).h(0).h(1).s(0).cx(0,2).s(0).s(1);
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute00) {
+TEST(OptimizerZX, LoadExecute00) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/00.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute01) {
+TEST(OptimizerZX, LoadExecute01) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/01.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute02) {
+TEST(OptimizerZX, LoadExecute02) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/02.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute03) {
+TEST(OptimizerZX, LoadExecute03) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/03.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute04) {
+TEST(OptimizerZX, LoadExecute04) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/04.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute05) {
+TEST(OptimizerZX, LoadExecute05) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/05.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute06) {
+TEST(OptimizerZX, LoadExecute06) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/06.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute07) {
+TEST(OptimizerZX, LoadExecute07) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/07.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute08) {
+TEST(OptimizerZX, LoadExecute08) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/08.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute09) {
+TEST(OptimizerZX, LoadExecute09) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/09.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute10) {
+TEST(OptimizerZX, LoadExecute10) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/10.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute11) {
+TEST(OptimizerZX, LoadExecute11) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/11.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute12) {
+TEST(OptimizerZX, LoadExecute12) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/12.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute13) {
+TEST(OptimizerZX, LoadExecute13) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/13.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute14) {
+TEST(OptimizerZX, LoadExecute14) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/14.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute15) {
+TEST(OptimizerZX, LoadExecute15) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/15.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute16) {
+TEST(OptimizerZX, LoadExecute16) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/16.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute17) {
+TEST(OptimizerZX, LoadExecute17) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/17.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute18) {
+TEST(OptimizerZX, LoadExecute18) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/18.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute19) {
+TEST(OptimizerZX, LoadExecute19) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/19.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute20) {
+TEST(OptimizerZX, LoadExecute20) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/20.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute21) {
+TEST(OptimizerZX, LoadExecute21) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/21.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute22) {
+TEST(OptimizerZX, LoadExecute22) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/22.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute23) {
+TEST(OptimizerZX, LoadExecute23) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/23.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
 
-TEST(Optimizer, LoadExecute24) {
+TEST(OptimizerZX, LoadExecute24) {
 
   Sharq::Optimizer opt;
   Sharq::QCirc qc_in;
   qc_in.load("data/24.sqc");
 
-  Sharq::QCirc qc_out = opt.execute(qc_in);
+  Sharq::QCirc qc_out = opt.execute(qc_in, OPTIMIZER_KIND);
   
   EXPECT_EQ(qc_in.is_equal(qc_out), true);
 }
