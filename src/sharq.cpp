@@ -9,7 +9,7 @@ void print_help()
   ss << "[option]" << std::endl;
   ss << "  --opt(=kind) FILE  : optimize the circuit file, output to stdout." << std::endl;
   ss << "                       --opt=zx: T-count reduction using ZX-calculus" << std::endl;
-  ss << "                       --opt=pp: T-count, 2Q-count reduction using Phase Polynomials" << std::endl;
+  ss << "                       --opt=pp: gate-count reduction using Phase Polynomials" << std::endl;
   ss << "  --rand PARAMS      : generate a random circuit file, output to stdout." << std::endl;
   ss << "  --eq FILE1 FILE2   : verify two circuits are equal. (can't execute that have too many qubits)" << std::endl;
   ss << "  --stats FILE       : print stats of the circut file." << std::endl;
