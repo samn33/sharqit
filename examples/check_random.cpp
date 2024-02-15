@@ -1,6 +1,6 @@
 #include "sharq.h"
 
-bool test_random(int qubit_num, int gate_num) {
+bool test_random(int qubit_num, int gate_num, std::string& mode) {
 
   try {
     Sharq::Optimizer opt;
@@ -16,7 +16,10 @@ bool test_random(int qubit_num, int gate_num) {
 
     qc_in.save("sandbox/out.sqc");
 
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharq::OptimizerKind optkind = Sharq::OptimizerKind::ZXCalculus;
+    if (mode == "pp") optkind = Sharq::OptimizerKind::PhasePolynomial;
+
+    Sharq::QCirc qc_out = opt.execute(qc_in, optkind);
     std::cout << "qgate_num = " << qc_out.qgate_num() << std::endl;
     std::cout << "equal? " << qc_in.is_equal(qc_out) << std::endl;
     if (!qc_in.is_equal(qc_out)) return false;
@@ -31,12 +34,23 @@ bool test_random(int qubit_num, int gate_num) {
 
 int main(int argc, char** argv)
 {
-  int trial = atoi(argv[1]);
-  int qubit_num = atoi(argv[2]);
-  int gate_num = atoi(argv[3]);
+  /*
+    $ ./check_random [mode] [trial] [qubit_num] [gate_num]
+    ex) $ ./check_random zx 1000 3 100
+    ex) $ ./check_random pp 1000 3 100
+   */
+  std::string mode = argv[1];
+  int trial = atoi(argv[2]);
+  int qubit_num = atoi(argv[3]);
+  int gate_num = atoi(argv[4]);
+
+  //int trial = atoi(argv[1]);
+  //int qubit_num = atoi(argv[2]);
+  //int gate_num = atoi(argv[3]);
+
   for (int n = 0; n < trial; ++n) {
     std::cout << "** n = " << n << " **" << std::endl;
-    if (test_random(qubit_num, gate_num) == false) break;
+    if (test_random(qubit_num, gate_num, mode) == false) break;
   }
 
   return 0;
