@@ -38,6 +38,11 @@ namespace Sharq {
     bool is_innode() const { return kind_ == Sharq::DAGNodeKind::InNode; }
     bool is_outnode() const { return kind_ == Sharq::DAGNodeKind::OutNode; }
     bool is_opnode() const { return kind_ == Sharq::DAGNodeKind::OpNode; }
+    bool is_identity() const
+    { return (qgate_.kind() == Sharq::QGateKind::Id || qgate_.kind() == Sharq::QGateKind::Id2); }
+    bool is_hadamard() const { return qgate_.is_H_gate(); }
+    bool is_rotation() const { return qgate_.is_RZ_gate(); }
+    bool is_cnot() const { return qgate_.is_CX_gate(); }
     bool is_included(const uint32_t q) const
     {
       for (auto& i:qgate_.qid()) { if (i == q) return true; }
@@ -113,6 +118,7 @@ namespace Sharq {
     void connect_nodes(const uint32_t a, const uint32_t b, const uint32_t q);
     void remove_node(const uint32_t idx);
     void remove_edge(const uint32_t a, const uint32_t b);
+    void remove_edge(const uint32_t a, const uint32_t b, const uint32_t q);
     void remove_edges_of_node(const uint32_t idx);
     void remove_isolated_nodes();
     DAGCirc& add_qgate(const QGate& qgate);
