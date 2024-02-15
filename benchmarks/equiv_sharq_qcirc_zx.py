@@ -92,7 +92,7 @@ if __name__ == '__main__':
     for line in lines:
         name = line.split()[0]
         path_in = "qcirc_sharq/" + line.split()[1] + ".sqc"
-        path_out = "qcirc_sharq/" + line.split()[2] + ".sqc"
+        path_out = "qcirc_sharq/zx/" + line.split()[2] + ".sqc"
         name_list.append(name)
         path_in_list.append(path_in)
         path_out_list.append(path_out)

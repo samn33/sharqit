@@ -11,7 +11,7 @@ void eval_sharq(const std::string& name, const std::string& path_in, const std::
     /* clock start */
     auto start = std::chrono::system_clock::now();
 
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::PhasePolynomial);
     qc_out.save(path_out);
 
     /* clock end */
@@ -20,10 +20,8 @@ void eval_sharq(const std::string& name, const std::string& path_in, const std::
     auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
     double proc_time = msec / 1000.;
 
-    //std::cout << name << "," << std::to_string(proc_time) << "," << qc_in.t_count() << ","<< qc_out.t_count() << std::endl;
     std::cout << name << "," << std::to_string(proc_time) << ",";
     std::cout << qc_in.t_count() << "," << qc_out.t_count() << ",";
-    //std::cout << qc_in.cx_count() << "," << qc_out.cx_count() << ",";
     std::cout << qc_in.twoq_count() << "," << qc_out.twoq_count() << ",";
     std::cout << qc_in.gate_count() << "," << qc_out.gate_count() << std::endl;
   }
@@ -46,7 +44,7 @@ int main(int argc, char** argv)
     std::vector<std::string> svec = Sharq::split(str, ' ');
     std::string name = svec[0];
     std::string path_in = "qcirc_sharq/" + svec[1] + ".sqc";
-    std::string path_out = "qcirc_sharq/" + svec[2] + ".sqc";
+    std::string path_out = "qcirc_sharq/pp/" + svec[2] + ".sqc";
     eval_sharq(name, path_in, path_out);
   }
 
