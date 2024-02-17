@@ -101,14 +101,14 @@ namespace Sharq {
     /* compound gates */
     QCirc& rx(const uint32_t q, const Phase& phase) { h(q); rz(q,phase); h(q); return *this; }
     QCirc& y(const uint32_t q) { x(q); z(q); return *this; }
-    QCirc& xr(const uint32_t q) { sdg(q); h(q); sdg(q); return *this;}
-    QCirc& xrdg(const uint32_t q) { s(q); h(q); s(q); return *this;}
+    QCirc& sx(const uint32_t q) { sdg(q); h(q); sdg(q); return *this;}
+    QCirc& sxdg(const uint32_t q) { s(q); h(q); s(q); return *this;}
     QCirc& ry(const uint32_t q, const Phase& phase)
     { rx(q, Phase(1,2)); rz(q, phase); rx(q, Phase(-1,2)); return *this; }
     QCirc& p(const uint32_t q, const Phase& phase) { rz(q,phase); return *this; }
     QCirc& cy(const uint32_t con, const uint32_t tar) { cz(con,tar); cx(con,tar); s(con); return *this; }
-    QCirc& cxr(const uint32_t con, const uint32_t tar) { crx(con,tar,Phase(1,2)); t(con); return *this; }
-    QCirc& cxrdg(const uint32_t con, const uint32_t tar) { tdg(con); crx(con,tar,Phase(-1,2)); return *this; }
+    QCirc& csx(const uint32_t con, const uint32_t tar) { crx(con,tar,Phase(1,2)); t(con); return *this; }
+    QCirc& csxdg(const uint32_t con, const uint32_t tar) { tdg(con); crx(con,tar,Phase(-1,2)); return *this; }
     QCirc& ch(const uint32_t con, const uint32_t tar)
     { crz(con,tar,Phase(1,2)); crx(con,tar,Phase(1,2)); crz(con,tar,Phase(1,2)); s(con); return *this; }
     QCirc& cs(const uint32_t con, const uint32_t tar)
@@ -148,7 +148,7 @@ namespace Sharq {
     QCirc& csw(const uint32_t con, const uint32_t q0, const uint32_t q1) // Fredkin gate
     { cx(q1,q0); ccx(con,q0,q1); cx(q1,q0); return *this; }
     QCirc& ccx(const uint32_t c0, const uint32_t c1, const uint32_t tar) // Toffoli gate
-    { cxr(c1,tar); cx(c0,c1); cxrdg(c1,tar); cx(c0,c1); cxr(c0,tar); return *this; }
+    { csx(c1,tar); cx(c0,c1); csxdg(c1,tar); cx(c0,c1); csx(c0,tar); return *this; }
     /* operator overloadding */
     QCirc& operator+=(const QCirc& rhs) { return add_qcirc(rhs); }
     friend QCirc operator+(const QCirc& lhs, const QCirc& rhs) { QCirc qc = lhs; return qc.add_qcirc(rhs); }
