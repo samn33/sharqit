@@ -112,6 +112,7 @@ namespace Sharq {
     /* member functions */
     std::string to_string() const;
     void show() const { std::cout << to_string(); }
+    uint32_t gate_count() const { return nodes_.size() - inputs_.size() - outputs_.size(); }
     uint32_t append_node(const Sharq::DAGNode node);
     uint32_t prev_node(const uint32_t idx, const uint32_t q);
     uint32_t next_node(const uint32_t idx, const uint32_t q);
@@ -124,9 +125,9 @@ namespace Sharq {
     DAGCirc& add_qgate(const QGate& qgate);
     QCirc to_qcirc() const;
     void id_removal();
-    void hadamard_gate_reduction();
-    void single_qubit_gate_cancellation();
-    void two_qubit_gate_cancellation();
+    uint32_t hadamard_gate_reduction();
+    uint32_t single_qubit_gate_cancellation();
+    uint32_t two_qubit_gate_cancellation();
     void rule_based_gate_reduction();
     friend std::ostream& operator<<(std::ostream& ost, const DAGCirc& dc) { ost << dc.to_string(); return ost; }
   };

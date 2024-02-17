@@ -529,16 +529,20 @@ void Sharq::DAGCirc::hadamard_gate_reduction_3()
   id_removal();
 }
 
-void Sharq::DAGCirc::hadamard_gate_reduction()
+//void Sharq::DAGCirc::hadamard_gate_reduction()
+uint32_t Sharq::DAGCirc::hadamard_gate_reduction()
 {
   cx_to_cz_gate();
   cz_to_cx_gate();
   hadamard_gate_reduction_1();
   hadamard_gate_reduction_2();
   hadamard_gate_reduction_3();
+
+  return gate_count();
 }
 
-void Sharq::DAGCirc::single_qubit_gate_cancellation()
+//void Sharq::DAGCirc::single_qubit_gate_cancellation()
+uint32_t Sharq::DAGCirc::single_qubit_gate_cancellation()
 {
   for (uint32_t q = 0; q < qubit_num_; ++q) {
 
@@ -632,9 +636,12 @@ void Sharq::DAGCirc::single_qubit_gate_cancellation()
     }
   }
   id_removal();
+
+  return gate_count();
 }
 
-void Sharq::DAGCirc::two_qubit_gate_cancellation()
+//void Sharq::DAGCirc::two_qubit_gate_cancellation()
+uint32_t Sharq::DAGCirc::two_qubit_gate_cancellation()
 {
   for (uint32_t q = 0; q < qubit_num_; ++q) {
 
@@ -720,6 +727,8 @@ void Sharq::DAGCirc::two_qubit_gate_cancellation()
     }
   }
   id_removal();
+
+  return gate_count();
 }
 
 void Sharq::DAGCirc::rule_based_gate_reduction()
