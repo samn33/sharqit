@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.1.0-beta] - 2024-xx-xx
+## [0.1.0] - 2024-02-17
 ### Added
 - rule based gate reduction and rotation gate merging using phase polynomials
 

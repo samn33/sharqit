@@ -12,7 +12,7 @@
 #include "optimizer.h"
 
 namespace Sharq {
-  constexpr char VERSION[] = "v0.0.6";
+  constexpr char VERSION[] = "v0.1.0";
 }
 
 #endif
