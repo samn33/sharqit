@@ -2,6 +2,8 @@ name: build_test_Ubuntu-22.04
 
 on:
   push:
+    branches:
+      - develop
 
 jobs:
   build:
