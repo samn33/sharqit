@@ -1,0 +1,48 @@
+name: build_test_Ubuntu-22.04
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: "ubuntu-22.04"
+    steps:
+    - uses: actions/checkout@v3
+    - name: googletest
+      run: |
+        git clone https://github.com/google/googletest.git
+        cd googletest
+        mkdir build
+        cd build
+        cmake ..
+        make
+        cd ../../tests
+        cp -r ../googletest/googletest/include/gtest .
+        cp -r ../googletest/build/lib/* .
+    - name: eigen
+      run: |
+        sudo apt install libeigen3-dev
+    - name: nlohmann-json3-dev
+      run: |
+        sudo apt install nlohmann-json3-dev
+    - name: nlohmann-json3-dev
+      run: |
+        sudo apt install graphviz
+    - name: build_test
+      run: |
+        echo $GITHUB_WORKSPACE
+        pwd
+        mkdir -p ~/lib ~/include
+        export LD_LIBRARY_PATH="${GITHUB_WORKSPACE}/lib:$LD_LIBRARY_PATH"
+        cd src
+        make
+        make install
+        ls ~/lib
+        ls ~/include
+        cd ../tests
+        cp ../src/libsharq.so .
+        ls -al
+        make
+        ./test_sharq

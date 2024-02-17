@@ -414,10 +414,10 @@ TEST(QCirc, Y) {
   EXPECT_EQ((std::abs(std::abs(lmap(0,0)) -1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
-TEST(QCirc, XR) {
+TEST(QCirc, SX) {
   std::complex<double> I(0.0, 1.0);
   Sharq::QCirc qc;
-  qc.xr(0);
+  qc.sx(0);
   Sharq::LinearMap lmap_actual = qc.to_linearmap();
   Sharq::LinearMap lmap_expect({{I, 1.0},
 				{1.0, I}});
@@ -427,10 +427,10 @@ TEST(QCirc, XR) {
   EXPECT_EQ((std::abs(std::abs(lmap(0,0)) -1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
-TEST(QCirc, XRdg) {
+TEST(QCirc, SXdg) {
   std::complex<double> I(0.0, 1.0);
   Sharq::QCirc qc;
-  qc.xrdg(0);
+  qc.sxdg(0);
   Sharq::LinearMap lmap_actual = qc.to_linearmap();
   Sharq::LinearMap lmap_expect({{-I, 1.0},
 				{1.0, -I}});
@@ -490,10 +490,10 @@ TEST(QCirc, CZ) {
   EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
-TEST(QCirc, CXR) {
+TEST(QCirc, CSX) {
   std::complex<double> I(0.0, 1.0);
   Sharq::QCirc qc;
-  qc.cxr(0, 1);
+  qc.csx(0, 1);
   Sharq::LinearMap lmap_actual = qc.to_linearmap();
   Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
@@ -504,10 +504,10 @@ TEST(QCirc, CXR) {
   EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
-TEST(QCirc, CXRdg) {
+TEST(QCirc, CSXdg) {
   std::complex<double> I(0.0, 1.0);
   Sharq::QCirc qc;
-  qc.cxrdg(0, 1);
+  qc.csxdg(0, 1);
   Sharq::LinearMap lmap_actual = qc.to_linearmap();
   Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},

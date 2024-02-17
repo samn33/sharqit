@@ -31,6 +31,7 @@ Sharq::QGate::QGate(const Sharq::QGateKind kind, const std::vector<uint32_t>& qi
       throw std::runtime_error("related qubit number must be 1.");
     }
     break;
+  case Sharq::QGateKind::Id2:
   case Sharq::QGateKind::CX:
   case Sharq::QGateKind::CZ:
     if (qid.size() != 2) {
@@ -110,6 +111,12 @@ std::vector<std::vector<std::complex<double>>> Sharq::QGate::kind_to_op(const Sh
     op = {{std::exp(-I*phase.value()/2.0), 0.0},
 	  {0.0, std::exp(I*phase.value()/2.0)}};
     break;
+  case Sharq::QGateKind::Id2:
+    op = {{1.0, 0.0, 0.0, 0.0},
+	  {0.0, 1.0, 0.0, 0.0},
+	  {0.0, 0.0, 1.0, 0.0},
+	  {0.0, 0.0, 0.0, 1.0}};
+    break;
   case Sharq::QGateKind::CX:
     op = {{1.0, 0.0, 0.0, 0.0},
 	  {0.0, 1.0, 0.0, 0.0},
@@ -130,7 +137,7 @@ std::vector<std::vector<std::complex<double>>> Sharq::QGate::kind_to_op(const Sh
 
 std::string Sharq::QGate::name(bool pi_str) const
 {
-  std::vector<std::string> s = { "X", "Z", "S", "S+", "T", "T+", "H", "RZ", "CX", "CZ", "Id" };
+  std::vector<std::string> s = { "X", "Z", "S", "S+", "T", "T+", "H", "RZ", "CX", "CZ", "I", "I2" };
   Phase p = phase_;
   std::string p_str = "";
   if (kind_ == QGateKind::RZ) p_str = "(" + p.to_string(pi_str) + ")";
@@ -161,7 +168,7 @@ std::tuple<Sharq::QGateKind, Sharq::Phase> Sharq::QGate::kind_phase(const std::s
   Sharq::QGateKind kind;
   Sharq::Phase phase;
   
-  if (str == "Id") {
+  if (str == "I") {
     kind = Sharq::QGateKind::Id;
     phase = Sharq::Phase(0);
   }
@@ -199,6 +206,10 @@ std::tuple<Sharq::QGateKind, Sharq::Phase> Sharq::QGate::kind_phase(const std::s
   }
   else if (str == "H") {
     kind = Sharq::QGateKind::H;
+    phase = Sharq::Phase(0);
+  }
+  else if (str == "I2") {
+    kind = Sharq::QGateKind::Id2;
     phase = Sharq::Phase(0);
   }
   else if (str == "CX") {
@@ -271,6 +282,11 @@ Sharq::QGate Sharq::QGate::inverse() const
     qgate_inv.phase(-phase_);
     qgate_inv.op(kind_to_op(Sharq::QGateKind::RZ, -phase_));
     break;
+  case Sharq::QGateKind::Id2:
+    qgate_inv.kind(Sharq::QGateKind::Id2);
+    qgate_inv.qid(qid_);
+    qgate_inv.op(kind_to_op(Sharq::QGateKind::Id2));
+    break;
   case Sharq::QGateKind::CX:
     qgate_inv.kind(Sharq::QGateKind::CX);
     qgate_inv.qid(qid_);
@@ -336,12 +352,17 @@ bool Sharq::QGate::commutable(const Sharq::QGate& other) const
   /* meargeable -> commutable */
   if (Sharq::QGate::mergeable(other)) return true;
 
+  /* pauli gates -> commutable */
+  if (is_pauli_gate() && other.is_pauli_gate()) return true;
+
   /* not overlap -> commutable */
   bool ov = overlap(other);
   if (!ov) return true;
 
+  /* single qubit gate and two qubit gate */
   if (qid_.size() == 1 && other.qid().size() == 2 && other.kind() == Sharq::QGateKind::CX) {
     if (is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
+    else if (is_X_gate() && (qid_[0] == other.qid()[1])) return true;
   }
   if (qid_.size() == 1 && other.qid().size() == 2 && other.kind() == Sharq::QGateKind::CZ) {
     if (is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
@@ -350,12 +371,14 @@ bool Sharq::QGate::commutable(const Sharq::QGate& other) const
 
   if (qid_.size() == 2 && other.qid().size() == 1 && kind_ == Sharq::QGateKind::CX) {
     if (other.is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
+    else if (other.is_X_gate() && (qid_[1] == other.qid()[0])) return true;
   }  
   if (qid_.size() == 2 && other.qid().size() == 1 && kind_ == Sharq::QGateKind::CZ) {
     if (other.is_RZ_gate() && (qid_[0] == other.qid()[0])) return true;
     else if (other.is_RZ_gate() && (qid_[1] == other.qid()[0])) return true;
   }  
 
+  /* two qubit gate and two qubit gate */
   if (qid_.size() == 2 && other.qid().size() == 2) {
     if (kind_ == other.kind() && kind_ == Sharq::QGateKind::CX &&
 	((qid_[0] == other.qid()[0]) || (qid_[1] == other.qid()[1]))) return true;
@@ -368,12 +391,13 @@ bool Sharq::QGate::commutable(const Sharq::QGate& other) const
   return false;
 }
 
-void Sharq::QGate::merge(Sharq::QGate other)
+void Sharq::QGate::merge(const Sharq::QGate& other)
 {
   if (kind_ == other.kind() && !is_RZ_gate()) {
-    kind(Sharq::QGateKind::Id);
+    if (qubit_num() == 1) kind(Sharq::QGateKind::Id);
+    else kind(Sharq::QGateKind::Id2);
   }
-  else {
+  else if (qubit_num() == 1) {
     Sharq::Phase p(0);
     if (kind_ == Sharq::QGateKind::Z) p += Sharq::Phase(1);
     else if (kind_ == Sharq::QGateKind::S) p += Sharq::Phase(1,2);

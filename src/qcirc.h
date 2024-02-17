@@ -6,23 +6,34 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <list>
 #include <random>
+#include <limits>
 #include <nlohmann/json.hpp>
 
 #include "linear_map.h"
 #include "qgate.h"
 #include "zx.h"
+#include "dag.h"
 
 namespace Sharq {
 
   class ZXDiagram;
+  class DAGCirc;
+  class BinaryMatrix;
   
   class QCirc
   {
   private:
     uint32_t qubit_num_;
     std::vector<QGate> qgates_;
+    /* member functions */
     void gate_cancel_one_time();
+    void merge_rotation_one_time(const uint32_t start, const uint32_t end,
+				 const std::vector<uint32_t>& ppc_qid,
+				 const std::vector<std::pair<uint32_t, uint32_t>>& term_border,
+				 const std::vector<uint8_t>& cnot_objects);
+    bool is_termination_border(const uint32_t idx, const uint32_t q); // for merge_rotation
   public:
     QCirc(const uint32_t qubit_num = 0) : qubit_num_(qubit_num) {}
     QCirc(const QCirc& qc) : qubit_num_(qc.qubit_num_), qgates_(qc.qgates_) {}
@@ -34,9 +45,10 @@ namespace Sharq {
     void qubit_num(const uint32_t qubit_num) { qubit_num_ = qubit_num; }
     void qgates(const std::vector<QGate>& qgates) { qgates_ = qgates; }
     /* member functions */
-    uint32_t qgate_num() { return qgates_.size(); }
+    uint32_t qgate_num() const { return qgates_.size(); }
     void save(const std::string& file_name) const;
     void load(const std::string& file_name);
+    void clear() { qgates_.clear(); qubit_num_ = 0; }
     std::map<std::string, uint32_t> stats() const;
     uint32_t gate_count() const { return (qgates_.size() - id_count()); }
     uint32_t id_count() const;
@@ -66,6 +78,12 @@ namespace Sharq {
     void to_svg_file(const std::string& file_name) const;
     ZXDiagram to_zxdiagram() const;
     LinearMap to_linearmap() const;
+    DAGCirc to_dagcirc() const;
+    void remove_id();
+    void replace_with_rz();
+    void merge_rotation(); // merge rotation gates using phase polynomials
+    void propagate_pauli_x(); // propagate pauli x gates after cnot gates
+    void cz_to_cx();
     void gate_cancel();
     /* fundamental gates */
     QCirc& id(const uint32_t q) { return add_qgate(QGateKind::Id, {q}); }
@@ -77,19 +95,20 @@ namespace Sharq {
     QCirc& tdg(const uint32_t q) { return add_qgate(QGateKind::Tdg, {q}); }
     QCirc& h(const uint32_t q) { return add_qgate(QGateKind::H, {q}); }
     QCirc& rz(const uint32_t q, const Phase& phase) { return add_qgate(QGateKind::RZ, {q}, phase); }
+    QCirc& id2(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::Id2, {c, t}); }
     QCirc& cx(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::CX, {c, t}); }
     QCirc& cz(const uint32_t c, const uint32_t t) { return add_qgate(QGateKind::CZ, {c, t}); }
     /* compound gates */
     QCirc& rx(const uint32_t q, const Phase& phase) { h(q); rz(q,phase); h(q); return *this; }
     QCirc& y(const uint32_t q) { x(q); z(q); return *this; }
-    QCirc& xr(const uint32_t q) { sdg(q); h(q); sdg(q); return *this;}
-    QCirc& xrdg(const uint32_t q) { s(q); h(q); s(q); return *this;}
+    QCirc& sx(const uint32_t q) { sdg(q); h(q); sdg(q); return *this;}
+    QCirc& sxdg(const uint32_t q) { s(q); h(q); s(q); return *this;}
     QCirc& ry(const uint32_t q, const Phase& phase)
     { rx(q, Phase(1,2)); rz(q, phase); rx(q, Phase(-1,2)); return *this; }
     QCirc& p(const uint32_t q, const Phase& phase) { rz(q,phase); return *this; }
     QCirc& cy(const uint32_t con, const uint32_t tar) { cz(con,tar); cx(con,tar); s(con); return *this; }
-    QCirc& cxr(const uint32_t con, const uint32_t tar) { crx(con,tar,Phase(1,2)); t(con); return *this; }
-    QCirc& cxrdg(const uint32_t con, const uint32_t tar) { tdg(con); crx(con,tar,Phase(-1,2)); return *this; }
+    QCirc& csx(const uint32_t con, const uint32_t tar) { crx(con,tar,Phase(1,2)); t(con); return *this; }
+    QCirc& csxdg(const uint32_t con, const uint32_t tar) { tdg(con); crx(con,tar,Phase(-1,2)); return *this; }
     QCirc& ch(const uint32_t con, const uint32_t tar)
     { crz(con,tar,Phase(1,2)); crx(con,tar,Phase(1,2)); crz(con,tar,Phase(1,2)); s(con); return *this; }
     QCirc& cs(const uint32_t con, const uint32_t tar)
@@ -129,7 +148,7 @@ namespace Sharq {
     QCirc& csw(const uint32_t con, const uint32_t q0, const uint32_t q1) // Fredkin gate
     { cx(q1,q0); ccx(con,q0,q1); cx(q1,q0); return *this; }
     QCirc& ccx(const uint32_t c0, const uint32_t c1, const uint32_t tar) // Toffoli gate
-    { cxr(c1,tar); cx(c0,c1); cxrdg(c1,tar); cx(c0,c1); cxr(c0,tar); return *this; }
+    { csx(c1,tar); cx(c0,c1); csxdg(c1,tar); cx(c0,c1); csx(c0,tar); return *this; }
     /* operator overloadding */
     QCirc& operator+=(const QCirc& rhs) { return add_qcirc(rhs); }
     friend QCirc operator+(const QCirc& lhs, const QCirc& rhs) { QCirc qc = lhs; return qc.add_qcirc(rhs); }

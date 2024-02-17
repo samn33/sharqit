@@ -56,6 +56,14 @@ std::map<std::string, uint32_t> Sharq::ZXDiagram::stats() const
   for (auto& node:nodes_) {
     if (node.kind() == Sharq::ZXNodeKind::XSpider) sts["xspider"] = sts["xspider"] + 1;
     if (node.kind() == Sharq::ZXNodeKind::ZSpider) sts["zspider"] = sts["zspider"] + 1;
+    if (node.phase() == Sharq::Phase(0) || node.phase() == Sharq::Phase(1) ||
+	node.phase() == Sharq::Phase(1,2) || node.phase() == Sharq::Phase(3,2)) {
+      sts["clifford"] = sts["clifford"] + 1;
+    }
+    if (node.phase() != Sharq::Phase(0) && node.phase() != Sharq::Phase(1) &&
+	node.phase() != Sharq::Phase(1,2) && node.phase() != Sharq::Phase(3,2)) {
+      sts["non-clifford"] = sts["non-clifford"] + 1;
+    }
   }
   uint32_t hadamard_num = 0;
   for (auto& adj:adj_mat_) {

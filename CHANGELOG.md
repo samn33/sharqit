@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.1.0] - 2024-02-17
+### Added
+- rule based gate reduction and rotation gate merging using phase polynomials
+
 ## [0.0.5] - 2023-12-23
 ### Changed
 - improve the T-count, 2Q-count, Gate-count reduction
