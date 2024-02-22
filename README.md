@@ -114,7 +114,7 @@ Quantum circuit data used in the benchmarks are from [optimizer: Benchmark quant
 
 ## Documents
 
-- [Tutorial (japanese)](http://samn33.github.io/sharq/doc/tutorial/jp/main.md)
+- [Tutorial (japanese)](doc/tutorial/jp/main.md)
 
 
 ## References
