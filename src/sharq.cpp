@@ -37,7 +37,7 @@ void print_help()
   ss << "  Supported quantum gates are X,Z,H,S,S+,T,T+,RZ,CX,CZ." << std::endl;
   ss << "  S+ and T+ are Hermitian conjugate of S and T respectively." << std::endl;
   ss << "  RZ gate have one phase factor denoted by fraction brackled in parentheses." << std::endl;
-  ss << "  The unit of phase factor is radian, so 3/4 means 3PI/4, 1 means PI, and so on." << std::endl;
+  ss << "  The unit of phase factor is PI radian, so 3/4 means 3PI/4, 1 means PI, and so on." << std::endl;
   std::cerr << ss.str();
 }
 
