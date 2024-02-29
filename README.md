@@ -133,9 +133,13 @@ Papers about T-count reduction using ZX-calculus.
 "There and back again: A circuit extraction tale",
 [arXiv:2003.01664](https://arxiv.org/abs/2003.01664)
 
+4. Korbinian Staudacher,
+"Optimization Approaches for Quantum Circuits using ZX-calculus"
+[Ludwig maximilian university of munich thesis](https://www.mnm-team.org/pub/Diplomarbeiten/stau21/PDF-Version/stau21.pdf)
+
 Papers about gate-count reduction using Phase Polynomial.
 
-4. Yunseong Nam, Neil J. Ross, Yuan Su, Andrew M. Childs, Dmitri Maslov,
+5. Yunseong Nam, Neil J. Ross, Yuan Su, Andrew M. Childs, Dmitri Maslov,
 "Automated optimization of large quantum circuits with continuous parameters",
 [arXiv:1710.07345](https://arxiv.org/abs/1710.07345)
 
