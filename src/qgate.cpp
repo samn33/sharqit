@@ -1,8 +1,9 @@
-#include "qgate.h"
-
 /**
- *  member functions
+ * @file qgate.cpp
+ * @brief member functions of QGate class
  */
+
+#include "qgate.h"
 
 Sharq::QGate::QGate(const Sharq::QGateKind kind, const std::vector<uint32_t>& qid,
 		    const Sharq::Phase& phase)

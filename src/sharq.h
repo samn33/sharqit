@@ -1,3 +1,8 @@
+/**
+ * @file sharq.h
+ * @brief include file of Sharq library
+ */
+
 #ifndef SHARQ_H
 #define SHARQ_H
 
@@ -12,7 +17,7 @@
 #include "optimizer.h"
 
 namespace Sharq {
-  constexpr char VERSION[] = "v0.1.0";
+  constexpr char VERSION[] = "v0.1.0"; //!< versoin of sharq
 }
 
 #endif

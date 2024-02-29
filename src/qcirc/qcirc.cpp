@@ -1,8 +1,9 @@
-#include "qcirc.h"
-
 /**
- *  member functions
+ * @file merge_rotation.cpp
+ * @brief member functions of QCirc class
  */
+
+#include "qcirc.h"
 
 void Sharq::QCirc::save(const std::string& file_name) const
 {
@@ -641,62 +642,62 @@ Sharq::DAGCirc Sharq::QCirc::to_dagcirc() const
   return dc;
 }
 
-void Sharq::QCirc::gate_cancel_one_time()
-{
-  std::vector<Sharq::QGate> qgates_out;
-
-  for (auto& qgate:qgates_) {
-
-    bool merge = false;
-    uint32_t pos = 0;
-    for (int32_t i = qgates_out.size() - 1; i >= 0; --i) {
-      if (qgates_out[i].mergeable(qgate)) {
-	merge = true;
-	pos = i;
-	break;
-      }
-      else if (qgates_out[i].commutable(qgate)) {
-	continue;
-      }
-      else {
-	merge = false;
-	break;
-      }
-    }
-
-    if (merge) qgates_out[pos].merge(qgate);
-    else qgates_out.push_back(qgate);
-  }
-
-  /* remove Id gates */
-  uint32_t gnum_last_qubit = 0;
-  for (auto it = qgates_out.begin(); it != qgates_out.end(); ++it) {
-    if (it->kind() == Sharq::QGateKind::Id) {
-      it == qgates_out.erase(it);
-      --it;
-    }
-    else if (it->qid().size() == 1 && it->qid()[0] == qubit_num_-1) {
-      ++gnum_last_qubit;
-    }
-    else if (it->qid().size() == 2 && (it->qid()[0] == qubit_num_-1 || it->qid()[1] == qubit_num_-1)) {
-      ++gnum_last_qubit;
-    }
-  }
-  if (gnum_last_qubit == 0) {
-    qgates_out.push_back(Sharq::QGate(Sharq::QGateKind::Id, {qubit_num_-1}));
-  }
-  
-  qgates(qgates_out);
-}
-
-void Sharq::QCirc::gate_cancel()
-{
-  while (true) {
-    uint32_t qgate_num = qgates_.size();
-    gate_cancel_one_time();
-    if (qgates_.size() == qgate_num) break;
-  }
-}
+//void Sharq::QCirc::gate_cancel_one_time()
+//{
+//  std::vector<Sharq::QGate> qgates_out;
+//
+//  for (auto& qgate:qgates_) {
+//
+//    bool merge = false;
+//    uint32_t pos = 0;
+//    for (int32_t i = qgates_out.size() - 1; i >= 0; --i) {
+//      if (qgates_out[i].mergeable(qgate)) {
+//	merge = true;
+//	pos = i;
+//	break;
+//      }
+//      else if (qgates_out[i].commutable(qgate)) {
+//	continue;
+//      }
+//      else {
+//	merge = false;
+//	break;
+//      }
+//    }
+//
+//    if (merge) qgates_out[pos].merge(qgate);
+//    else qgates_out.push_back(qgate);
+//  }
+//
+//  /* remove Id gates */
+//  uint32_t gnum_last_qubit = 0;
+//  for (auto it = qgates_out.begin(); it != qgates_out.end(); ++it) {
+//    if (it->kind() == Sharq::QGateKind::Id) {
+//      it == qgates_out.erase(it);
+//      --it;
+//    }
+//    else if (it->qid().size() == 1 && it->qid()[0] == qubit_num_-1) {
+//      ++gnum_last_qubit;
+//    }
+//    else if (it->qid().size() == 2 && (it->qid()[0] == qubit_num_-1 || it->qid()[1] == qubit_num_-1)) {
+//      ++gnum_last_qubit;
+//    }
+//  }
+//  if (gnum_last_qubit == 0) {
+//    qgates_out.push_back(Sharq::QGate(Sharq::QGateKind::Id, {qubit_num_-1}));
+//  }
+//  
+//  qgates(qgates_out);
+//}
+//
+//void Sharq::QCirc::gate_cancel()
+//{
+//  while (true) {
+//    uint32_t qgate_num = qgates_.size();
+//    gate_cancel_one_time();
+//    if (qgates_.size() == qgate_num) break;
+//  }
+//}
 
 /* replace all cz gates with cnot gates and hadamard gates */
 void Sharq::QCirc::cz_to_cx()

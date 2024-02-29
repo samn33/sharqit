@@ -1,0 +1,8 @@
+var searchData=
+[
+  ['name_508',['name',['../classSharq_1_1DAGNode.html#acd4432c19f8b142e489d8f7885445fb4',1,'Sharq::DAGNode::name()'],['../classSharq_1_1DAGEdge.html#a0416493104e16103e59246210d606ebf',1,'Sharq::DAGEdge::name()'],['../classSharq_1_1Optimizer.html#a42be1de705dbbd62b8c8a84d38aad6b6',1,'Sharq::Optimizer::name()'],['../classSharq_1_1QGate.html#a7fbdf87ac7a8120259519d1712b7a318',1,'Sharq::QGate::name()'],['../classSharq_1_1ZXNode.html#a6fc1283374a36eed85d970f02a87d1f3',1,'Sharq::ZXNode::name()'],['../classSharq_1_1ZXEdge.html#a0d4fe025f2712d011dedc4e4fbbf675c',1,'Sharq::ZXEdge::name()']]],
+  ['next_5fnode_509',['next_node',['../classSharq_1_1DAGCirc.html#a9e81f8401505a273372a6591d77f575b',1,'Sharq::DAGCirc']]],
+  ['nodes_510',['nodes',['../classSharq_1_1DAGCirc.html#abd96159806f3d3e95a02df28ce3f2685',1,'Sharq::DAGCirc::nodes() const'],['../classSharq_1_1DAGCirc.html#a6b2a89453081b39e70674e5c7353c9df',1,'Sharq::DAGCirc::nodes(const std::vector&lt; DAGNode &gt; &amp;nodes)'],['../classSharq_1_1ZXDiagram.html#ab5d3dfd0b2edeb08e895c6064ed8c439',1,'Sharq::ZXDiagram::nodes() const'],['../classSharq_1_1ZXDiagram.html#af862d2331cdbd6bf583f8774aa0d75d6',1,'Sharq::ZXDiagram::nodes(const std::vector&lt; ZXNode &gt; &amp;nodes)']]],
+  ['non_5fclifford_5fcount_511',['non_clifford_count',['../classSharq_1_1ZXDiagram.html#ac1879466af572112c9aa8e12bb985bba',1,'Sharq::ZXDiagram']]],
+  ['numerator_512',['numerator',['../classSharq_1_1Fraction.html#aaf5b070ff3a56fb435e787fb8da7fa31',1,'Sharq::Fraction::numerator() const'],['../classSharq_1_1Fraction.html#ae1abe3f80db5c19a069b6e7f49f7e9d5',1,'Sharq::Fraction::numerator(const int32_t numerator)']]]
+];

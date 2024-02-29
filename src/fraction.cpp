@@ -1,8 +1,9 @@
-#include "fraction.h"
-
 /**
- *  member functions
+ * @file fraction.cpp
+ * @brief member functions of Fraction class
  */
+
+#include "fraction.h"
 
 std::string Sharq::Fraction::to_string() const
 {

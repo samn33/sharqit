@@ -1,3 +1,8 @@
+/**
+ * @file phase.h
+ * @brief include file of Phase class
+ */
+
 #ifndef PHASE_H
 #define PHASE_H
 
@@ -11,26 +16,72 @@
 
 namespace Sharq {
 
+  /**
+   * @class Phase
+   * @brief phase of rotation gate
+  */
   class Phase
   {
   private:
-    Fraction frac_;
+    Fraction frac_; //!< fraction for describing phase of rotation gate
   public:
+    /**
+     * @brief constructor of the Phase
+     * @param [in] numerator numerator of the fraction of the phase except to pi
+     * @param [in] denominator denominator of the fraction of the phase except to pi
+     */
     Phase(const int32_t numerator = 0, const int32_t denominator = 1) : frac_(numerator, denominator) {}
+    /**
+     * @brief constructor of the Phase
+     * @param [in] frac fraction of the phase except to pi
+     */
     Phase(const Fraction& frac) : frac_(frac.numerator(), frac.denominator()) {}
+    /**
+     * @brief constructor of the Phase
+     * @param [in] str string representation of the phase
+     */
     Phase(const std::string& str);
+    /**
+     * @brief copy constructor of the Phase
+     * @param [in] phase phase
+     */
     Phase(const Phase& phase) : frac_(phase.frac_) {}
-    /* getters */
+    //! getter of the frac_
     Fraction frac() const { return frac_; }
-    /* setters */
+    //! setter of the frac_
     void frac(Fraction frac) { frac_ = frac; }
-    /* member functions */
+    /**
+     * @brief get a string of the Phase object
+     * @return string of the phase
+     */
     std::string to_string(bool pi_str = true) const;
+    /**
+     * @brief get a value of the phase
+     * @return value of the phase
+     */
     double value() const { return M_PI * frac_.numerator() / frac_.denominator(); }
+    /**
+     * @brief is the phase zero or not
+     * @return true if the phase is zero, false otherwise
+     */
     bool is_zero() const { return (*this == Phase(0)); }
+    /**
+     * @brief is the phase positive or not
+     * @return true if the phase is positive, false otherwise
+     */
     bool is_positive() const { return frac_.is_positive(); }
+    /**
+     * @brief is the phase negative or not
+     * @return true if the phase is negative, false otherwise
+     */
     bool is_negative() const { return frac_.is_negative(); }
+    /**
+     * @brief reduce the fraction of the phase except to pi
+     */
     void reduce() { frac_.reduce(); }
+    /**
+     * @brief mod 2pi of the phase
+     */
     void mod_2pi()
     {
       frac_.reduce();

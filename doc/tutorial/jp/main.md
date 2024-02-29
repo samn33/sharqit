@@ -608,7 +608,7 @@ Sharqコマンド同様、ひとつ注意点があります。
 	
 また、量子回路イメージをSVG形式で出力することもできます。
 
-   qc_out.to_svg_file("bar.svg");
+    qc_out.to_svg_file("bar.svg");
 
 
 ## 他の量子回路ファイル形式からSharq形式への変換

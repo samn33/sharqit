@@ -3,6 +3,7 @@
 ## [0.1.1 beta] - 2024-xx-xx
 ### Added
 - tutorial (japanese)
+- doxygen documents
 
 ## [0.1.0] - 2024-02-17
 ### Added

@@ -1,8 +1,9 @@
-#include "qcirc.h"
-
 /**
- *  member functions
+ * @file merge_rotation.cpp
+ * @brief member functions of QCirc class related to the algorithm to merge rotation gates
  */
+
+#include "qcirc.h"
 
 bool Sharq::QCirc::is_termination_border(const uint32_t idx, const uint32_t q)
 {

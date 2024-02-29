@@ -1,5 +1,13 @@
+/**
+ * @file sharq.cpp
+ * @brief source code of sharq command
+ */
+
 #include "sharq.h"
 
+/**
+ * @brief print help message
+ */
 void print_help()
 {
   std::stringstream ss;
@@ -41,6 +49,11 @@ void print_help()
   std::cerr << ss.str();
 }
 
+/**
+ * @brief optimize the file
+ * @param [in] fin quantum circuit file name
+ * @param [in] kind kind of optimization method
+ */
 void optimize(std::string& fin, Sharq::OptimizerKind kind)
 {
   try {
@@ -56,6 +69,11 @@ void optimize(std::string& fin, Sharq::OptimizerKind kind)
   }
 }
 
+/**
+ * @brief verify equality of two quantum circuit
+ * @param [in] fin_A quantum circuit file name
+ * @param [in] fin_B quantum circuit file name
+ */
 void verify_equality(std::string& fin_A, std::string& fin_B)
 {
   try {
@@ -72,6 +90,11 @@ void verify_equality(std::string& fin_A, std::string& fin_B)
   }
 }
 
+/**
+ * @brief generate random quantum circuit
+ * @param [in] params parameters for randomization
+ * @details example of the params @n "3,100,CX:1,H:2,T:3,RZ(1/2):5"
+ */
 void random_qcirc(std::string& params)
 {
   try {
@@ -96,6 +119,10 @@ void random_qcirc(std::string& params)
   }
 }
 
+/**
+ * @brief print stats
+ * @param [in] fin quantum circuit file name
+ */
 void print_stats(std::string& fin)
 {
   try {
@@ -108,6 +135,10 @@ void print_stats(std::string& fin)
   }
 }
 
+/**
+ * @brief show the quantum circuit as an ascii text
+ * @param [in] fin quantum circuit file name
+ */
 void show_qcirc(std::string& fin)
 {
   try {
@@ -120,6 +151,11 @@ void show_qcirc(std::string& fin)
   }
 }
 
+/**
+ * @brief main function of sharq command
+ * @param [in] argc number of arguments
+ * @param [in] argv string of arguments
+ */
 int main(int argc, char** argv)
 {
   Sharq::OptimizerKind kind = Sharq::OptimizerKind::ZXCalculus;
