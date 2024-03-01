@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.1.1 beta] - 2024-xx-xx
+## [0.1.1] - 2024-03-01
 ### Added
 - tutorial (japanese)
 - doxygen documents
