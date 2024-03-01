@@ -1,8 +1,9 @@
-#include "dag.h"
-
 /**
- *  member functions
+ * @file dagedge.cpp
+ * @brief member functions of DAGEdge class
  */
+
+#include "dag.h"
 
 std::string Sharq::DAGEdge::name() const
 {

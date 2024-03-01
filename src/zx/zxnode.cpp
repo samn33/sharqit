@@ -1,8 +1,9 @@
-#include "zx.h"
-
 /**
- *  member functions
+ * @file zxnode.cpp
+ * @brief member functions of ZXNode class
  */
+
+#include "zx.h"
 
 std::string Sharq::ZXNode::name() const
 {

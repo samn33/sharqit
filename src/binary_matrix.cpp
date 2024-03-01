@@ -1,3 +1,8 @@
+/**
+ * @file binary_matrix.cpp
+ * @brief member functions of BinaryMatrix class
+ */
+
 #include "binary_matrix.h"
 
 std::string Sharq::BinaryMatrix::to_string() const

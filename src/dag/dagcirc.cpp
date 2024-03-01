@@ -1,8 +1,9 @@
-#include "dag.h"
-
 /**
- *  member functions
+ * @file dagcirc.cpp
+ * @brief member functions of DAGCirc class
  */
+
+#include "dag.h"
 
 Sharq::DAGCirc::DAGCirc(uint32_t qubit_num)
 {
@@ -529,7 +530,6 @@ void Sharq::DAGCirc::hadamard_gate_reduction_3()
   id_removal();
 }
 
-//void Sharq::DAGCirc::hadamard_gate_reduction()
 uint32_t Sharq::DAGCirc::hadamard_gate_reduction()
 {
   cx_to_cz_gate();
@@ -541,7 +541,6 @@ uint32_t Sharq::DAGCirc::hadamard_gate_reduction()
   return gate_count();
 }
 
-//void Sharq::DAGCirc::single_qubit_gate_cancellation()
 uint32_t Sharq::DAGCirc::single_qubit_gate_cancellation()
 {
   for (uint32_t q = 0; q < qubit_num_; ++q) {
@@ -640,7 +639,6 @@ uint32_t Sharq::DAGCirc::single_qubit_gate_cancellation()
   return gate_count();
 }
 
-//void Sharq::DAGCirc::two_qubit_gate_cancellation()
 uint32_t Sharq::DAGCirc::two_qubit_gate_cancellation()
 {
   for (uint32_t q = 0; q < qubit_num_; ++q) {

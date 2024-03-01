@@ -1,3 +1,8 @@
+/**
+ * @file fraction.h
+ * @brief include file of Fraction class
+ */
+
 #ifndef FRACTION_H
 #define FRACTION_H
 
@@ -6,55 +11,131 @@
 
 namespace Sharq {
 
+  /**
+   * @class Fraction
+   * @brief fraction to describe a phase
+  */
   class Fraction
   {
   private:
-    int32_t numerator_;
-    int32_t denominator_;
+    int32_t numerator_; //!< numerator of the fraction
+    int32_t denominator_; //!< denominator of the fraction
   public:
+    /**
+     * @brief constructor of the Fraction
+     */
     Fraction() : numerator_(1), denominator_(1) {}
+    /**
+     * @brief constructor of the Fraction
+     * @param [in] numerator numerator of the fraction
+     * @param [in] denominator denominator of the fraction
+     */
     Fraction(const int32_t numerator, const int32_t denominator = 1) :
       numerator_(numerator), denominator_(denominator) { reduce(); }
+    /**
+     * @brief copy constructor of the Fraction
+     * @param [in] frac the fraction
+     */
     Fraction(const Fraction& frac) : numerator_(frac.numerator_), denominator_(frac.denominator_) {}
-    /* getters */
+    //! getter of the numerator_
     int32_t numerator() const { return numerator_; }
+    //! getter of the denominator_
     int32_t denominator() const { return denominator_; }
-    /* setters */
+    //! setter of the numerator_
     void numerator(const int32_t numerator) { numerator_ = numerator; reduce(); }
+    //! setter of the denominator_
     void denominator(const int32_t denominator) { denominator_ = denominator; reduce(); }
-    /* member functions */
+    /**
+     * @brief get a string of the Fraction object
+     * @return string of the fraction
+     */
     std::string to_string() const;
+    /**
+     * @brief add the fraction
+     * @param [in] other fraction to be added
+     * @return result of the operation
+     */
     Fraction add(const Fraction& other) const
     {
       int32_t n = numerator_ * other.denominator() + other.numerator() * denominator_;
       int32_t d = denominator_ * other.denominator();
       return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
     }
+    /**
+     * @brief add the fraction
+     * @param [in] other integer to be added
+     * @return result of the operation
+     */
     Fraction add(const int32_t other) const { return add(Fraction(other)); }
+    /**
+     * @brief subtract the fraction
+     * @param [in] other fraction to be subtracted
+     * @return result of the operation
+     */
     Fraction sub(const Fraction& other) const
     {
       int n = numerator_ * other.denominator() - other.numerator() * denominator_;
       int d = denominator_ * other.denominator();
       return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
     }
+    /**
+     * @brief subtract the fraction
+     * @param [in] other integer to be subtracted
+     * @return result of the operation
+     */
     Fraction sub(const int32_t other) const { return sub(Fraction(other)); }
+    /**
+     * @brief multiply the fraction
+     * @param [in] other fraction to be multiplied
+     * @return result of the operation
+     */
     Fraction mul(const Fraction& other) const
     {
       int n = numerator_ * other.numerator();
       int d = denominator_ * other.denominator();
       return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
     }
+    /**
+     * @brief multiply the fraction
+     * @param [in] other integer to be multiplied
+     * @return result of the operation
+     */
     Fraction mul(const int32_t other) const { return mul(Fraction(other)); }
+    /**
+     * @brief divide the fraction
+     * @param [in] other fraction to be divided
+     * @return result of the operation
+     */
     Fraction div(const Fraction& other) const
     {
       int n = numerator_ * other.denominator();
       int d = denominator_ * other.numerator();
       return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
     }
+    /**
+     * @brief divide the fraction
+     * @param [in] other the integer to be divided
+     * @return result of the operation
+     */
     Fraction div(const int32_t other) const { return div(Fraction(other)); }
+    /**
+     * @brief is the fraction zero or not
+     * @return true if the fraction is zero, false otherwise
+     */
     bool is_zero() const { return numerator_ == 0; }
+    /**
+     * @brief is the fraction positive or not
+     * @return true if the fraction is positive, false otherwise
+     */
     bool is_positive() const { return numerator_ * denominator_ > 0; }
+    /**
+     * @brief is the fraction negative or not
+     * @return true if the fraction is negative, false otherwise
+     */
     bool is_negative() const { return numerator_ * denominator_ < 0; }
+    /**
+     * @brief reduce the fraction
+     */
     void reduce()
     {
       /* make denominator positive if denominator < 0 */
@@ -70,6 +151,12 @@ namespace Sharq {
 	denominator_ /= fac;
       }
     }
+    /**
+     * @brief greaetst common divisor of two intergers
+     * @param [in] n integer
+     * @param [in] d integer
+     * @return greaetst common divisor
+     */
     static int32_t gcd(const int32_t n, const int32_t d)
     {
       int32_t remainder;

@@ -1,8 +1,9 @@
-#include "zx.h"
-
 /**
- *  member functions
+ * @file zxdiagram.cpp
+ * @brief member functions of ZXDiagram class
  */
+
+#include "zx.h"
 
 Sharq::ZXDiagram::ZXDiagram(uint32_t qubit_num)
 {

@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.1.1] - 2024-03-01
+### Added
+- tutorial (japanese)
+- doxygen documents
+
 ## [0.1.0] - 2024-02-17
 ### Added
 - rule based gate reduction and rotation gate merging using phase polynomials

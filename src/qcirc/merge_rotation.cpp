@@ -1,11 +1,9 @@
-#include "qcirc.h"
-
 /**
- *  member functions
+ * @file merge_rotation.cpp
+ * @brief member functions of QCirc class related to the algorithm to merge rotation gates
  */
 
-//#define DEBUG
-//#define SHOW
+#include "qcirc.h"
 
 bool Sharq::QCirc::is_termination_border(const uint32_t idx, const uint32_t q)
 {
@@ -36,11 +34,6 @@ void Sharq::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t 
 
   std::vector<uint8_t> qid_flg(qubit_num(), 0);
   for (auto& q:ppc_qid) qid_flg[q] = 1;
-#ifdef DEBUG
-  std::cerr << "qid_flg = ";
-  for (auto& x:qid_flg) std::cerr << std::to_string(x) << " ";
-  std::cerr << std::endl;
-#endif
 
   for (uint32_t i = start; i <= end; ++i) {
     if (qgates_[i].is_CX_gate() && cnot_objects[i] == 1) {
@@ -49,33 +42,20 @@ void Sharq::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t 
       if ((term_border[con].first <= i && i <= term_border[con].second) &&
 	  (term_border[tar].first <= i && i <= term_border[tar].second)) {
 	B.xor_rows(qid_map[con], qid_map[tar]);
-#ifdef DEBUG
-	std::cerr << qgates_[i] << std::endl;
-	std::cerr << B << std::endl;
-#endif
       }
     }
     else if (qgates_[i].is_X_gate() && qid_flg[qgates_[i].qid()[0]] == 1) {
       uint32_t q = qgates_[i].qid()[0];
       if (term_border[q].first <= i && i <= term_border[q].second) {
 	B.reverse_element(qid_map[q], ppc_qid.size());
-#ifdef DEBUG
-	std::cerr << qgates_[i] << std::endl;
-	std::cerr << B << std::endl;
-#endif
       }
     }
     else if (qgates_[i].is_RZ_gate() && qid_flg[qgates_[i].qid()[0]] == 1) {
       uint32_t q = qgates_[i].qid()[0];
-      //if (term_border[q].first < i && i < term_border[q].second) {
       if (term_border[q].first <= i && i <= term_border[q].second) {
 	P.push_back(B.elements()[qid_map[q]]);
 	rotation_index.push_back(i);
 	rotation_index_used.push_back(0);
-#ifdef DEBUG
-	std::cerr << qgates_[i] << std::endl;
-	std::cerr << B << std::endl;
-#endif
       }
     }
   }
@@ -88,9 +68,6 @@ void Sharq::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t 
     for (uint32_t j = i + 1; j < P.size(); ++j) {
       if (std::equal(P[i].cbegin(), P[i].cend(), P[j].cbegin())) {
 	uint32_t q_j = rotation_index[j];
-#ifdef DEBUG
-	std::cerr << "qgates_[" << q_i << "] <- qgates_[" << q_j << "]" << std::endl; 
-#endif
 	Sharq::Phase phase = qgates_[q_i].phase() + qgates_[q_j].phase();
 	Sharq::Phase zero(0);
 	qgates_[q_i].phase(phase);
@@ -146,11 +123,6 @@ void Sharq::QCirc::merge_rotation()
     }
     if (!cnot_find) break;
 
-#ifdef DEBUG
-    getchar();
-    std::cerr << "=== start cycle ===" << std::endl;
-#endif
-
     bool find = false;
     while (!cnot_anchor.empty()) {
 
@@ -158,11 +130,6 @@ void Sharq::QCirc::merge_rotation()
       cnot_anchor.pop();
       con = qgates_[cnot_idx].qid()[0];
       tar = qgates_[cnot_idx].qid()[1];
-
-#ifdef DEBUG
-      std::cerr << "cnot_idx = " << cnot_idx << std::endl;
-      std::cerr << "con, tar = " << con << ", " << tar << std::endl;
-#endif
 
       /* scan the control qubit, set the termination border */
       find = false;
@@ -222,18 +189,6 @@ void Sharq::QCirc::merge_rotation()
       }
       if (std::find(ppc_qid.begin(), ppc_qid.end(), tar) == ppc_qid.end()) ppc_qid.push_back(tar);
 
-#ifdef DEBUG
-      std::cerr << "ppc_qid = ";
-      for (auto& q:ppc_qid) { std::cerr << q << " "; }
-      std::cerr << std::endl;
-      for (uint32_t i = 0; i < ppc_qid.size(); ++i) {
-	std::cerr << "term_border["<< ppc_qid[i] << "] = "
-		  << term_border[ppc_qid[i]].first << ", "
-		  << term_border[ppc_qid[i]].second << std::endl;
-      }
-      std::cerr << "start, end = " << start << ", " << end << std::endl;
-#endif
-
       /* add cnot anchors */
       for (int32_t j = (int32_t)(cnot_idx - 1); j >= (int32_t)start; --j) { // scan backwoard
 	if (qgates_[j].is_CX_gate() && cnot_visits[j] == 0) {
@@ -283,24 +238,8 @@ void Sharq::QCirc::merge_rotation()
 	  }
 	}
       }
-
-#ifdef DEBUG
-      std::queue<uint32_t> tmp = cnot_anchor;
-      std::cerr << "cnot_anchor:";
-      while (!tmp.empty()) {
-	std::cerr << tmp.front() << " ";
-	tmp.pop();
-      }
-      std::cerr << std::endl;
-#endif
     }
 
-#ifdef DEBUG
-    std::cerr << "=== done ===" << std::endl;
-    std::cerr << "start, end = " << start << ", " << end << std::endl;
-    std::cerr << "subcircuit = " << start << ", " << end << std::endl;
-#endif
-    
     /* rules of removing cnot and changing termination borders */
     std::vector<uint8_t> cnot_objects = cnot_visits;
     for (uint32_t i = start; i <= end; ++i) {
@@ -320,36 +259,11 @@ void Sharq::QCirc::merge_rotation()
       }
     }
 
-#ifdef DEBUG
-    std::cerr << "=== after applying the rule ===" << std::endl;
-    for (uint32_t i = 0; i < ppc_qid.size(); ++i) {
-      std::cerr << "term_border["<< ppc_qid[i] << "] = "
-		<< term_border[ppc_qid[i]].first << ", "
-		<< term_border[ppc_qid[i]].second << std::endl;
-    }
-    std::cerr << "start, end = " << start << ", " << end << std::endl;
-    std::cerr << "cnot_visit =";
-    for (auto& x:cnot_visits) std::cerr << std::to_string(x) << " ";
-    std::cerr << std::endl;
-    std::cerr << "cnot_objects =";
-    for (auto& x:cnot_objects) std::cerr << std::to_string(x) << " ";
-    std::cerr << std::endl;
-#endif
-
     if (start >= end) break;
 
     /* execute merging rotation gates */
-#ifdef DEBUG
-    std::cerr << "=== merge rotation one time ===" << std::endl;
-#endif
     merge_rotation_one_time(start, end, ppc_qid, term_border, cnot_objects);
   }
-
-
-#ifdef SHOW
-  std::cerr << to_string() << std::endl;
-  std::cerr << std::endl;
-#endif
 
   uint32_t maxq = 0;
   for (auto& qgate:qgates_) {
@@ -358,11 +272,6 @@ void Sharq::QCirc::merge_rotation()
     }
   }
   if (maxq < qubit_num_ - 1) id(qubit_num_ - 1); 
-
-#ifdef SHOW
-  std::cerr << qc.to_string() << std::endl;
-  std::cerr << std::endl;
-#endif
 
   /* remove RZ(0)'s and Id's */
   remove_id();

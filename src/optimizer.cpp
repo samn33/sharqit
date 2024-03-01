@@ -1,8 +1,9 @@
-#include "optimizer.h"
-
 /**
- *  member functions
+ * @file optimizer.cpp
+ * @brief member functions of Optimizer class
  */
+
+#include "optimizer.h"
 
 std::string Sharq::Optimizer::to_string() const
 {

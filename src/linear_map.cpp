@@ -1,8 +1,9 @@
-#include "linear_map.h"
-
 /**
- *  member functions
-*/
+ * @file linear_map.cpp
+ * @brief member functions of LinearMap class
+ */
+
+#include "linear_map.h"
 
 bool Sharq::LinearMap::is_zero() const
 {

@@ -1,8 +1,9 @@
-#include "zx.h"
-
 /**
- *  member functions
+ * @file simplify.cpp
+ * @brief member functions of ZXDiagram class related to the algorithm to simplify ZX-diagram
  */
+
+#include "zx.h"
 
 void Sharq::ZXDiagram::fuse_spiders()
 {

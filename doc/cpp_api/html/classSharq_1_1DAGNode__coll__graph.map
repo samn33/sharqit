@@ -1,0 +1,6 @@
+<map id="Sharq::DAGNode" name="Sharq::DAGNode">
+<area shape="rect" id="node1" title="node of DAG (directed acyclic graph)" alt="" coords="5,273,129,300"/>
+<area shape="rect" id="node2" href="$classSharq_1_1QGate.html" title="quantum gate" alt="" coords="16,184,119,211"/>
+<area shape="rect" id="node3" href="$classSharq_1_1Phase.html" title="phase of rotation gate" alt="" coords="17,95,118,121"/>
+<area shape="rect" id="node4" href="$classSharq_1_1Fraction.html" title="fraction to describe a phase" alt="" coords="12,5,123,32"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="dag.h" name="dag.h">
+<area shape="rect" id="node1" title="include file of DAG (directed acyclic graph) related classes (DAGNode, DAGEdge, DAGCirc)" alt="" coords="97,5,151,32"/>
+<area shape="rect" id="node2" href="$qcirc_8h.html" title="include file of QCirc class" alt="" coords="93,80,155,107"/>
+<area shape="rect" id="node6" href="$sharq_8h.html" title="include file of Sharq library" alt="" coords="141,304,206,331"/>
+<area shape="rect" id="node3" href="$zx_8h.html" title="include file of ZXCalculus related classes (ZXNode, ZXEdge, ZXDiagram)" alt="" coords="101,155,147,181"/>
+<area shape="rect" id="node4" href="$optimizer_8h.html" title="include file of Optimizer class" alt="" coords="12,229,97,256"/>
+<area shape="rect" id="node5" href="$optimizer_8cpp.html" title="member functions of Optimizer class" alt="" coords="5,304,104,331"/>
+<area shape="rect" id="node7" href="$sharq_8cpp.html" title="source code of sharq command" alt="" coords="134,379,213,405"/>
+</map>

@@ -29,137 +29,75 @@ Add following lines to your ~/.bashrc. (If you are using another shell, replace 
     export LD_LIBRARY_PATH="${HOME}/lib:$LD_LIBRARY_PATH"
     export PATH="${HOME}/bin:$PATH"
 
+
 ## Uninstall
 
     $ make uninstall
 
+
 ## Usage
+
+### Sharq command
+
+Prepare the quantum circuit you want to optimize as follows.
+
+    $ cat sample.sqc
+    T 1
+    H 0
+    H 1
+    CX 0 1
+    H 0
+    H 1
+    T+ 1
+
+You can display this quantum circuit.
+
+    $ sharq --show sample.sqc
+	q[0] --H-----*--H------
+	q[1] --T--H--X--H--T+--
+
+Optimize and display the result.
+
+    $ sharq --opt sample.sqc > foo.sqc
+    $ sharq --show foo.sqc
+    q[0] --X--
+    q[1] --*--
+
+Print help message.
+
+    $ sharq --help
 
 ### Sharq library
 
-#### Random quantum circuit
+An example of C++ code that calls the Sharq library.
 
-    $ cat sample1.cpp
+    $ cat sample.cpp
     #include "sharq.h"
     
     int main()
     {
       Sharq::QCirc qc_in;
-      // random circuit (qubit-num=5, gate-num=20, X:T:CX:CZ=4:5:3:1)
-      qc_in.add_random(5, 20, {{"X", 4},{"T", 5},{"CX", 3},{"CZ", 1}});
-    
-      qc_in.show(); // show the circuit
-      qc_in.save("in.sqc"); // save to text file
-      std::cout << "T-count (in) = " << qc_in.t_count() << std::endl;
-    
-      Sharq::Optimizer opt;
-      Sharq::QCirc qc_out = opt.execute(qc_in); // circuit optimization using ZX-calculus (default)
-      //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::ZXCalculus); // using ZX-calculus
-      //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::PhasePolynomial); // using Phase Polynomial
+	  qc_in.t(1).h(0).h(1).cx(0,1).h(0).h(1).tdg(1);
+	  qc_in.show();
 
-      qc_out.show(); // show the circuit
-      qc_out.save("out.sqc"); // save to text file
-      std::cout << "T-count (out) = " << qc_out.t_count() << std::endl;
+      Sharq::Optimizer opt;
+      Sharq::QCirc qc_out = opt.execute(qc_in);
+      qc_out.show();
     
       return 0;
     }
 
-Build and execute it.
+Build it.
 
-    $ g++ -O4 -std=c++17 -L ~/lib -I ~/include -I /usr/include/eigen3 sample1.cpp -lsharq
-	$ ./a.out
+    $ g++ -O4 -std=c++17 -L ~/lib -I ~/include -I /usr/include/eigen3 sample.cpp -lsharq
 
-#### Explicitly specified quantum circuit
+Execute a.out.
 
-    $ cat sample2.cpp
-	...
-    Sharq::QCirc qc_in;
-    qc_in.h(3).h(4).cx(1,4).tdg(4).cx(0,4).t(4).cx(1,4).t(1).tdg(4);
-    qc_in.cx(0,4).cx(0,1).t(4).t(0).tdg(1).cx(4,3).cx(0,1).tdg(3);
-    qc_in.cx(2,3).t(3).cx(4,3).tdg(3).t(4).cx(2,3).cx(2,4).t(2).t(3);
-    qc_in.tdg(4).cx(2,4).h(4).cx(1,4).tdg(4).cx(0,4).t(4).cx(1,4).t(1);
-    qc_in.tdg(4).cx(0,4).cx(0,1).t(4).t(0).tdg(1).cx(0,1).h(3).h(4);
-    ...
-    Sharq::Optimizer opt;
-    Sharq::QCirc qc_out = opt.execute(qc_in); // default: ZXCalculus
-    //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::ZXCalculus);
-    //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::PhasePolynomial);
-    ...
-
-#### Quantum circuit loaded from file
-
-    $ cat in.sqc
-    H 3
-    H 4
-    CX 1 4
-    T+ 4
-    CX 0 4
-    T 4
-    CX 1 4
-    T 1
-    T+ 4
-    CX 0 4
-    CX 0 1
-    ...
-
-Use 'load' method to load the file.
-
-    $ cat sample2.cpp
-	...
-    Sharq::QCirc qc_in;
-    qc_in.load("in.sqc");
-    ...
-    Sharq::Optimizer opt;
-    Sharq::QCirc qc_out = opt.execute(qc_in); // default: ZXCalculus
-    //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::ZXCalculus);
-    //Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::PhasePolynomial);
-    ...
-
-### Sharq command
-
-Print help message.
-
-    $ sharq --help
-    sharq - quantum circuit optimizer
-    [usage]
-      sharq [option] ([file]..)([params]) (> [file])
-    [option]
-      --opt(=kind) FILE  : optimize the circuit file, output to stdout.
-                           --opt=zx: T-count reduction using ZX-calculus
-                           --opt=pp: gate-count reduction using Phase Polynomials
-      --rand PARAMS      : generate a random circuit file, output to stdout.
-      --eq FILE1 FILE2   : verify two circuits are equal. (can't execute that have too many qubits)
-      --stats FILE       : print stats of the circut file.
-      --show FILE        : print the circuit diagram as ascii text.
-      --help             : print help message.
-      --version          : print version.
-    [examples]
-      $ sharq --opt foo.sqc > bar.sqc
-      $ sharq --opt=zx foo.sqc > bar.sqc
-      $ sharq --opt=pp foo.sqc > bar.sqc
-      $ sharq --eq foo.sqc bar.sqc
-      $ sharq --rand 3,100,"X":1,"H":2,"T":3.5,"RZ(1/2)":1.5 > bar.sqc # 3 qubits,100 gates
-      $ sharq --stats foo.sqc
-      $ sharq --show foo.sqc
-      ...
-  
-
-## Quantum circuit file format
-
-Sharq supports a simple file format for quantum circuits as follows.
-
-    $ cat foo.sqc"
-    H 0
-    CX 0 1
-    RZ(1/2) 0
-	H 2
-    T+ 2
-    ...
-
-Supported quantum gates are X,Z,H,S,S+,T,T+,RZ,CX,CZ.
-S+ and T+ are Hermitian conjugates of S and T respectively.
-RZ gate have a phase factor denoted by fraction brackled in parentheses.
-The unit of phase factor is PI radian, so 3/4 means 3PI/4, 1 means PI, and so on.
+    $ ./a.out
+    q[0] --H-----*--H------
+    q[1] --T--H--X--H--T+--
+    q[0] --X--
+    q[1] --*--
 
 ### How to convert from other file format
 
@@ -173,6 +111,10 @@ Processing time, T-count, 2Q-count, Gate-count of 'sharq' are compared with [PyZ
 ![benchmarks](/benchmarks/plot.png)
 
 Quantum circuit data used in the benchmarks are from [optimizer: Benchmark quantum circuits before and after optimization](https://github.com/njross/optimizer).
+
+## Documents
+
+- [Tutorial (japanese)](doc/tutorial/jp/main.md)
 
 
 ## References
@@ -191,9 +133,13 @@ Papers about T-count reduction using ZX-calculus.
 "There and back again: A circuit extraction tale",
 [arXiv:2003.01664](https://arxiv.org/abs/2003.01664)
 
+4. Korbinian Staudacher,
+"Optimization Approaches for Quantum Circuits using ZX-calculus"
+[Ludwig maximilian university of munich thesis](https://www.mnm-team.org/pub/Diplomarbeiten/stau21/PDF-Version/stau21.pdf)
+
 Papers about gate-count reduction using Phase Polynomial.
 
-4. Yunseong Nam, Neil J. Ross, Yuan Su, Andrew M. Childs, Dmitri Maslov,
+5. Yunseong Nam, Neil J. Ross, Yuan Su, Andrew M. Childs, Dmitri Maslov,
 "Automated optimization of large quantum circuits with continuous parameters",
 [arXiv:1710.07345](https://arxiv.org/abs/1710.07345)
 

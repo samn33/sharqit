@@ -1,0 +1,16 @@
+<map id="util.h" name="util.h">
+<area shape="rect" id="node1" title="include file of utility functions" alt="" coords="474,5,524,32"/>
+<area shape="rect" id="node2" href="$phase_8h.html" title="include file of Phase class" alt="" coords="465,80,533,107"/>
+<area shape="rect" id="node3" href="$qgate_8h.html" title="include file of QGate class" alt="" coords="280,155,345,181"/>
+<area shape="rect" id="node9" href="$sharq_8h.html" title="include file of Sharq library" alt="" coords="210,528,276,555"/>
+<area shape="rect" id="node14" href="$phase_8cpp.html" title="member functions of Phase class" alt="" coords="536,155,619,181"/>
+<area shape="rect" id="node4" href="$dag_8h.html" title="include file of DAG (directed acyclic graph) related classes (DAGNode, DAGEdge, DAGCirc)" alt="" coords="252,229,306,256"/>
+<area shape="rect" id="node5" href="$qcirc_8h.html" title="include file of QCirc class" alt="" coords="195,304,256,331"/>
+<area shape="rect" id="node11" href="$linear__map_8h.html" title="include file of LinearMap class" alt="" coords="74,229,170,256"/>
+<area shape="rect" id="node13" href="$qgate_8cpp.html" title="member functions of QGate class" alt="" coords="382,229,461,256"/>
+<area shape="rect" id="node6" href="$zx_8h.html" title="include file of ZXCalculus related classes (ZXNode, ZXEdge, ZXDiagram)" alt="" coords="158,379,205,405"/>
+<area shape="rect" id="node7" href="$optimizer_8h.html" title="include file of Optimizer class" alt="" coords="70,453,155,480"/>
+<area shape="rect" id="node8" href="$optimizer_8cpp.html" title="member functions of Optimizer class" alt="" coords="63,528,162,555"/>
+<area shape="rect" id="node10" href="$sharq_8cpp.html" title="source code of sharq command" alt="" coords="204,603,282,629"/>
+<area shape="rect" id="node12" href="$linear__map_8cpp.html" title="member functions of LinearMap class" alt="" coords="60,304,170,331"/>
+</map>

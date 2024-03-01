@@ -1,8 +1,9 @@
-#include "zx.h"
-
 /**
- *  member functions
+ * @file extract_qcirc.cpp
+ * @brief member functions of ZXDiagram class related to the algorithm to extract quantum circuit
  */
+
+#include "zx.h"
 
 void Sharq::ZXDiagram::permutation_as_swap(Sharq::QCirc& qc)
 {
@@ -181,9 +182,9 @@ bool Sharq::ZXDiagram::update_frontier(std::vector<uint32_t>& frontier, Sharq::Q
       auto top = connects.begin();
       qc.cx(nodes_[top->first].q(), nodes_[top->second].q());
       for (auto it = connects.begin() + 1; it != connects.end(); ++it) {
-	qc.cz(nodes_[it->first].q(), nodes_[it->second].q());
-	remove_edge(it->first, it->second);
-	remove_edge(top->first, it->second);
+  	qc.cz(nodes_[it->first].q(), nodes_[it->second].q());
+  	remove_edge(it->first, it->second);
+  	remove_edge(top->first, it->second);
       }
       qc.cx(nodes_[top->first].q(), nodes_[top->second].q());
     }
@@ -332,9 +333,9 @@ void Sharq::ZXDiagram::process_frontier(std::vector<uint32_t>& frontier, Sharq::
       auto top = connects.begin();
       qc.cx(nodes_[top->first].q(), nodes_[top->second].q());
       for (auto it = connects.begin() + 1; it != connects.end(); ++it) {
-	qc.cz(nodes_[it->first].q(), nodes_[it->second].q());
-	remove_edge(it->first, it->second);
-	remove_edge(top->first, it->second);
+  	qc.cz(nodes_[it->first].q(), nodes_[it->second].q());
+  	remove_edge(it->first, it->second);
+  	remove_edge(top->first, it->second);
       }
       qc.cx(nodes_[top->first].q(), nodes_[top->second].q());
     }
@@ -382,7 +383,6 @@ Sharq::QCirc Sharq::ZXDiagram::extract_qcirc()
   /* first step */
   Sharq::QCirc qc;
   std::vector<uint32_t> frontier = outputs_;
-  //process_frontier(frontier, qc, false);
   process_frontier(frontier, qc, true);
 
   /* update frontier */

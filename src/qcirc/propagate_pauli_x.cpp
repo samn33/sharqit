@@ -1,8 +1,9 @@
-#include "qcirc.h"
-
 /**
- *  member functions
+ * @file merge_rotation.cpp
+ * @brief member functions of QCirc class related to the algorithm to propagate pauli X gates
  */
+
+#include "qcirc.h"
 
 /* propagate pauli x gates after cnot gates */
 void Sharq::QCirc::propagate_pauli_x()

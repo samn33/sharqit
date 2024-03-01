@@ -1,8 +1,9 @@
-#include "dag.h"
-
 /**
- *  member functions
+ * @file dagnode.cpp
+ * @brief member functions of DAGNode class
  */
+
+#include "dag.h"
 
 std::string Sharq::DAGNode::name() const
 {

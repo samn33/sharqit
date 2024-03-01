@@ -1,8 +1,9 @@
-#include "phase.h"
-
 /**
- *  member functions
+ * @file phase.cpp
+ * @brief member functions of Phase class
  */
+
+#include "phase.h"
 
 Sharq::Phase::Phase(const std::string& str)
 {
