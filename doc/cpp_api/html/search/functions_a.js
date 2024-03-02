@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['lcomp_495',['lcomp',['../classSharq_1_1ZXDiagram.html#aa560f1bfebf5489be5979b1609f662ba',1,'Sharq::ZXDiagram']]],
-  ['lcomp_5fone_5ftime_496',['lcomp_one_time',['../classSharq_1_1ZXDiagram.html#af73ee743528df8b191e5f6d3b25168cd',1,'Sharq::ZXDiagram']]],
-  ['linearmap_497',['LinearMap',['../classSharq_1_1LinearMap.html#a17067ea87a4bef8c7a202dc0a520ac84',1,'Sharq::LinearMap::LinearMap(uint32_t row_num=0, uint32_t col_num=0)'],['../classSharq_1_1LinearMap.html#a72d89765eb43eeba580b89b7b167b2b5',1,'Sharq::LinearMap::LinearMap(const std::vector&lt; std::vector&lt; std::complex&lt; double &gt;&gt;&gt; &amp;mat)'],['../classSharq_1_1LinearMap.html#ae08aa8c27c650e690b06f0d9917b29dc',1,'Sharq::LinearMap::LinearMap(const Eigen::MatrixBase&lt; OtherDerived &gt; &amp;other)']]],
-  ['load_498',['load',['../classSharq_1_1QCirc.html#a122347e1d987aaf85a0d0848a9afba2e',1,'Sharq::QCirc']]],
-  ['ltrim_499',['ltrim',['../util_8h.html#a4083799f83efd35807a8f452928f418e',1,'Sharq']]]
+  ['lcomp_495',['lcomp',['../classSharqit_1_1ZXDiagram.html#a79a7d5b4ac607783b611af43136cd071',1,'Sharqit::ZXDiagram']]],
+  ['lcomp_5fone_5ftime_496',['lcomp_one_time',['../classSharqit_1_1ZXDiagram.html#a7437040102fd820b57837316cc4ec0cb',1,'Sharqit::ZXDiagram']]],
+  ['linearmap_497',['LinearMap',['../classSharqit_1_1LinearMap.html#a38a35586a9c339fdb34e4cdc5c1218f5',1,'Sharqit::LinearMap::LinearMap(uint32_t row_num=0, uint32_t col_num=0)'],['../classSharqit_1_1LinearMap.html#a01b636d076b327d38bfb89013ae9d726',1,'Sharqit::LinearMap::LinearMap(const std::vector&lt; std::vector&lt; std::complex&lt; double &gt;&gt;&gt; &amp;mat)'],['../classSharqit_1_1LinearMap.html#a9cc2c589880a513b01dc4edc2c27f8ef',1,'Sharqit::LinearMap::LinearMap(const Eigen::MatrixBase&lt; OtherDerived &gt; &amp;other)']]],
+  ['load_498',['load',['../classSharqit_1_1QCirc.html#a5f6d8d201fc1cb41d649c669c7ba2810',1,'Sharqit::QCirc']]],
+  ['ltrim_499',['ltrim',['../util_8h.html#acb1eeef9c25b929a9a8697e527ed1915',1,'Sharqit']]]
 ];

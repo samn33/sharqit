@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['h_672',['H',['../qgate_8h.html#a98321dabde428a5558608a1f1275f928a4fb064147e9259079d993eb40710ce5b',1,'Sharq']]],
-  ['hadamard_673',['Hadamard',['../zx_8h.html#a3a902e638bb00efe6c25078e5a9c6cf7ab529215a7c6a55f9f38d1587c636ed7c',1,'Sharq']]]
+  ['h_672',['H',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606a9431d69179de7b5701c121a5c31acf84',1,'Sharqit']]],
+  ['hadamard_673',['Hadamard',['../zx_8h.html#a313f1181cb769f2e489b6e35219287d1a9cc1d8e06e087cac11c3073d7d0f6cfb',1,'Sharqit']]]
 ];

@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['op_513',['op',['../classSharq_1_1QGate.html#ab7bec85ee2fdfdf2cbb70dfaa5569709',1,'Sharq::QGate::op() const'],['../classSharq_1_1QGate.html#a0c33f0223e1a69615d045d78d835845b',1,'Sharq::QGate::op(const std::vector&lt; std::vector&lt; std::complex&lt; double &gt;&gt;&gt; &amp;op)']]],
-  ['operate_5fqgate_514',['operate_qgate',['../classSharq_1_1LinearMap.html#a563c3acea73e75aa3a31c72c587a535c',1,'Sharq::LinearMap']]],
-  ['optimize_515',['optimize',['../sharq_8cpp.html#a3e096dcc959c3b8ec44e609020b29dc7',1,'sharq.cpp']]],
-  ['outputs_516',['outputs',['../classSharq_1_1DAGCirc.html#af8155a969e64c9832bdc60d5fb79b366',1,'Sharq::DAGCirc::outputs() const'],['../classSharq_1_1DAGCirc.html#a7df30585d20013cda3f51f49ad7c67cc',1,'Sharq::DAGCirc::outputs(const std::vector&lt; uint32_t &gt; &amp;outputs)'],['../classSharq_1_1ZXDiagram.html#a45a59edfbf37f69dcc918ccae391f528',1,'Sharq::ZXDiagram::outputs() const'],['../classSharq_1_1ZXDiagram.html#a3dbfbd7995ba1566c9030f4077b6ada6',1,'Sharq::ZXDiagram::outputs(const std::vector&lt; uint32_t &gt; &amp;outputs)']]],
-  ['overlap_517',['overlap',['../classSharq_1_1QGate.html#abfad628c063c5ba370aefbf79ca9573c',1,'Sharq::QGate']]]
+  ['op_513',['op',['../classSharqit_1_1QGate.html#a61823a008b90517d29a2e2cb7054260c',1,'Sharqit::QGate::op() const'],['../classSharqit_1_1QGate.html#acc1e6af98c953930ad793d278ff47fc9',1,'Sharqit::QGate::op(const std::vector&lt; std::vector&lt; std::complex&lt; double &gt;&gt;&gt; &amp;op)']]],
+  ['operate_5fqgate_514',['operate_qgate',['../classSharqit_1_1LinearMap.html#a61d7a3a46fd7cfd3fe5052665b796898',1,'Sharqit::LinearMap']]],
+  ['optimize_515',['optimize',['../sharqit_8cpp.html#af446a68519de551c5f1865d73bab34ef',1,'sharqit.cpp']]],
+  ['outputs_516',['outputs',['../classSharqit_1_1DAGCirc.html#a831f1513d9c126b2edf783d6ba6488cd',1,'Sharqit::DAGCirc::outputs() const'],['../classSharqit_1_1DAGCirc.html#a6b9ea22d95a6308068eb080d998b7912',1,'Sharqit::DAGCirc::outputs(const std::vector&lt; uint32_t &gt; &amp;outputs)'],['../classSharqit_1_1ZXDiagram.html#a20c9a52d7fcc1ec0237766bd74c85f6f',1,'Sharqit::ZXDiagram::outputs() const'],['../classSharqit_1_1ZXDiagram.html#a98097e7937496be394b19071810870b2',1,'Sharqit::ZXDiagram::outputs(const std::vector&lt; uint32_t &gt; &amp;outputs)']]],
+  ['overlap_517',['overlap',['../classSharqit_1_1QGate.html#ab0d511254a8b4cd8720fe7ec4f07ba39',1,'Sharqit::QGate']]]
 ];

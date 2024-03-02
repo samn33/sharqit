@@ -1,17 +1,17 @@
-#include "sharq.h"
+#include "sharqit/sharqit.h"
 
 void eval_sharq(const std::string& name, const std::string& path_in, const std::string& path_out) {
 
   try {
-    Sharq::Optimizer opt;
+    Sharqit::Optimizer opt;
 
-    Sharq::QCirc qc_in;
+    Sharqit::QCirc qc_in;
     qc_in.load(path_in);
 
     /* clock start */
     auto start = std::chrono::system_clock::now();
 
-    Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::ZXCalculus);
+    Sharqit::QCirc qc_out = opt.execute(qc_in, Sharqit::OptimizerKind::ZXCalculus);
     qc_out.save(path_out);
 
     /* clock end */
@@ -41,10 +41,10 @@ int main(int argc, char** argv)
   std::string str;
   std::cout << "name,time[sec],T-count<in>,T-count<out>,2Q-count<in>,2Q-count<out>,gate_count<in>,gate_count<out>" << std::endl;
   while (std::getline(ifs, str)) {
-    std::vector<std::string> svec = Sharq::split(str, ' ');
+    std::vector<std::string> svec = Sharqit::split(str, ' ');
     std::string name = svec[0];
-    std::string path_in = "qcirc_sharq/" + svec[1] + ".sqc";
-    std::string path_out = "qcirc_sharq/zx/" + svec[2] + ".sqc";
+    std::string path_in = "qcirc_sharqit/" + svec[1] + ".sqc";
+    std::string path_out = "qcirc_sharqit/zx/" + svec[2] + ".sqc";
     eval_sharq(name, path_in, path_out);
   }
 

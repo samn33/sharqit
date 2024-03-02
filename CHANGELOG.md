@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.1.2 - beta] - 2024-xx-xx
+### Added
+- installation using CMake
+### Changed
+- command name: sharq -> sharqit
+- library name: libsharq.so -> libshrqt.so
+- insall location of include files: ~/include/ -> ~/include/sharqit/
+
 ## [0.1.1] - 2024-03-01
 ### Added
 - tutorial (japanese)

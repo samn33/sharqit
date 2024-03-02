@@ -1,10 +1,10 @@
 /**
- * @file sharq.h
- * @brief include file of Sharq library
+ * @file sharqit.h
+ * @brief include file of Sharqit library
  */
 
-#ifndef SHARQ_H
-#define SHARQ_H
+#ifndef SHARQIT_H
+#define SHARQIT_H
 
 #include "fraction.h"
 #include "phase.h"
@@ -16,8 +16,8 @@
 #include "dag.h"
 #include "optimizer.h"
 
-namespace Sharq {
-  constexpr char VERSION[] = "v0.1.0"; //!< versoin of sharq
+namespace Sharqit {
+  constexpr char VERSION[] = "v0.1.2"; //!< versoin of sharq
 }
 
 #endif

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['t_688',['T',['../qgate_8h.html#a98321dabde428a5558608a1f1275f928a98f36330e6bd527c5fa5b7ff6192ccd0',1,'Sharq']]],
-  ['tdg_689',['Tdg',['../qgate_8h.html#a98321dabde428a5558608a1f1275f928a6ed874cf5288962d3c8473ea4f964258',1,'Sharq']]],
-  ['terminal_690',['Terminal',['../zx_8h.html#ae10c265d12d7b287d16f07f53be074b8a3528d4586700934e2a85a72561416b28',1,'Sharq']]]
+  ['t_688',['T',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606a07d3125c5b2d5cda0ef07dfd14f5e2e5',1,'Sharqit']]],
+  ['tdg_689',['Tdg',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606a120b06d1c97409b9f9a058d6f267f9d9',1,'Sharqit']]],
+  ['terminal_690',['Terminal',['../zx_8h.html#af2d84e2de87bd75d55d223504e45ce58a49f8df135afba1a6164409b685450e0b',1,'Sharqit']]]
 ];

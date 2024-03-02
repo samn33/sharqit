@@ -40,7 +40,7 @@ if __name__ == '__main__':
     for line in lines:
         fname = line.split()[1]
         path_in_list.append("qcirc_pyzx/" + fname)
-        path_out_list.append("qcirc_sharq/" + fname + ".sqc")
+        path_out_list.append("qcirc_sharqit/" + fname + ".sqc")
         
     for pin, pout in zip(path_in_list, path_out_list):
         convert(pin, pout)

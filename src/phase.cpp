@@ -5,7 +5,7 @@
 
 #include "phase.h"
 
-Sharq::Phase::Phase(const std::string& str)
+Sharqit::Phase::Phase(const std::string& str)
 {
   std::string s = std::regex_replace(str, std::regex("PI"), "1");
   s = std::regex_replace(s, std::regex(" "), "");
@@ -15,7 +15,7 @@ Sharq::Phase::Phase(const std::string& str)
     throw std::runtime_error("invalid phase string.");
   }
   
-  std::vector<std::string> phase_str_vec = Sharq::split(s, '/');
+  std::vector<std::string> phase_str_vec = Sharqit::split(s, '/');
   int32_t numerator = stoi(phase_str_vec[0]);
   int32_t denominator = 1;
   if (phase_str_vec.size() > 1) {
@@ -28,11 +28,11 @@ Sharq::Phase::Phase(const std::string& str)
   frac_.reduce();
 }
 
-std::string Sharq::Phase::to_string(bool pi_str) const
+std::string Sharqit::Phase::to_string(bool pi_str) const
 {
   std::string pi = "π";
   std::string str = "";
-  Sharq::Phase p = Sharq::Phase(frac_);
+  Sharqit::Phase p = Sharqit::Phase(frac_);
   p.mod_2pi();
 
   if (pi_str == true) {

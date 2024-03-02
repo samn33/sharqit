@@ -13,7 +13,7 @@
 
 #include "qgate.h"
 
-namespace Sharq {
+namespace Sharqit {
 
   constexpr double EPS = 1.0e-8; //!< epsilon for evaluating very small error
 

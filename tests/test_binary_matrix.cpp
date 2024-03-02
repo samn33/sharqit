@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "sharq.h"
+#include "sharqit/sharqit.h"
 
 TEST(BinaryMatrix, Constructor01) {
-  Sharq::BinaryMatrix bmat;
+  Sharqit::BinaryMatrix bmat;
   std::vector<std::vector<uint8_t>> elements = bmat.elements();
   std::vector<uint32_t> row_indexes = bmat.row_indexes();
 
@@ -15,7 +15,7 @@ TEST(BinaryMatrix, Constructor01) {
 }
 
 TEST(BinaryMatrix, Constructor02) {
-  Sharq::BinaryMatrix bmat(2,3);
+  Sharqit::BinaryMatrix bmat(2,3);
   std::vector<std::vector<uint8_t>> elements = bmat.elements();
   std::vector<uint32_t> row_indexes = bmat.row_indexes();
 
@@ -34,7 +34,7 @@ TEST(BinaryMatrix, Constructor02) {
 }
 
 TEST(BinaryMatrix, Constructor03) {
-  Sharq::BinaryMatrix bmat({{1, 0, 1},
+  Sharqit::BinaryMatrix bmat({{1, 0, 1},
 			    {0, 0, 1},
 			    {1, 1, 0}});
   std::vector<std::vector<uint8_t>> elements = bmat.elements();
@@ -59,7 +59,7 @@ TEST(BinaryMatrix, Constructor03) {
 }
 
 TEST(BinaryMatrix, GaussReduce01) {
-  Sharq::BinaryMatrix bmat({{1, 0, 1},
+  Sharqit::BinaryMatrix bmat({{1, 0, 1},
 			    {0, 0, 1},
 			    {1, 1, 0}});
 
@@ -93,7 +93,7 @@ TEST(BinaryMatrix, GaussReduce01) {
 }
 
 TEST(BinaryMatrix, GaussReduce02) {
-  Sharq::BinaryMatrix bmat({{1, 0, 1},
+  Sharqit::BinaryMatrix bmat({{1, 0, 1},
 			    {1, 0, 1},
 			    {1, 0, 1}});
 
@@ -125,7 +125,7 @@ TEST(BinaryMatrix, GaussReduce02) {
 }
 
 TEST(BinaryMatrix, GaussReduce03) {
-  Sharq::BinaryMatrix bmat({{1, 1, 1, 0},
+  Sharqit::BinaryMatrix bmat({{1, 1, 1, 0},
 			    {0, 1, 1, 1},
 			    {1, 1, 0, 1}});
 
@@ -164,7 +164,7 @@ TEST(BinaryMatrix, GaussReduce03) {
 }
 
 TEST(BinaryMatrix, GaussReduce04) {
-  Sharq::BinaryMatrix bmat({{0, 1, 1},
+  Sharqit::BinaryMatrix bmat({{0, 1, 1},
 			    {0, 1, 1},
 			    {1, 1, 0},
 			    {1, 1, 0},

@@ -1,9 +1,9 @@
 チュートリアル
 ==============
 
-## Sharqとは
+## Sharqitとは
 
-sharqは量子回路最適化のためのC++ライブラリです。現在実装されている機能は以下の2つです。
+sharqitは量子回路最適化のためのC++ライブラリです。現在実装されている機能は以下の2つです。
 
 - ZX-calculusを用いたTゲートの削減
 - Phase Polynomialを用いた量子ゲートの削減
@@ -13,21 +13,30 @@ sharqは量子回路最適化のためのC++ライブラリです。現在実装
 
 ## インストール
 
-まず、sharqの動作に必要となる以下のソフトウェアをインストールします。
+まず、sharqitの動作に必要となる以下のソフトウェアをインストールします。
 
     $ sudo apt install nlohmann-json3-dev 
 	$ sudo apt install libeigen3-dev
 	$ sudo apt install graphviz
 
-次に、sharqをビルドして、インストールします。
+次に、sharqitをビルドして、インストールします。
 
-	$ git clone https://github.com/samn33/sharq.git
-    $ cd sharq/src
+	$ git clone https://github.com/samn33/sharqit.git
+    $ cd sharqit/src
     $ mkdir -p ~/lib ~/include ~/bin
     $ make
     $ make install
 
-sharqライブラリとsharqコマンドを使用可能とするために、以下の環境変数を設定します。
+CMakeでインストールすることもできます。
+
+    $ git clone https://github.com/samn33/sharqit.git
+    $ mkdir -p ~/lib ~/bin ~/include/sharqit
+    $ cd sharqit; mkdir build; cd build
+    $ cmake ..
+    $ make
+    $ make install
+
+sharqtiライブラリとsharqitコマンドを使用可能とするために、以下の環境変数を設定します。
 
     export LD_LIBRARY_PATH="${HOME}/lib:$LD_LIBRARY_PATH"
     export PATH="${HOME}/bin:$PATH"
@@ -35,12 +44,12 @@ sharqライブラリとsharqコマンドを使用可能とするために、以�
 ここで、bashの場合の例を示しましたが、別のシェルの場合は適宜読み替えてください。
 
 アンインストールする場合は、以下のようにします。
-これで、SharqコマンドとSharqライブラリ(およびインクルードファイル)が削除されます。
+これで、SharqitコマンドとSharqitライブラリ(およびインクルードファイル)が削除されます。
 
     $ make uninstall
 
 
-## Sharqコマンド
+## Sharqitコマンド
 
 ### 量子回路のファイル形式
 
@@ -55,7 +64,7 @@ sharqライブラリとsharqコマンドを使用可能とするために、以�
     H 1
     T+ 1
 
-これは、sharqで定義している独自形式のテキストファイルです。
+これは、sharqitで定義している独自形式のテキストファイルです。
 最初の行はTゲートを1番目の量子ビットに演算することを表しています。
 2番目の行はHゲート(アダマールゲート)を0番目の量子ゲートに演算することを表しています。
 以下同様に、Hゲートを1番目、CNOTゲートを0番目(制御側)と1番目(標的側)、
@@ -77,10 +86,10 @@ RZはZ軸周りの回転を表しています。回転角は、
 ### 量子回路図の表示
 
 さて、このような記号の羅列では量子回路のイメージがつかみにくいです。
-そのため、sharqコマンドでは--showオプションが用意されていて、
+そのため、sharqitコマンドでは--showオプションが用意されていて、
 以下のように多少グラフィカルに量子回路を表示することができます。
 
-    $ sharq --show sample.sqc
+    $ sharqit --show sample.sqc
 	q[0] --H-----*--H------
 	q[1] --T--H--X--H--T+--
 
@@ -88,7 +97,7 @@ RZはZ軸周りの回転を表しています。回転角は、
 
 各量子ゲートの数を知りたい場合、--statsオプションが使えます。
 
-    $ sharq --stats sample.sqc
+    $ sharqit --stats sample.sqc
     X_count  = 0
     Z_count  = 0
     H_count  = 4
@@ -119,11 +128,11 @@ RZはZ軸周りの回転を表しています。回転角は、
 
 ### 量子回路の最適化
 
-量子回路を最適化するのは、sharqコマンドの--optオプションです。
+量子回路を最適化するのは、sharqitコマンドの--optオプションです。
 結果の量子回路は標準出力に出力されるので、
 以下のように(例えばfoo.sqcという)ファイルにリダイレクトするのが通常の使い方です。
 
-    $ sharq --opt sample.sqc > foo.sqc
+    $ sharqit --opt sample.sqc > foo.sqc
     [zx diagram]
     xspider       = 1 -> 0
     zspider       = 1 -> 4
@@ -148,22 +157,22 @@ RZはZ軸周りの回転を表しています。回転角は、
 
 標準エラー出力にいろいろ出力されますが一旦置いておいて(詳細後述)、foo.sqcがどうなっているか--showオプションで見てみます。
 
-    $ sharq --show foo.sqc
+    $ sharqit --show foo.sqc
     q[0] --X--
     q[1] --*--
 
 というわけで、正しく等価な量子回路が取得できました。
 
-ところで、sharqには、
+ところで、sharqitには、
 
 - ZX-calculusを用いたTゲートの削減
 - Phase Polynomialを用いた量子ゲートの削減
 
-という2つの最適化機能が搭載されていると「Sharqとは」で述べました。
+という2つの最適化機能が搭載されていると「Sharqitとは」で述べました。
 実は、上の--optオプションで計算したのはZX-calculusを用いた方法になります。
 Phase Polynomialを用いた方法は以下のように--opt=ppオプションで計算できます(ZX-calculusの場合は--opt=zxでも可)。
 
-    $ sharq --opt=pp sample.sqc > foo.sqc
+    $ sharqit --opt=pp sample.sqc > foo.sqc
     [quantum circuit]
 	X-count  = 0 -> 0
     Z-count  = 0 -> 0
@@ -182,7 +191,7 @@ Phase Polynomialを用いた方法は以下のように--opt=ppオプション�
 
 結果を--showオプションで見ると、
 
-    $ sharq --show foo.sqc
+    $ sharqit --show foo.sqc
     q[0] --X--
     q[1] --*--
 
@@ -207,12 +216,12 @@ ZX-calculusほどTゲートの削減率は良くない傾向ですが削減は�
 量子回路の最適化ができたら、それが本当に元の量子回路と等価なものなのか確認したくなります。
 --eqオプションでそれが実行できます。等価な場合、
 
-    $ sharq --eq sample.sqc foo.sqc
+    $ sharqit --eq sample.sqc foo.sqc
 	true
 
 となり、等価でない場合、
 
-    $ sharq --eq sample.sqc bar.sqc
+    $ sharqit --eq sample.sqc bar.sqc
 	false
 
 となります。
@@ -230,7 +239,7 @@ ZX-calculusほどTゲートの削減率は良くない傾向ですが削減は�
 
 --opt=ppオプションの場合、以下のような情報が表示されます。
 
-    $ sharq --opt=pp sample.sqc > foo.sqc
+    $ sharqit --opt=pp sample.sqc > foo.sqc
     [quantum circuit]
 	X-count  = 0 -> 0
     Z-count  = 0 -> 0
@@ -281,17 +290,17 @@ ZX-calculusを用いた方法の場合、
 --randオプションを使うことでランダム回路を作成できます。例えば、3量子ビットでトータルのゲート数が100になる量子回路を、
 CNOTゲートとHゲートとTゲートとRZ(3/2)ゲートの個数の比を1:2:3:5として作成したい場合、
 
-    $ sharq --rand 3,100,"CX":1,"H":2,"T":3,"RZ(1/2)":5 > bar.sqc
+    $ sharqit --rand 3,100,"CX":1,"H":2,"T":3,"RZ(1/2)":5 > bar.sqc
 
 とします。比率の数字は小数であっても大丈夫です。
 
-Sharqコマンドの説明の最後に、--helpで表示されるヘルプメッセージを掲載します。
-各オプションの仕様を忘れてしまった場合、sharq --helpしてみてください。
+Sharqitコマンドの説明の最後に、--helpで表示されるヘルプメッセージを掲載します。
+各オプションの仕様を忘れてしまった場合、sharqit --helpしてみてください。
 
-    $ sharq --help
-    sharq - quantum circuit optimizer
+    $ sharqit --help
+    sharqit - quantum circuit optimizer
     [usage]
-      sharq [option] ([file]..)([params]) (> [file])
+      sharqit [option] ([file]..)([params]) (> [file])
     [option]
       --opt(=kind) FILE  : optimize the circuit file, output to stdout.
                            --opt=zx: T-count reduction using ZX-calculus
@@ -303,13 +312,13 @@ Sharqコマンドの説明の最後に、--helpで表示されるヘルプメッ
       --help             : print help message.
       --version          : print version.
     [examples]
-      $ sharq --opt foo.sqc > bar.sqc
-      $ sharq --opt=zx foo.sqc > bar.sqc
-      $ sharq --opt=pp foo.sqc > bar.sqc
-      $ sharq --eq foo.sqc bar.sqc
-      $ sharq --rand 3,100,"X":1,"H":2,"T":3.5,"RZ(1/2)":1.5 > bar.sqc # 3 qubits,100 gates
-      $ sharq --stats foo.sqc
-      $ sharq --show foo.sqc
+      $ sharqit --opt foo.sqc > bar.sqc
+      $ sharqit --opt=zx foo.sqc > bar.sqc
+      $ sharqit --opt=pp foo.sqc > bar.sqc
+      $ sharqit --eq foo.sqc bar.sqc
+      $ sharqit --rand 3,100,"X":1,"H":2,"T":3.5,"RZ(1/2)":1.5 > bar.sqc # 3 qubits,100 gates
+      $ sharqit --stats foo.sqc
+      $ sharqit --show foo.sqc
       ...
     Supported quantum gates are X,Z,H,S,S+,T,T+,RZ,CX,CZ.
     S+ and T+ are Hermitian conjugate of S and T respectively.
@@ -317,24 +326,24 @@ Sharqコマンドの説明の最後に、--helpで表示されるヘルプメッ
     The unit of phase factor is PI radian, so 3/4 means 3PI/4, 1 means PI, and so on.
 
 
-## Sharqライブラリ
+## Sharqitライブラリ
 
 ### 簡単な例
 
-何はともあれ、Sharqライブラリを呼び出す簡単なプログラムを作ってみることから始めてみましょう。
+何はともあれ、Sharqitライブラリを呼び出す簡単なプログラムを作ってみることから始めてみましょう。
 まず、以下のようなC++プログラムをコピペしてどこかのディレクトリに置いてみてください。
 
     $ cat sample.cpp
-    #include "sharq.h"
+    #include "sharqit/sharqit.h"
     
     int main()
     {
-      Sharq::QCirc qc_in;
+      Sharqit::QCirc qc_in;
 	  qc_in.t(1).h(0).h(1).cx(0,1).h(0).h(1).tdg(1);
 	  qc_in.show();
 
-      Sharq::Optimizer opt;
-      Sharq::QCirc qc_out = opt.execute(qc_in);
+      Sharqit::Optimizer opt;
+      Sharqit::QCirc qc_out = opt.execute(qc_in);
       qc_out.show();
     
       return 0;
@@ -342,7 +351,7 @@ Sharqコマンドの説明の最後に、--helpで表示されるヘルプメッ
 
 これを、
 
-    $ g++ -O4 -std=c++17 -L ~/lib -I ~/include -I /usr/include/eigen3 sample.cpp -lsharq
+    $ g++ -O4 -std=c++17 -L ~/lib -I ~/include -I /usr/include/eigen3 sample.cpp -lshrqt
 
 のようにコンパイルすると、a.outという実行形式が作成されます。実行すると、
 
@@ -354,17 +363,17 @@ Sharqコマンドの説明の最後に、--helpで表示されるヘルプメッ
 
 のようになります。最初の2行が最適化前の量子回路で後の2行が最適化後の量子回路を表しています。
 何をやっているかというと(言わずもがなかもしれませんが)、
-Sharqコマンドを説明したときに例として上げた量子回路の最適化プログラムを作成してみました、というわけです。
+Sharqitコマンドを説明したときに例として上げた量子回路の最適化プログラムを作成してみました、というわけです。
 
 一応、プログラムの中身を説明します。一行目の
 
-    #include "sharq.h"
+    #include "sharqit/sharqit.h"
 
-で、Sharqライブラリに対応したインクルードファイルをインクルードします。main関数の中の
+で、Sharqitライブラリに対応したインクルードファイルをインクルードします。main関数の中の
 
-    Sharq::QCirc qc_in;
+    Sharqit::QCirc qc_in;
 	
-で、SharqのQCircクラスのオブジェクトを生成します。この時点で量子回路は空です。次の
+で、SharqitのQCircクラスのオブジェクトを生成します。この時点で量子回路は空です。次の
 	
     qc_in.t(1).h(0).h(1).cx(0,1).h(0).h(1).tdg(1);
 
@@ -378,11 +387,11 @@ t,h,cx,tdgというメソッドを適用するのですが引数に記載され�
 
 次に量子回路を最適化するOptimizerクラスのオブジェクトを生成します。
 
-    Sharq::Optimizer opt;
+    Sharqit::Optimizer opt;
 
 で良いです。最適化を実行するメソッドはexecute()です。引数に最適化したい元になる量子回路オブジェクトを指定します。
 
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharqit::QCirc qc_out = opt.execute(qc_in);
 
 返却値は最適化後の量子回路オブジェクトになるので、それをqc_outという変数で受けるようにします。最後に、
 
@@ -420,7 +429,7 @@ t,h,cx,tdgというメソッドを適用するのですが引数に記載され�
 - id ... 1量子ビットの恒等演算ゲート(何もしないゲート)
 - id2 ... 2量子ビットの恒等演算ゲート(何もしないゲート)
 
-Sharqでは、あらゆる量子回路をこの量子ゲートによって内部的に表現するようにしています。
+Sharqitでは、あらゆる量子回路をこの量子ゲートによって内部的に表現するようにしています。
 加えて、以下の量子ゲートに対応したメソッドを使うこともできます。
 ベーシックな量子ゲートを組み合わせることで、これらメソッドを実現しています。
 
@@ -457,26 +466,26 @@ Sharqでは、あらゆる量子回路をこの量子ゲートによって内部
 
 例を示します。
 
-    Sharq::QCirc qc;
-    Sharq::Phase PI("PI"); // 角度PIを表すPhaseクラスのオブジェクト
+    Sharqit::QCirc qc;
+    Sharqit::Phase PI("PI"); // 角度PIを表すPhaseクラスのオブジェクト
     qc.h(0).t(0); // 回転角指定のない1量子ビットゲート
 	qc.cx(0,1).csw(0,1,2).crx(1,2); // 回転角指定のない2,3量子ビットゲート
 	qc.rz(2, 3*PI/4).crx(1,2,PI/2); // 回転角指定のある1,2量子ビットゲート
 
 回転角はPhaseクラスのオブジェクトとして定義します。典型的な使い方は、上に示したように、PIラジアンを
 
-    Sharq::Phase PI("PI");
+    Sharqit::Phase PI("PI");
 
 のように定義して、3*PI/4, PI/2, -PI/4, ...のように指定するやり方です。それ以外にも、
 
-    Sharq::Phase phase(3,4); // 3*PI/4を表す
-    Sharq::Phase phase(-1,2); // -PI/2を表す
+    Sharqit::Phase phase(3,4); // 3*PI/4を表す
+    Sharqit::Phase phase(-1,2); // -PI/2を表す
 
 のように指定するやり方もあります。
 
 #### 量子回路を記述したファイルを読み込む方法
 
-Sharqコマンドで説明した量子回路ファイルを読み込んで、量子回路オブジェクトとする方法もあります。
+Sharqitコマンドで説明した量子回路ファイルを読み込んで、量子回路オブジェクトとする方法もあります。
 以下のようなファイルがあるとします。
 
     $ cat sample.sqc
@@ -490,7 +499,7 @@ Sharqコマンドで説明した量子回路ファイルを読み込んで、量
 
 loadメソッドを使って、
 
-    Sharq::QCirc qc_in;
+    Sharqit::QCirc qc_in;
     qc_in.load("sample.sqc");
 
 のようにすることで、ファイルに記述されたものと同じ量子回路オブジェクトが作成されます。
@@ -498,12 +507,12 @@ loadメソッドを使って、
 #### ランダムな量子回路を生成する方法
 
 量子回路の最適化の性能を評価したい場合、ランダムに発生させた量子ゲートからなる量子回路を作りたい場合があります。
-Sharqコマンドの--randオプションと同様のことをC++プログラム内で実行することができます。
+Sharqitコマンドの--randオプションと同様のことをC++プログラム内で実行することができます。
 
 例えば、5量子ビットでトータルのゲート数が20の量子回路を、XゲートとTゲートとCNOTゲートの比率を4:5:3として作成したい場合、
 add_randomメソッドを使って、
 
-    Sharq::QCirc qc_in;
+    Sharqit::QCirc qc_in;
     qc_in.add_random(5, 20, {{"X", 4},{"T", 5},{"CX", 3}});
 
 のようにします。指定する比率は小数であっても良いです。
@@ -542,7 +551,7 @@ add_randomメソッドを使って、
 statsメソッドによって、std::map<std::string, uint32_t>のオブジェクトが返ってきます。
 文字列をキーとしたした整数値によって各種情報が表現されているので、各々を以下のようにして取得することがきます。
 
-    Sharq::QCirc qc_in;
+    Sharqit::QCirc qc_in;
     qc_in.t(1).h(0).h(1).cx(0,1).h(0).h(1).tdg(1);
     std::map<std::string, uint32_t> stats = qc_in.stats();
     std::cout << "X-count  = " << stats["x_count"] << std::endl;
@@ -575,16 +584,16 @@ statsメソッドによって、std::map<std::string, uint32_t>のオブジェ�
 
 「簡単な例」で、
 
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharqit::QCirc qc_out = opt.execute(qc_in);
 
 のように実行しました。このときexecuteメソッドに2番目の引数を指定しない場合、ZX-calculusを用いた手法で最適化計算がなされます。
 Phase Polynomialを用いた手法で最適化計算をしたい場合、以下のように2番目の引数に手法を指定します。
 
-    Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::PhasePolynomial);
+    Sharqit::QCirc qc_out = opt.execute(qc_in, Sharqit::OptimizerKind::PhasePolynomial);
 
 ZX-calculusを用いた手法での計算を
 
-    Sharq::QCirc qc_out = opt.execute(qc_in, Sharq::OptimizerKind::ZXCalculus);
+    Sharqit::QCirc qc_out = opt.execute(qc_in, Sharqit::OptimizerKind::ZXCalculus);
 
 のように明示的に指定することもできます。
 
@@ -595,14 +604,14 @@ ZX-calculusを用いた手法での計算を
     bool eq = qc_in.is_equal(qc_out);
     std::cout << std::boolalpha << eq << std::endl;
 
-Sharqコマンド同様、ひとつ注意点があります。
+Sharqitコマンド同様、ひとつ注意点があります。
 内部で量子回路を行列に展開して行列同士の等価判定を行っているため、
 量子ビット数があまり大きな回路でこれを実行すると、
 なかなか結果が返ってこなかったり、メモリが足りなくなることに起因したエラーが発生する可能性があります。
 
 ### 量子回路の保存
 
-量子回路をSharq独自のファイル形式で出力する場合、saveメソッドを使います。
+量子回路をSharqit独自のファイル形式で出力する場合、saveメソッドを使います。
 
     qc_out.save("bar.sqc");
 	
@@ -611,9 +620,9 @@ Sharqコマンド同様、ひとつ注意点があります。
     qc_out.to_svg_file("bar.svg");
 
 
-## 他の量子回路ファイル形式からSharq形式への変換
+## 他の量子回路ファイル形式からSharqit形式への変換
 
-OpenQASM2.0で記述されたClifford-T回路からSharq形式に変換するPythonコード例を以下に示します。
+OpenQASM2.0で記述されたClifford-T回路からSharqit形式に変換するPythonコード例を以下に示します。
 [PyZX](https://github.com/Quantomatic/pyzx)の機能を使っています。
 
     $ cat qasm_to_sqc.py

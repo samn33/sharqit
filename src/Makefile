@@ -1,6 +1,6 @@
 VPATH = .:./qcirc:./zx:./dag:./qcirc
 
-INC = sharq.h util.h fraction.h phase.h binary_matrix.h linear_map.h qgate.h \
+INC = sharqit.h util.h fraction.h phase.h binary_matrix.h linear_map.h qgate.h \
 	qcirc.h zx.h dag.h optimizer.h
 LIB_SRC = fraction.cpp phase.cpp binary_matrix.cpp qgate.cpp qcirc.cpp \
 	merge_rotation.cpp propagate_pauli_x.cpp \
@@ -11,16 +11,16 @@ LIB_OBJ = $(LIB_SRC:%.cpp=%.o)
 CC = g++
 CFLAG = -fPIC -Wall -O4 -std=c++17
 
-PROG = sharq
-PROG_SRC = sharq.cpp
-PROG_OBJ = sharq.o
-LIB_DYNAMIC = libsharq.so
-LIB_STATIC = libsharq.a
+PROG = sharqit
+PROG_SRC = sharqit.cpp
+PROG_OBJ = sharqit.o
+LIB_DYNAMIC = libshrqt.so
+LIB_STATIC = libshrqt.a
 
 IFLAG = -I . -I ~/include -I /usr/include/eigen3
 LFLAG = -L . -L ~/lib
 
-INSTALL_INC = ~/include
+INSTALL_INC = ~/include/sharqit
 INSTALL_LIB = ~/lib
 INSTALL_BIN = ~/bin
 

@@ -1,10 +1,10 @@
-#include "sharq.h"
+#include "sharqit/sharqit.h"
 
 bool test_random(int qubit_num, int gate_num, std::string& mode) {
 
   try {
-    Sharq::Optimizer opt;
-    Sharq::QCirc qc_in;
+    Sharqit::Optimizer opt;
+    Sharqit::QCirc qc_in;
     qc_in.add_random((uint32_t)qubit_num, (uint32_t)gate_num,
 		     {{"X", 1},
 		      {"Z", 1},
@@ -16,10 +16,10 @@ bool test_random(int qubit_num, int gate_num, std::string& mode) {
 
     qc_in.save("sandbox/out.sqc");
 
-    Sharq::OptimizerKind optkind = Sharq::OptimizerKind::ZXCalculus;
-    if (mode == "pp") optkind = Sharq::OptimizerKind::PhasePolynomial;
+    Sharqit::OptimizerKind optkind = Sharqit::OptimizerKind::ZXCalculus;
+    if (mode == "pp") optkind = Sharqit::OptimizerKind::PhasePolynomial;
 
-    Sharq::QCirc qc_out = opt.execute(qc_in, optkind);
+    Sharqit::QCirc qc_out = opt.execute(qc_in, optkind);
     std::cout << "qgate_num = " << qc_out.qgate_num() << std::endl;
     std::cout << "equal? " << qc_in.is_equal(qc_out) << std::endl;
     if (!qc_in.is_equal(qc_out)) return false;

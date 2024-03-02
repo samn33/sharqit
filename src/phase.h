@@ -14,7 +14,7 @@
 #include "util.h"
 #include "fraction.h"
 
-namespace Sharq {
+namespace Sharqit {
 
   /**
    * @class Phase

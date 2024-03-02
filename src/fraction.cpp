@@ -5,7 +5,7 @@
 
 #include "fraction.h"
 
-std::string Sharq::Fraction::to_string() const
+std::string Sharqit::Fraction::to_string() const
 {
   std::string str;
   if (numerator_ == 0) str = "0";

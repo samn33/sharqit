@@ -5,7 +5,7 @@
 
 #include "qcirc.h"
 
-void Sharq::QCirc::save(const std::string& file_name) const
+void Sharqit::QCirc::save(const std::string& file_name) const
 {
   std::ofstream ofs;
   ofs.open(file_name, std::ios::out);
@@ -17,7 +17,7 @@ void Sharq::QCirc::save(const std::string& file_name) const
   ofs.close();
 }
 
-void Sharq::QCirc::load(const std::string& file_name)
+void Sharqit::QCirc::load(const std::string& file_name)
 {
   std::ifstream ifs(file_name);
   if (ifs.fail()) {
@@ -28,16 +28,16 @@ void Sharq::QCirc::load(const std::string& file_name)
   while (std::getline(ifs, str)) {
     if (str[0] == '#') continue;
     if (str.find('#') != std::string::npos) {
-      str = Sharq::split(str, '#')[0];
+      str = Sharqit::split(str, '#')[0];
     }
-    Sharq::QGate qgate(str);
+    Sharqit::QGate qgate(str);
     add_qgate(qgate);
   }
 
   ifs.close();
 }
 
-std::map<std::string, uint32_t> Sharq::QCirc::stats() const
+std::map<std::string, uint32_t> Sharqit::QCirc::stats() const
 {
   std::map<std::string, uint32_t> sts;
   sts["id_count"] = id_count();
@@ -55,9 +55,9 @@ std::map<std::string, uint32_t> Sharq::QCirc::stats() const
   return sts;
 }
 
-void Sharq::QCirc::print_stats() const
+void Sharqit::QCirc::print_stats() const
 {
-  std::map<std::string, uint32_t> sts = Sharq::QCirc::stats();
+  std::map<std::string, uint32_t> sts = Sharqit::QCirc::stats();
   std::cout << "X_count  = " << sts["x_count"] << std::endl;
   std::cout << "Z_count  = " << sts["z_count"] << std::endl;
   std::cout << "H_count  = " << sts["h_count"] << std::endl;
@@ -71,70 +71,70 @@ void Sharq::QCirc::print_stats() const
   std::cout << "qubit_num  = " << sts["qubit_num"] << std::endl;
 }
 
-uint32_t Sharq::QCirc::id_count() const
+uint32_t Sharqit::QCirc::id_count() const
 {
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_Id_gate()) ++cnt;
   return cnt;
 }
 
-uint32_t Sharq::QCirc::x_count() const
+uint32_t Sharqit::QCirc::x_count() const
 {
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_X_gate()) ++cnt;
   return cnt;
 }
 
-uint32_t Sharq::QCirc::z_count() const
+uint32_t Sharqit::QCirc::z_count() const
 {
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_Z_gate()) ++cnt;
   return cnt;
 }
 
-uint32_t Sharq::QCirc::h_count() const
+uint32_t Sharqit::QCirc::h_count() const
 {
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_H_gate()) ++cnt;
   return cnt;
 }
 
-uint32_t Sharq::QCirc::s_count() const
+uint32_t Sharqit::QCirc::s_count() const
 {
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_S_gate()) ++cnt;
   return cnt;
 }
 
-uint32_t Sharq::QCirc::t_count() const
+uint32_t Sharqit::QCirc::t_count() const
 {
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_T_gate()) ++cnt;
   return cnt;
 }
 
-uint32_t Sharq::QCirc::rz_count() const
+uint32_t Sharqit::QCirc::rz_count() const
 {
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_RZ_gate()) ++cnt;
   return cnt;
 }
 
-uint32_t Sharq::QCirc::cx_count() const
+uint32_t Sharqit::QCirc::cx_count() const
 {
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_CX_gate()) ++cnt;
   return cnt;
 }
 
-uint32_t Sharq::QCirc::cz_count() const
+uint32_t Sharqit::QCirc::cz_count() const
 {
   uint32_t cnt = 0;
   for (auto& qgate:qgates_) if (qgate.is_CZ_gate()) ++cnt;
   return cnt;
 }
 
-uint32_t Sharq::QCirc::depth() const
+uint32_t Sharqit::QCirc::depth() const
 {
   std::vector<uint32_t> depth_count(qubit_num_, 0);
 
@@ -158,7 +158,7 @@ uint32_t Sharq::QCirc::depth() const
   return depth;
 }
 
-std::string Sharq::QCirc::to_string(const uint32_t width) const
+std::string Sharqit::QCirc::to_string(const uint32_t width) const
 {
   if (qubit_num_ == 0) {
     throw std::runtime_error("qubit_num must be positive integer.");
@@ -181,7 +181,7 @@ std::string Sharq::QCirc::to_string(const uint32_t width) const
   std::vector<uint32_t> qid;
   std::string name;
   for (auto qgate:qgates_) {
-    if ((qgate.kind() != Sharq::QGateKind::CX) && (qgate.kind() != Sharq::QGateKind::CZ)) {
+    if ((qgate.kind() != Sharqit::QGateKind::CX) && (qgate.kind() != Sharqit::QGateKind::CZ)) {
       name = qgate.name(false);
       qid = qgate.qid();
       str_list[qid[0]] += name + "--";
@@ -199,9 +199,9 @@ std::string Sharq::QCirc::to_string(const uint32_t width) const
       uint32_t t = qgate.qid()[1];
       for (uint32_t i = 0; i < qubit_num_; ++i) {
 	if (i == c) str_list[i] += "*--";
-	else if (i == t && qgate.kind() == Sharq::QGateKind::Id2) str_list[i] += "I--";
-	else if (i == t && qgate.kind() == Sharq::QGateKind::CX) str_list[i] += "X--";
-	else if (i == t && qgate.kind() == Sharq::QGateKind::CZ) str_list[i] += "*--";
+	else if (i == t && qgate.kind() == Sharqit::QGateKind::Id2) str_list[i] += "I--";
+	else if (i == t && qgate.kind() == Sharqit::QGateKind::CX) str_list[i] += "X--";
+	else if (i == t && qgate.kind() == Sharqit::QGateKind::CZ) str_list[i] += "*--";
 	else if (c < t && c < i && i < t) str_list[i] += "|--";
 	else if (t < c && t < i && i < c) str_list[i] += "|--";
 	else str_list[i] += "---";
@@ -241,7 +241,7 @@ std::string Sharq::QCirc::to_string(const uint32_t width) const
   return s;
 }
 
-Sharq::QCirc& Sharq::QCirc::add_qgate(const Sharq::QGate& qgate)
+Sharqit::QCirc& Sharqit::QCirc::add_qgate(const Sharqit::QGate& qgate)
 {
   QGate qg = qgate;
   qgates_.push_back(qg);
@@ -251,10 +251,10 @@ Sharq::QCirc& Sharq::QCirc::add_qgate(const Sharq::QGate& qgate)
   return *this;
 }
 
-Sharq::QCirc& Sharq::QCirc::add_qgate(const Sharq::QGateKind kind,
-				      const std::vector<uint32_t>& qid, const Sharq::Phase& phase)
+Sharqit::QCirc& Sharqit::QCirc::add_qgate(const Sharqit::QGateKind kind,
+				      const std::vector<uint32_t>& qid, const Sharqit::Phase& phase)
 {
-  Sharq::QGate qgate(kind, qid, phase);
+  Sharqit::QGate qgate(kind, qid, phase);
   qgates_.push_back(qgate);
 
   for (auto& q:qid) {
@@ -263,7 +263,7 @@ Sharq::QCirc& Sharq::QCirc::add_qgate(const Sharq::QGateKind kind,
   return *this;
 }
 
-Sharq::QCirc& Sharq::QCirc::add_qcirc(const QCirc& other)
+Sharqit::QCirc& Sharqit::QCirc::add_qcirc(const QCirc& other)
 {
   for (auto& qgate:other.qgates()) {
     add_qgate(qgate);
@@ -279,7 +279,7 @@ Sharq::QCirc& Sharq::QCirc::add_qcirc(const QCirc& other)
   *                       {"CZ", 2},
   *                       {"RZ(1/4)", 1},});
   */
-Sharq::QCirc& Sharq::QCirc::add_random(const uint32_t qubit_num, const uint32_t qgate_num,
+Sharqit::QCirc& Sharqit::QCirc::add_random(const uint32_t qubit_num, const uint32_t qgate_num,
 				       const nlohmann::json& probs)
 {
   if (qubit_num == 0 || qgate_num == 0) {
@@ -293,24 +293,24 @@ Sharq::QCirc& Sharq::QCirc::add_random(const uint32_t qubit_num, const uint32_t 
   }
 
   /* read probs */
-  std::vector<Sharq::QGateKind> kind_list;
+  std::vector<Sharqit::QGateKind> kind_list;
   std::vector<double> prob_list;
-  std::vector<Sharq::Phase> phase_list;
+  std::vector<Sharqit::Phase> phase_list;
   double prob_tmp = 0.0;
   if (probs.size() == 0) {
     throw std::runtime_error("no probabilities are specified.");
   }
   for (auto it = probs.begin(); it != probs.end(); ++it) {
     std::string str = it.key();
-    std::tuple<Sharq::QGateKind, Sharq::Phase> kp = Sharq::QGate::kind_phase(str);
+    std::tuple<Sharqit::QGateKind, Sharqit::Phase> kp = Sharqit::QGate::kind_phase(str);
     kind_list.push_back(std::get<0>(kp));
     phase_list.push_back(std::get<1>(kp));
     prob_tmp += (double)it.value() / total_prob;
     prob_list.push_back(prob_tmp);
-    if (std::get<0>(kp) == Sharq::QGateKind::CX && qubit_num == 1) {
+    if (std::get<0>(kp) == Sharqit::QGateKind::CX && qubit_num == 1) {
       throw std::runtime_error("not allowed CX gate for qubit_num = 1.");
     }
-    if (std::get<0>(kp) == Sharq::QGateKind::CZ && qubit_num == 1) {
+    if (std::get<0>(kp) == Sharqit::QGateKind::CZ && qubit_num == 1) {
       throw std::runtime_error("not allowed CZ gate for qubit_num = 1.");
     }
   }
@@ -339,10 +339,10 @@ Sharq::QCirc& Sharq::QCirc::add_random(const uint32_t qubit_num, const uint32_t 
       }
     }
     /* kind, qid, phase */
-    Sharq::QGateKind kind = kind_list[prob_idx];
-    Sharq::Phase phase = phase_list[prob_idx];
+    Sharqit::QGateKind kind = kind_list[prob_idx];
+    Sharqit::Phase phase = phase_list[prob_idx];
     std::vector<uint32_t> qid = {q_list[i]};
-    if (kind_list[prob_idx] == Sharq::QGateKind::CX || kind_list[prob_idx] == Sharq::QGateKind::CZ) {
+    if (kind_list[prob_idx] == Sharqit::QGateKind::CX || kind_list[prob_idx] == Sharqit::QGateKind::CZ) {
       uint32_t t = (qid[0] + 1 + engine() % (qubit_num - 1)) % qubit_num;
       qid.push_back(t);
     }
@@ -351,9 +351,9 @@ Sharq::QCirc& Sharq::QCirc::add_random(const uint32_t qubit_num, const uint32_t 
   return *this;
 }
 
-Sharq::QCirc Sharq::QCirc::reverse() const
+Sharqit::QCirc Sharqit::QCirc::reverse() const
 {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   uint32_t qgate_num = qgates_.size();
   for (uint32_t i = 0; i < qgate_num; ++i) {
     qc.add_qgate(qgates_[qgate_num - i - 1]);
@@ -361,9 +361,9 @@ Sharq::QCirc Sharq::QCirc::reverse() const
   return qc;
 }
 
-Sharq::QCirc Sharq::QCirc::inverse() const
+Sharqit::QCirc Sharqit::QCirc::inverse() const
 {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   uint32_t qgate_num = qgates_.size();
   for (uint32_t i = 0; i < qgate_num; ++i) {
     qc.add_qgate(qgates_[qgate_num - i - 1].inverse());
@@ -371,7 +371,7 @@ Sharq::QCirc Sharq::QCirc::inverse() const
   return qc;
 }
 
-bool Sharq::QCirc::is_identical(const QCirc& other) const
+bool Sharqit::QCirc::is_identical(const QCirc& other) const
 {
   uint32_t qgate_num = qgates_.size();
   for (uint32_t i = 0; i < qgate_num; ++i) {
@@ -380,17 +380,17 @@ bool Sharq::QCirc::is_identical(const QCirc& other) const
   return true;
 }
 
-bool Sharq::QCirc::is_equal(const QCirc& other) const
+bool Sharqit::QCirc::is_equal(const QCirc& other) const
 {
-  Sharq::LinearMap lmap = to_linearmap();
-  Sharq::LinearMap lmap_other = other.inverse().to_linearmap();
+  Sharqit::LinearMap lmap = to_linearmap();
+  Sharqit::LinearMap lmap_other = other.inverse().to_linearmap();
   if (qubit_num() != other.qubit_num()) return false;
   lmap *= lmap_other;
   if (lmap.is_identity_multiple_constant()) return true;
   else return false;
 }
 
-void Sharq::QCirc::to_dot_file(const std::string& file_name) const
+void Sharqit::QCirc::to_dot_file(const std::string& file_name) const
 {
   std::ofstream ofs;
   ofs.open(file_name, std::ios::out);
@@ -479,8 +479,8 @@ void Sharq::QCirc::to_dot_file(const std::string& file_name) const
   uint32_t cnt = 0;
   for (uint32_t i = 0; i < qgates_.size(); ++i) {
     uint32_t offset = 2 * qubit_num_;
-    Sharq::QGate qgate = qgates_[i];
-    if ((qgate.kind() != Sharq::QGateKind::CX) && (qgate.kind() != Sharq::QGateKind::CZ)) {
+    Sharqit::QGate qgate = qgates_[i];
+    if ((qgate.kind() != Sharqit::QGateKind::CX) && (qgate.kind() != Sharqit::QGateKind::CZ)) {
       label = qgate.name();
       shape = "box";
       width = "0.5";
@@ -488,7 +488,7 @@ void Sharq::QCirc::to_dot_file(const std::string& file_name) const
       color = "black";
       fillcolor = "white";
       fontcolor = "black";
-      if (qgate.kind() == Sharq::QGateKind::RZ) width = "0.8";
+      if (qgate.kind() == Sharqit::QGateKind::RZ) width = "0.8";
 
       edges.push_back({lasts[qgate.qid()[0]], "node_"+ std::to_string(cnt + offset)});
       lasts[qgate.qid()[0]] = "node_"+ std::to_string(cnt + offset);
@@ -520,7 +520,7 @@ void Sharq::QCirc::to_dot_file(const std::string& file_name) const
       ++cnt;
       
       /* target */
-      if (qgate.kind() == Sharq::QGateKind::CX) {
+      if (qgate.kind() == Sharqit::QGateKind::CX) {
 	label = "+";
 	shape = "circle";
 	width = "0.2";
@@ -597,7 +597,7 @@ void Sharq::QCirc::to_dot_file(const std::string& file_name) const
   ofs.close();
 }
 
-void Sharq::QCirc::to_svg_file(const std::string& file_name) const
+void Sharqit::QCirc::to_svg_file(const std::string& file_name) const
 {
   std::string tmpfile_name = std::filesystem::temp_directory_path().native() + "/sharq_qcirc_to_svg_file.dot";
   to_dot_file(tmpfile_name);
@@ -609,16 +609,16 @@ void Sharq::QCirc::to_svg_file(const std::string& file_name) const
   }
 }
 
-Sharq::ZXDiagram Sharq::QCirc::to_zxdiagram() const
+Sharqit::ZXDiagram Sharqit::QCirc::to_zxdiagram() const
 {
   ZXDiagram zx(qubit_num_);
   for (auto qgate:qgates_) {
     if (qgate.is_CZ_gate()) {
       uint32_t c = qgate.qid()[0];
       uint32_t t = qgate.qid()[1];
-      zx.add_qgate(Sharq::QGate(Sharq::QGateKind::H, {t}));
-      zx.add_qgate(Sharq::QGate(Sharq::QGateKind::CX, {c,t}));
-      zx.add_qgate(Sharq::QGate(Sharq::QGateKind::H, {t}));
+      zx.add_qgate(Sharqit::QGate(Sharqit::QGateKind::H, {t}));
+      zx.add_qgate(Sharqit::QGate(Sharqit::QGateKind::CX, {c,t}));
+      zx.add_qgate(Sharqit::QGate(Sharqit::QGateKind::H, {t}));
     }
     else {
       zx.add_qgate(qgate);
@@ -627,24 +627,24 @@ Sharq::ZXDiagram Sharq::QCirc::to_zxdiagram() const
   return zx;
 }
 
-Sharq::LinearMap Sharq::QCirc::to_linearmap() const
+Sharqit::LinearMap Sharqit::QCirc::to_linearmap() const
 {
-  Sharq::LinearMap lmap(1<<qubit_num_, 1<<qubit_num_);
+  Sharqit::LinearMap lmap(1<<qubit_num_, 1<<qubit_num_);
   for (auto qgate:qgates_) {
     lmap.operate_qgate(qgate);
   }
   return lmap;
 }
 
-Sharq::DAGCirc Sharq::QCirc::to_dagcirc() const
+Sharqit::DAGCirc Sharqit::QCirc::to_dagcirc() const
 {
-  Sharq::DAGCirc dc(*this);
+  Sharqit::DAGCirc dc(*this);
   return dc;
 }
 
-//void Sharq::QCirc::gate_cancel_one_time()
+//void Sharqit::QCirc::gate_cancel_one_time()
 //{
-//  std::vector<Sharq::QGate> qgates_out;
+//  std::vector<Sharqit::QGate> qgates_out;
 //
 //  for (auto& qgate:qgates_) {
 //
@@ -672,7 +672,7 @@ Sharq::DAGCirc Sharq::QCirc::to_dagcirc() const
 //  /* remove Id gates */
 //  uint32_t gnum_last_qubit = 0;
 //  for (auto it = qgates_out.begin(); it != qgates_out.end(); ++it) {
-//    if (it->kind() == Sharq::QGateKind::Id) {
+//    if (it->kind() == Sharqit::QGateKind::Id) {
 //      it == qgates_out.erase(it);
 //      --it;
 //    }
@@ -684,13 +684,13 @@ Sharq::DAGCirc Sharq::QCirc::to_dagcirc() const
 //    }
 //  }
 //  if (gnum_last_qubit == 0) {
-//    qgates_out.push_back(Sharq::QGate(Sharq::QGateKind::Id, {qubit_num_-1}));
+//    qgates_out.push_back(Sharqit::QGate(Sharqit::QGateKind::Id, {qubit_num_-1}));
 //  }
 //  
 //  qgates(qgates_out);
 //}
 //
-//void Sharq::QCirc::gate_cancel()
+//void Sharqit::QCirc::gate_cancel()
 //{
 //  while (true) {
 //    uint32_t qgate_num = qgates_.size();
@@ -700,16 +700,16 @@ Sharq::DAGCirc Sharq::QCirc::to_dagcirc() const
 //}
 
 /* replace all cz gates with cnot gates and hadamard gates */
-void Sharq::QCirc::cz_to_cx()
+void Sharqit::QCirc::cz_to_cx()
 {
   std::list<QGate> qgates_list(qgates_.begin(), qgates_.end());
   for (auto it = qgates_list.begin(); it != qgates_list.end(); ++it) {
     if (it->is_CZ_gate()) {
       uint32_t tar = it->qid()[1];
-      it->kind(Sharq::QGateKind::CX);
-      it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::H, {tar}));
+      it->kind(Sharqit::QGateKind::CX);
+      it = qgates_list.insert(it, Sharqit::QGate(Sharqit::QGateKind::H, {tar}));
       ++it; ++it;
-      it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::H, {tar}));
+      it = qgates_list.insert(it, Sharqit::QGate(Sharqit::QGateKind::H, {tar}));
       ++it;
     }
   }
@@ -719,13 +719,13 @@ void Sharq::QCirc::cz_to_cx()
 }
 
 /* remove Ids and RZ(0)s */
-void Sharq::QCirc::remove_id()
+void Sharqit::QCirc::remove_id()
 {
   std::list<QGate> qgates_list(qgates_.begin(), qgates_.end());
   for (auto it = qgates_list.begin(); it != qgates_list.end();) {
     if (it->is_Z_gate() || it->is_S_gate() || it->is_T_gate()) ++it;
     else if (it->is_Id_gate()) it = qgates_list.erase(it);
-    else if (it->is_RZ_gate() && it->phase() == Sharq::Phase(0)) it = qgates_list.erase(it);
+    else if (it->is_RZ_gate() && it->phase() == Sharqit::Phase(0)) it = qgates_list.erase(it);
     else ++it;
   }
   std::vector<QGate> qgates_vec(qgates_list.begin(), qgates_list.end());
@@ -733,28 +733,28 @@ void Sharq::QCirc::remove_id()
 }
 
 /* replace Z,S,S+,T,T+ with RZ gates */
-void  Sharq::QCirc::replace_with_rz()
+void  Sharqit::QCirc::replace_with_rz()
 {
   for (auto& qgate:qgates_) {
     if (qgate.is_Z_gate()) { // phase = 1
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(1));
+      qgate.kind(Sharqit::QGateKind::RZ);
+      qgate.phase(Sharqit::Phase(1));
     }
     else if (qgate.is_S1_gate()) { // phase = 1/2
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(1, 2));
+      qgate.kind(Sharqit::QGateKind::RZ);
+      qgate.phase(Sharqit::Phase(1, 2));
     }
     else if (qgate.is_S3_gate()) { // phase = 3/2
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(3, 2));
+      qgate.kind(Sharqit::QGateKind::RZ);
+      qgate.phase(Sharqit::Phase(3, 2));
     }
     if (qgate.is_T1_gate()) { // phase = 1/4
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(1, 4));
+      qgate.kind(Sharqit::QGateKind::RZ);
+      qgate.phase(Sharqit::Phase(1, 4));
     }
     else if (qgate.is_T7_gate()) { // phase = 7/4
-      qgate.kind(Sharq::QGateKind::RZ);
-      qgate.phase(Sharq::Phase(7, 4));
+      qgate.kind(Sharqit::QGateKind::RZ);
+      qgate.phase(Sharqit::Phase(7, 4));
     }
   }
 }

@@ -1,17 +1,17 @@
 var searchData=
 [
   ['dag_2eh_59',['dag.h',['../dag_8h.html',1,'']]],
-  ['dagcirc_60',['DAGCirc',['../classSharq_1_1DAGCirc.html',1,'Sharq::DAGCirc'],['../classSharq_1_1DAGCirc.html#a96a66fceda0f0514bc9581d8c45a6175',1,'Sharq::DAGCirc::DAGCirc(const uint32_t qubit_num=1)'],['../classSharq_1_1DAGCirc.html#aaa55a566cfb7634aec4798608ca89daa',1,'Sharq::DAGCirc::DAGCirc(const QCirc &amp;qc)'],['../classSharq_1_1DAGCirc.html#aeeb7427f14038f1ab0f1cb585c14baf3',1,'Sharq::DAGCirc::DAGCirc(const DAGCirc &amp;dc)']]],
-  ['dagedge_61',['DAGEdge',['../classSharq_1_1DAGEdge.html',1,'Sharq::DAGEdge'],['../classSharq_1_1DAGEdge.html#a8d2117a3cbb6bd0e86a09a59e8d194ea',1,'Sharq::DAGEdge::DAGEdge(const DAGEdgeKind kind=Sharq::DAGEdgeKind::Forward, const uint32_t q=0, const uint32_t to=0)'],['../classSharq_1_1DAGEdge.html#a96959b9de1d89df65424d0552809c2d2',1,'Sharq::DAGEdge::DAGEdge(const DAGEdge &amp;edge)']]],
-  ['dagedgekind_62',['DAGEdgeKind',['../dag_8h.html#ab08172561c75d6d31efdc9eb88b43276',1,'Sharq']]],
-  ['dagnode_63',['DAGNode',['../classSharq_1_1DAGNode.html',1,'Sharq::DAGNode'],['../classSharq_1_1DAGNode.html#a15d457e1fda714df42bb885929764b9a',1,'Sharq::DAGNode::DAGNode(const DAGNodeKind kind=DAGNodeKind::OpNode, const QGate qgate=QGate())'],['../classSharq_1_1DAGNode.html#a84d080bd81dcce9a04d69a3b5ef7fc72',1,'Sharq::DAGNode::DAGNode(const DAGNode &amp;node)']]],
-  ['dagnodekind_64',['DAGNodeKind',['../dag_8h.html#a8763a0385c7d4f3e3bb0ac7b0010b194',1,'Sharq']]],
-  ['def_5fnode_5fplaces_5fsize_65',['DEF_NODE_PLACES_SIZE',['../zx_8h.html#a5a9cfcc1bd96f56e925bc4a63ec98141',1,'Sharq']]],
-  ['def_5fzxedgekind_66',['DEF_ZXEDGEKIND',['../zx_8h.html#a127b71fce2b712652cd51c8065fc99a7',1,'Sharq']]],
-  ['def_5fzxnodekind_67',['DEF_ZXNODEKIND',['../zx_8h.html#a22b3dfcd5f7d001149f944f4006150fc',1,'Sharq']]],
-  ['degree_5fof_5fnode_68',['degree_of_node',['../classSharq_1_1ZXDiagram.html#ae885fe4a203f4a09c00181bce24b61bb',1,'Sharq::ZXDiagram']]],
-  ['denominator_69',['denominator',['../classSharq_1_1Fraction.html#a377a81bdc1e3a66626d2cf05a990cc93',1,'Sharq::Fraction::denominator() const'],['../classSharq_1_1Fraction.html#a87bb4d02e5feca91fe888be4be0b6e7e',1,'Sharq::Fraction::denominator(const int32_t denominator)']]],
-  ['denominator_5f_70',['denominator_',['../classSharq_1_1Fraction.html#a7e4b39961877c7bbff343f2d23ce0f83',1,'Sharq::Fraction']]],
-  ['depth_71',['depth',['../classSharq_1_1QCirc.html#a44dc7c74def2265478d51a44a2890baa',1,'Sharq::QCirc']]],
-  ['div_72',['div',['../classSharq_1_1Fraction.html#a71318b3975c2250e2eed42bd7e1fceda',1,'Sharq::Fraction::div(const Fraction &amp;other) const'],['../classSharq_1_1Fraction.html#a10c3f106580655ebe8bd9e8414180a0d',1,'Sharq::Fraction::div(const int32_t other) const']]]
+  ['dagcirc_60',['DAGCirc',['../classSharqit_1_1DAGCirc.html',1,'Sharqit::DAGCirc'],['../classSharqit_1_1DAGCirc.html#a78c152eeebb6b610c82e3deacc370010',1,'Sharqit::DAGCirc::DAGCirc(const uint32_t qubit_num=1)'],['../classSharqit_1_1DAGCirc.html#a7a7af8e5a00352c218525401119a3fdc',1,'Sharqit::DAGCirc::DAGCirc(const QCirc &amp;qc)'],['../classSharqit_1_1DAGCirc.html#a3b9a7ff826b4e323d79ce68e02cbe9f3',1,'Sharqit::DAGCirc::DAGCirc(const DAGCirc &amp;dc)']]],
+  ['dagedge_61',['DAGEdge',['../classSharqit_1_1DAGEdge.html',1,'Sharqit::DAGEdge'],['../classSharqit_1_1DAGEdge.html#ab75f53d73b479502da72f228e6f18603',1,'Sharqit::DAGEdge::DAGEdge(const DAGEdgeKind kind=Sharqit::DAGEdgeKind::Forward, const uint32_t q=0, const uint32_t to=0)'],['../classSharqit_1_1DAGEdge.html#a3182981a83d42bf1e2d23fc01b92e8f8',1,'Sharqit::DAGEdge::DAGEdge(const DAGEdge &amp;edge)']]],
+  ['dagedgekind_62',['DAGEdgeKind',['../dag_8h.html#a3f45670ad580cc2da638927dcdb98af7',1,'Sharqit']]],
+  ['dagnode_63',['DAGNode',['../classSharqit_1_1DAGNode.html',1,'Sharqit::DAGNode'],['../classSharqit_1_1DAGNode.html#a824742297f75975e1c42a75035912c27',1,'Sharqit::DAGNode::DAGNode(const DAGNodeKind kind=DAGNodeKind::OpNode, const QGate qgate=QGate())'],['../classSharqit_1_1DAGNode.html#ad6451576e112b4b62e4dcc481bfbfbf3',1,'Sharqit::DAGNode::DAGNode(const DAGNode &amp;node)']]],
+  ['dagnodekind_64',['DAGNodeKind',['../dag_8h.html#a39ae4e590d5b1e30151016fc62d2bd6a',1,'Sharqit']]],
+  ['def_5fnode_5fplaces_5fsize_65',['DEF_NODE_PLACES_SIZE',['../zx_8h.html#a0ea31adc86c0a83721dfa9851888eacb',1,'Sharqit']]],
+  ['def_5fzxedgekind_66',['DEF_ZXEDGEKIND',['../zx_8h.html#af3ff074326c0c43546eee8a1802ae43c',1,'Sharqit']]],
+  ['def_5fzxnodekind_67',['DEF_ZXNODEKIND',['../zx_8h.html#a533aab3f93295eb5f0928f50949d6f95',1,'Sharqit']]],
+  ['degree_5fof_5fnode_68',['degree_of_node',['../classSharqit_1_1ZXDiagram.html#ace3e7c355c35e3af2272728baa9055c0',1,'Sharqit::ZXDiagram']]],
+  ['denominator_69',['denominator',['../classSharqit_1_1Fraction.html#a42c75dcafa58f677f635164ffc2d2600',1,'Sharqit::Fraction::denominator() const'],['../classSharqit_1_1Fraction.html#a3a42e8a82262ec452b6a9ea3d7a40deb',1,'Sharqit::Fraction::denominator(const int32_t denominator)']]],
+  ['denominator_5f_70',['denominator_',['../classSharqit_1_1Fraction.html#ae82aa6408d6794f53c16f1741c5d9af5',1,'Sharqit::Fraction']]],
+  ['depth_71',['depth',['../classSharqit_1_1QCirc.html#aa157c822862ce1f15d37e90362645d24',1,'Sharqit::QCirc']]],
+  ['div_72',['div',['../classSharqit_1_1Fraction.html#a60b2842950fde6fdd127f815e0c4fa02',1,'Sharqit::Fraction::div(const Fraction &amp;other) const'],['../classSharqit_1_1Fraction.html#abc0067e7909e950824e939cfb581d310',1,'Sharqit::Fraction::div(const int32_t other) const']]]
 ];

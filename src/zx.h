@@ -17,7 +17,7 @@
 #include "binary_matrix.h"
 #include "qcirc.h"
 
-namespace Sharq {
+namespace Sharqit {
 
   class QCirc;
 
@@ -221,13 +221,13 @@ namespace Sharq {
      * @param [in] node_index node index
      * @return true if the node specified in this index is a X spider, false otherwise
      */
-    bool check_x_spider(const uint32_t node_index) const { return nodes_[node_index].kind() == Sharq::ZXNodeKind::XSpider; }
+    bool check_x_spider(const uint32_t node_index) const { return nodes_[node_index].kind() == Sharqit::ZXNodeKind::XSpider; }
     /**
      * @brief whether the node specified in this index is a Z spider or not
      * @param [in] node_index node index
      * @return true if the node specified in this index is a Z spider, false otherwise
      */
-    bool check_z_spider(const uint32_t node_index) const { return nodes_[node_index].kind() == Sharq::ZXNodeKind::ZSpider; }
+    bool check_z_spider(const uint32_t node_index) const { return nodes_[node_index].kind() == Sharqit::ZXNodeKind::ZSpider; }
     /**
      * @brief whether the node specified in this index is a zero phase spider or not
      * @param [in] node_index node index
@@ -318,13 +318,13 @@ namespace Sharq {
      * @param [in] node_index node index
      * @return true if the node specified in this index is a input node, false otherwise
      */
-    bool check_input_node(const uint32_t node_index) const { return (nodes_[node_index].kind() == Sharq::ZXNodeKind::Input); }
+    bool check_input_node(const uint32_t node_index) const { return (nodes_[node_index].kind() == Sharqit::ZXNodeKind::Input); }
     /**
      * @brief whether the node specified in this index is a output node or not
      * @param [in] node_index node index
      * @return true if the node specified in this index is a output node, false otherwise
      */
-    bool check_output_node(const uint32_t node_index) const { return (nodes_[node_index].kind() == Sharq::ZXNodeKind::Output); }
+    bool check_output_node(const uint32_t node_index) const { return (nodes_[node_index].kind() == Sharqit::ZXNodeKind::Output); }
     /**
      * @brief whether the node specified in this index connects a input node or not
      * @param [in] node_index node index
@@ -333,7 +333,7 @@ namespace Sharq {
     bool check_connect_input_node(const uint32_t node_index)
     {
       for (auto& e:adj_mat_[node_index]) {
-	if (nodes_[e.to()].kind() == Sharq::ZXNodeKind::Input) return true;
+	if (nodes_[e.to()].kind() == Sharqit::ZXNodeKind::Input) return true;
       }
       return false;
     }
@@ -345,7 +345,7 @@ namespace Sharq {
     bool check_connect_output_node(const uint32_t node_index)
     {
       for (auto& e:adj_mat_[node_index]) {
-	if (nodes_[e.to()].kind() == Sharq::ZXNodeKind::Output) return true;
+	if (nodes_[e.to()].kind() == Sharqit::ZXNodeKind::Output) return true;
       }
       return false;
     }
@@ -461,7 +461,7 @@ namespace Sharq {
      * @sa ZXDiagram::update_frontier
      * @sa ZXDiagram::update_frontier_pg
      */
-    void process_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz = false);
+    void process_frontier(std::vector<uint32_t>& frontier, Sharqit::QCirc& qc, const bool opt_cz = false);
     /**
      * @brief extract quantum gates from the ZX-diagram and update the frontier spiders
      * @param [in,out] frontier indexes' vector of frontier spiders introduced in the process of extracting quantum circuit
@@ -470,7 +470,7 @@ namespace Sharq {
      * @sa ZXDiagram::process_frontier
      * @return updated or not
      */
-    bool update_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz = false);
+    bool update_frontier(std::vector<uint32_t>& frontier, Sharqit::QCirc& qc, const bool opt_cz = false);
     /**
      * @brief update frontier spiders in the case that the frontier can't be updated because of invalid biadjacency matrix related to the frontier
      * @param [in,out] frontier indexes' vector of frontier spiders introduced in the process of extracting quantum circuit
@@ -479,7 +479,7 @@ namespace Sharq {
      * @sa ZXDiagram::update_frontier
      * @return updated or not
      */
-    bool update_frontier_pg(std::vector<uint32_t>& frontier, Sharq::QCirc& qc);
+    bool update_frontier_pg(std::vector<uint32_t>& frontier, Sharqit::QCirc& qc);
     /**
      * @brief apply a local complimmentation algorithm for the node specified in the index
      * @param [in] idx_A node index

@@ -5,7 +5,7 @@
 
 #include "zx.h"
 
-void Sharq::ZXDiagram::fuse_spiders()
+void Sharqit::ZXDiagram::fuse_spiders()
 {
   while (true) {
     update_node_places();
@@ -16,15 +16,15 @@ void Sharq::ZXDiagram::fuse_spiders()
     uint32_t idx_remove;
   
     for (uint32_t i = 0; i < nodes_.size(); ++i) {
-      if (kind_of_node(i) == Sharq::ZXNodeKind::Input ||
-  	  kind_of_node(i) == Sharq::ZXNodeKind::Output) continue;
+      if (kind_of_node(i) == Sharqit::ZXNodeKind::Input ||
+  	  kind_of_node(i) == Sharqit::ZXNodeKind::Output) continue;
   
       bool find_normal = false;
       for (auto& edge:adj_mat_[i]) {
-  	if ((edge.kind() == Sharq::ZXEdgeKind::Plain) &&
+  	if ((edge.kind() == Sharqit::ZXEdgeKind::Plain) &&
 	    (kind_of_node(i) == kind_of_node(edge.to())) &&
-	    (kind_of_node(edge.to()) != Sharq::ZXNodeKind::Input &&
-	     kind_of_node(edge.to()) != Sharq::ZXNodeKind::Output)) {
+	    (kind_of_node(edge.to()) != Sharqit::ZXNodeKind::Input &&
+	     kind_of_node(edge.to()) != Sharqit::ZXNodeKind::Output)) {
   	  idx_target = std::min(i, edge.to());
   	  idx_remove = std::max(i, edge.to());
 
@@ -65,26 +65,26 @@ void Sharq::ZXDiagram::fuse_spiders()
   remove_isolated_spiders();
 }
 
-void Sharq::ZXDiagram::conv_x_to_z()
+void Sharqit::ZXDiagram::conv_x_to_z()
 {
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     for (uint32_t j = 0; j < adj_mat_[i].size(); ++j) {
-      if (kind_of_node(i) == Sharq::ZXNodeKind::XSpider) {
+      if (kind_of_node(i) == Sharqit::ZXNodeKind::XSpider) {
 	adj_mat_[i][j].reverse_kind();
       }
-      if (kind_of_node(adj_mat_[i][j].to()) == Sharq::ZXNodeKind::XSpider) {
+      if (kind_of_node(adj_mat_[i][j].to()) == Sharqit::ZXNodeKind::XSpider) {
 	adj_mat_[i][j].reverse_kind();
       }
     }
   }
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
-     if (kind_of_node(i) == Sharq::ZXNodeKind::XSpider) {
-      nodes_[i].kind(Sharq::ZXNodeKind::ZSpider);
+     if (kind_of_node(i) == Sharqit::ZXNodeKind::XSpider) {
+      nodes_[i].kind(Sharqit::ZXNodeKind::ZSpider);
     }
   }
 }
 
-void Sharq::ZXDiagram::remove_parallel_selfloops_hadamard_edges()
+void Sharqit::ZXDiagram::remove_parallel_selfloops_hadamard_edges()
 {
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     /* initialize hadamard counts */
@@ -94,7 +94,7 @@ void Sharq::ZXDiagram::remove_parallel_selfloops_hadamard_edges()
     }
     /* count hadamard edge */
     for (uint32_t j = 0; j < adj_mat_[i].size(); ++j) {
-      if (adj_mat_[i][j].kind() == Sharq::ZXEdgeKind::Hadamard) {
+      if (adj_mat_[i][j].kind() == Sharqit::ZXEdgeKind::Hadamard) {
 	uint32_t cnt = hadamard_counts.at(adj_mat_[i][j].to()) + 1;
 	hadamard_counts.insert_or_assign(adj_mat_[i][j].to(), cnt);
       }
@@ -109,37 +109,37 @@ void Sharq::ZXDiagram::remove_parallel_selfloops_hadamard_edges()
     }
     for (auto it = hadamard_counts.begin(); it != hadamard_counts.end(); ++it) {
       if (it->second != 0 && it->second % 2 == 1) {
-	adj_mat_[i].push_back(Sharq::ZXEdge(Sharq::ZXEdgeKind::Hadamard, it->first));
+	adj_mat_[i].push_back(Sharqit::ZXEdge(Sharqit::ZXEdgeKind::Hadamard, it->first));
       }
     }
   }
 }
 
-void Sharq::ZXDiagram::update_node_places()
+void Sharqit::ZXDiagram::update_node_places()
 {
   if (nodes_.size() > node_places_.size()) {
-    node_places_.assign(nodes_.size(), Sharq::ZXNodePlace::Internal);
+    node_places_.assign(nodes_.size(), Sharqit::ZXNodePlace::Internal);
   }
   else {
-    node_places_.assign(node_places_.size(), Sharq::ZXNodePlace::Internal);
+    node_places_.assign(node_places_.size(), Sharqit::ZXNodePlace::Internal);
   }
 
   for (auto& in:inputs_) {
-    node_places_[in] = Sharq::ZXNodePlace::Terminal;
+    node_places_[in] = Sharqit::ZXNodePlace::Terminal;
     uint32_t from = in;
     uint32_t to = adj_mat_[from][0].to(); // index of spider adjacent input node
-    node_places_[to] = Sharq::ZXNodePlace::Boundary;
+    node_places_[to] = Sharqit::ZXNodePlace::Boundary;
   }
 
   for (auto& out:outputs_) {
-    node_places_[out] = Sharq::ZXNodePlace::Terminal;
+    node_places_[out] = Sharqit::ZXNodePlace::Terminal;
     uint32_t from = out;
     uint32_t to = adj_mat_[from][0].to(); // index of spider adjacent output node
-    node_places_[to] = Sharq::ZXNodePlace::Boundary;
+    node_places_[to] = Sharqit::ZXNodePlace::Boundary;
   }
 }
 
-void Sharq::ZXDiagram::update_phase_gadget()
+void Sharqit::ZXDiagram::update_phase_gadget()
 {
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     nodes_[i].pg_phase(false);
@@ -147,7 +147,7 @@ void Sharq::ZXDiagram::update_phase_gadget()
   }
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     if (check_z_spider(i) && degree_of_node(i) == 1 &&
-	adj_mat_[i][0].kind() == Sharq::ZXEdgeKind::Hadamard &&
+	adj_mat_[i][0].kind() == Sharqit::ZXEdgeKind::Hadamard &&
 	check_internal_node(adj_mat_[i][0].to()) &&
 	check_z_spider(adj_mat_[i][0].to()) &&
 	check_zero_phase_spider(adj_mat_[i][0].to())) {
@@ -162,10 +162,10 @@ void Sharq::ZXDiagram::update_phase_gadget()
   }
 }
 
-void Sharq::ZXDiagram::graph_like()
+void Sharqit::ZXDiagram::graph_like()
 
 {
-  if (kind() == Sharq::ZXDiagramKind::GraphLike) return;
+  if (kind() == Sharqit::ZXDiagramKind::GraphLike) return;
   
   /* fuse Spiders */
   fuse_spiders();
@@ -185,18 +185,18 @@ void Sharq::ZXDiagram::graph_like()
   /* if input connected to Hadamard edge, convert Plain edge */
   for (auto& in:inputs_) {
     for (auto& e:adj_mat_[in]) {
-      if (e.kind() == Sharq::ZXEdgeKind::Hadamard) {
+      if (e.kind() == Sharqit::ZXEdgeKind::Hadamard) {
 	uint32_t to = e.to();
-	uint32_t mid = append_node(Sharq::ZXNode(Sharq::ZXNodeKind::ZSpider,
-						 Sharq::Phase(0), nodes_[in].q()),
-				   Sharq::ZXEdge(Sharq::ZXEdgeKind::Plain, in));
-	connect_nodes(mid, to, Sharq::ZXEdgeKind::Hadamard);
+	uint32_t mid = append_node(Sharqit::ZXNode(Sharqit::ZXNodeKind::ZSpider,
+						 Sharqit::Phase(0), nodes_[in].q()),
+				   Sharqit::ZXEdge(Sharqit::ZXEdgeKind::Plain, in));
+	connect_nodes(mid, to, Sharqit::ZXEdgeKind::Hadamard);
       }
     }
   }
   for (auto& in:inputs_) {
     for (auto& e:adj_mat_[in]) {
-      if (e.kind() == Sharq::ZXEdgeKind::Hadamard) {
+      if (e.kind() == Sharqit::ZXEdgeKind::Hadamard) {
 	remove_edge(in, e.to());
       }
     }
@@ -205,27 +205,27 @@ void Sharq::ZXDiagram::graph_like()
   /* if output connected to Hadamard edge, convert Plain edge */
   for (auto& out:outputs_) {
     for (auto& e:adj_mat_[out]) {
-      if (e.kind() == Sharq::ZXEdgeKind::Hadamard) {
+      if (e.kind() == Sharqit::ZXEdgeKind::Hadamard) {
 	uint32_t to = e.to();
-	uint32_t mid = append_node(Sharq::ZXNode(Sharq::ZXNodeKind::ZSpider,
-						 Sharq::Phase(0), nodes_[out].q()),
-				   Sharq::ZXEdge(Sharq::ZXEdgeKind::Plain, out));
-	connect_nodes(mid, to, Sharq::ZXEdgeKind::Hadamard);
+	uint32_t mid = append_node(Sharqit::ZXNode(Sharqit::ZXNodeKind::ZSpider,
+						 Sharqit::Phase(0), nodes_[out].q()),
+				   Sharqit::ZXEdge(Sharqit::ZXEdgeKind::Plain, out));
+	connect_nodes(mid, to, Sharqit::ZXEdgeKind::Hadamard);
       }
     }
   }
   for (auto& out:outputs_) {
     for (auto& e:adj_mat_[out]) {
-      if (e.kind() == Sharq::ZXEdgeKind::Hadamard) {
+      if (e.kind() == Sharqit::ZXEdgeKind::Hadamard) {
 	remove_edge(out, e.to());
       }
     }
   }
   
-  kind(Sharq::ZXDiagramKind::GraphLike);
+  kind(Sharqit::ZXDiagramKind::GraphLike);
 }
 
-void Sharq::ZXDiagram::lcomp_one_time(const uint32_t idx_A)
+void Sharqit::ZXDiagram::lcomp_one_time(const uint32_t idx_A)
 {
   /* node indexes of neighbours */
   std::vector<uint32_t> idx_neighbours = adjacent_node_indexes(idx_A);
@@ -240,9 +240,9 @@ void Sharq::ZXDiagram::lcomp_one_time(const uint32_t idx_A)
   remove_edges_of_node(idx_A);
 }
 
-uint32_t Sharq::ZXDiagram::lcomp()
+uint32_t Sharqit::ZXDiagram::lcomp()
 {
-  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+  if (kind() != Sharqit::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. must be graph-like ZX diagram.");
   }
 
@@ -261,8 +261,8 @@ uint32_t Sharq::ZXDiagram::lcomp()
     if (lc_used_spiders[i] == 1) continue;
     if ((check_internal_node(i) && check_z_spider(i)) == false) continue;
     if (check_pg_leaf_node(i)) continue;
-    if (nodes_[i].phase() == Sharq::Phase(1,2) ||
-	nodes_[i].phase() == Sharq::Phase(3,2)) {
+    if (nodes_[i].phase() == Sharqit::Phase(1,2) ||
+	nodes_[i].phase() == Sharqit::Phase(3,2)) {
       bool break_flg = false;
       for (auto& e:adj_mat_[i]) {
 	if (lc_used_spiders[e.to()] == 1) {
@@ -292,7 +292,7 @@ uint32_t Sharq::ZXDiagram::lcomp()
   return lc_cand_spiders.size();
 }
 
-void Sharq::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_B)
+void Sharqit::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_B)
 {
   std::vector<uint32_t> indexes_A = adjacent_node_indexes(idx_A);
   std::vector<uint32_t> indexes_B = adjacent_node_indexes(idx_B);
@@ -327,20 +327,20 @@ void Sharq::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_
   xor_hadamard_edges(indexes_AB);
 
   /* add phase of idx_A to the phases of all indexes_B */
-  Sharq::Phase phase_A = nodes_[idx_A].phase();
+  Sharqit::Phase phase_A = nodes_[idx_A].phase();
   for (auto& idx:indexes_B) {
     nodes_[idx].phase(nodes_[idx].phase() + phase_A);
   }
 
   /* add phase of idx_A to the phases of all indexes_B */
-  Sharq::Phase phase_B = nodes_[idx_B].phase();
+  Sharqit::Phase phase_B = nodes_[idx_B].phase();
   for (auto& idx:indexes_A) {
     nodes_[idx].phase(nodes_[idx].phase() + phase_B);
   }
 
   /* add phase of PI to the phases of all indexes_AandB */
   for (auto& idx:indexes_AandB) {
-    nodes_[idx].phase(nodes_[idx].phase() + Sharq::Phase(1));
+    nodes_[idx].phase(nodes_[idx].phase() + Sharqit::Phase(1));
   }
 
   /* remove edges of idx_A, idx_B */
@@ -348,9 +348,9 @@ void Sharq::ZXDiagram::pivot1_one_time(const uint32_t idx_A, const uint32_t idx_
   remove_edges_of_node(idx_B);
 }
 
-uint32_t Sharq::ZXDiagram::pivot1()
+uint32_t Sharqit::ZXDiagram::pivot1()
 {
-  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+  if (kind() != Sharqit::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
   }
 
@@ -428,7 +428,7 @@ uint32_t Sharq::ZXDiagram::pivot1()
   return p1_cand_spiders.size();
 }
 
-void Sharq::ZXDiagram::pivot2_one_time(const uint32_t idx_A, const uint32_t idx_B)
+void Sharqit::ZXDiagram::pivot2_one_time(const uint32_t idx_A, const uint32_t idx_B)
 {
   uint32_t idx_C = 0;
   uint32_t idx_D = 0;
@@ -467,14 +467,14 @@ void Sharq::ZXDiagram::pivot2_one_time(const uint32_t idx_A, const uint32_t idx_
   xor_hadamard_edges(indexes_AB);
 
   /* add phase of idx_A to the phases of all indexes_B */
-  Sharq::Phase phase_A = nodes_[idx_A].phase();
+  Sharqit::Phase phase_A = nodes_[idx_A].phase();
   for (auto& idx:indexes_B) {
     nodes_[idx].phase(nodes_[idx].phase() + phase_A);
   }
 
   /* add phase of PI to the phases of all indexes_AandB */
   for (auto& idx:indexes_AandB) {
-    nodes_[idx].phase(nodes_[idx].phase() + Sharq::Phase(1));
+    nodes_[idx].phase(nodes_[idx].phase() + Sharqit::Phase(1));
   }
 
   /* phase gadget */
@@ -492,8 +492,8 @@ void Sharq::ZXDiagram::pivot2_one_time(const uint32_t idx_A, const uint32_t idx_
     if (indexes_A[i] == idx_B || indexes_A[i] == idx_tmp) continue;
     else connect_nodes(idx_C, indexes_A[i], ZXEdgeKind::Hadamard);
   }
-  Sharq::Phase phase_B = nodes_[idx_B].phase();
-  Sharq::Fraction frac = phase_A.frac();
+  Sharqit::Phase phase_B = nodes_[idx_B].phase();
+  Sharqit::Fraction frac = phase_A.frac();
   frac.reduce();
   if (std::abs(frac.numerator()) % 2 == 1) {
     phase_B = -phase_B;
@@ -508,9 +508,9 @@ void Sharq::ZXDiagram::pivot2_one_time(const uint32_t idx_A, const uint32_t idx_
   remove_edges_of_node(idx_B);
 }
 
-uint32_t Sharq::ZXDiagram::pivot2()
+uint32_t Sharqit::ZXDiagram::pivot2()
 {
-  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+  if (kind() != Sharqit::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
   }
 
@@ -589,7 +589,7 @@ uint32_t Sharq::ZXDiagram::pivot2()
   return p2_cand_spiders.size();
 }
 
-void Sharq::ZXDiagram::pivot3_one_time(const uint32_t idx_A, const uint32_t idx_B)
+void Sharqit::ZXDiagram::pivot3_one_time(const uint32_t idx_A, const uint32_t idx_B)
 {
   uint32_t idx_C = 0;
   uint32_t idx_CC = 0;
@@ -640,14 +640,14 @@ void Sharq::ZXDiagram::pivot3_one_time(const uint32_t idx_A, const uint32_t idx_
   xor_hadamard_edges(indexes_AB);
 
   /* add phase of idx_A to the phases of all indexes_B */
-  Sharq::Phase phase_A = nodes_[idx_A].phase();
+  Sharqit::Phase phase_A = nodes_[idx_A].phase();
   for (auto& idx:indexes_B) {
     nodes_[idx].phase(nodes_[idx].phase() + phase_A);
   }
 
   /* add phase of PI to the phases of all indexes_AandB */
   for (auto& idx:indexes_AandB) {
-    nodes_[idx].phase(nodes_[idx].phase() + Sharq::Phase(1));
+    nodes_[idx].phase(nodes_[idx].phase() + Sharqit::Phase(1));
   }
 
   /* phase gadget */
@@ -670,8 +670,8 @@ void Sharq::ZXDiagram::pivot3_one_time(const uint32_t idx_A, const uint32_t idx_
       connect_nodes(idx_CC, indexes_A[i], ZXEdgeKind::Hadamard);
     }
   }
-  Sharq::Phase phase_B = nodes_[idx_B].phase();
-  Sharq::Fraction frac = phase_A.frac();
+  Sharqit::Phase phase_B = nodes_[idx_B].phase();
+  Sharqit::Fraction frac = phase_A.frac();
   frac.reduce();
   if (std::abs(frac.numerator()) % 2 == 1) {
     phase_B = -phase_B;
@@ -689,9 +689,9 @@ void Sharq::ZXDiagram::pivot3_one_time(const uint32_t idx_A, const uint32_t idx_
   remove_edges_of_node(idx_B);
 }
 
-uint32_t Sharq::ZXDiagram::pivot3()
+uint32_t Sharqit::ZXDiagram::pivot3()
 {
-  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+  if (kind() != Sharqit::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
   }
 
@@ -780,9 +780,9 @@ uint32_t Sharq::ZXDiagram::pivot3()
   return p3_cand_spiders.size();
 }
 
-void Sharq::ZXDiagram::id_removal()
+void Sharqit::ZXDiagram::id_removal()
 {
-  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+  if (kind() != Sharqit::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
   }
   
@@ -835,7 +835,7 @@ void Sharq::ZXDiagram::id_removal()
   remove_parallel_selfloops_hadamard_edges();
 }
 
-void Sharq::ZXDiagram::gfusion_one_time(const uint32_t idx_A_phase, const uint32_t idx_B_phase)
+void Sharqit::ZXDiagram::gfusion_one_time(const uint32_t idx_A_phase, const uint32_t idx_B_phase)
 {
   uint32_t idx_B_root = adj_mat_[idx_B_phase][0].to();
   nodes_[idx_A_phase].phase(nodes_[idx_A_phase].phase() + nodes_[idx_B_phase].phase());
@@ -843,9 +843,9 @@ void Sharq::ZXDiagram::gfusion_one_time(const uint32_t idx_A_phase, const uint32
   remove_edges_of_node(idx_B_root);
 }
 
-uint32_t Sharq::ZXDiagram::gfusion()
+uint32_t Sharqit::ZXDiagram::gfusion()
 {
-  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+  if (kind() != Sharqit::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't execute local complementation for general ZX diagram. it must be graph-like ZX diagram.");
   }
 
@@ -976,7 +976,7 @@ uint32_t Sharq::ZXDiagram::gfusion()
   return pg_phase_spiders_pairs.size();
 }
 
-void Sharq::ZXDiagram::simplify()
+void Sharqit::ZXDiagram::simplify()
 {
   graph_like();
 

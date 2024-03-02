@@ -5,20 +5,20 @@
 
 #include "zx.h"
 
-std::string Sharq::ZXNode::name() const
+std::string Sharqit::ZXNode::name() const
 {
   std::string s;
 
-  if (kind_ == Sharq::ZXNodeKind::XSpider) {
+  if (kind_ == Sharqit::ZXNodeKind::XSpider) {
     s = "X(" + phase_.to_string() + ")";
   }
-  else if (kind_ == Sharq::ZXNodeKind::ZSpider) {
+  else if (kind_ == Sharqit::ZXNodeKind::ZSpider) {
     s = "Z(" + phase_.to_string() + ")";
   }
-  else if (kind_ == Sharq::ZXNodeKind::Input) {
+  else if (kind_ == Sharqit::ZXNodeKind::Input) {
     s = "in_" + std::to_string(q_);
   }
-  else if (kind_ == Sharq::ZXNodeKind::Output) {
+  else if (kind_ == Sharqit::ZXNodeKind::Output) {
     s = "out_" + std::to_string(q_);
   }
   

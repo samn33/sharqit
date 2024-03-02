@@ -5,7 +5,7 @@
 
 #include "qcirc.h"
 
-bool Sharq::QCirc::is_termination_border(const uint32_t idx, const uint32_t q)
+bool Sharqit::QCirc::is_termination_border(const uint32_t idx, const uint32_t q)
 {
   if (qgates_[idx].is_included(q) &&
       (!qgates_[idx].is_RZ_gate() && !qgates_[idx].is_X_gate() &&
@@ -15,7 +15,7 @@ bool Sharq::QCirc::is_termination_border(const uint32_t idx, const uint32_t q)
   return false;
 }
 
-void Sharq::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t end,
+void Sharqit::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t end,
 					   const std::vector<uint32_t>& ppc_qid,
 					   const std::vector<std::pair<uint32_t, uint32_t>>& term_border,
 					   const std::vector<uint8_t>& cnot_objects)
@@ -68,8 +68,8 @@ void Sharq::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t 
     for (uint32_t j = i + 1; j < P.size(); ++j) {
       if (std::equal(P[i].cbegin(), P[i].cend(), P[j].cbegin())) {
 	uint32_t q_j = rotation_index[j];
-	Sharq::Phase phase = qgates_[q_i].phase() + qgates_[q_j].phase();
-	Sharq::Phase zero(0);
+	Sharqit::Phase phase = qgates_[q_i].phase() + qgates_[q_j].phase();
+	Sharqit::Phase zero(0);
 	qgates_[q_i].phase(phase);
 	qgates_[q_j].phase(zero);
 	rotation_index_used[j] = 1;
@@ -79,7 +79,7 @@ void Sharq::QCirc::merge_rotation_one_time(const uint32_t start, const uint32_t 
 }
 
 /* merge rotation gates using phase polynomial representation */
-void Sharq::QCirc::merge_rotation()
+void Sharqit::QCirc::merge_rotation()
 {
   /* CZ to CX */
   cz_to_cx();

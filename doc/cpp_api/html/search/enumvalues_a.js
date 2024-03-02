@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['s_686',['S',['../qgate_8h.html#a98321dabde428a5558608a1f1275f928a24820294f066e50f68beeea35bfb6de9',1,'Sharq']]],
-  ['sdg_687',['Sdg',['../qgate_8h.html#a98321dabde428a5558608a1f1275f928a06797ab55334e032aa8af3cb1af6f7eb',1,'Sharq']]]
+  ['s_686',['S',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606aa50d26dcac7e8e45fa761ed8729427d2',1,'Sharqit']]],
+  ['sdg_687',['Sdg',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606aeae4b27806814f1585134aa336538ddb',1,'Sharqit']]]
 ];

@@ -5,7 +5,7 @@
 
 #include "zx.h"
 
-void Sharq::ZXDiagram::permutation_as_swap(Sharq::QCirc& qc)
+void Sharqit::ZXDiagram::permutation_as_swap(Sharqit::QCirc& qc)
 {
   std::vector<uint32_t> qid_list(qubit_num_);
 
@@ -25,7 +25,7 @@ void Sharq::ZXDiagram::permutation_as_swap(Sharq::QCirc& qc)
   }
 }
 
-std::vector<std::pair<uint32_t, uint32_t>> Sharq::ZXDiagram::extract_2q_connects(std::vector<uint32_t>& frontier) const
+std::vector<std::pair<uint32_t, uint32_t>> Sharqit::ZXDiagram::extract_2q_connects(std::vector<uint32_t>& frontier) const
 {
   /* first element is related to CX gate, others are relate to CZ gate */
   std::vector<std::pair<uint32_t, uint32_t>> connects;
@@ -83,15 +83,15 @@ std::vector<std::pair<uint32_t, uint32_t>> Sharq::ZXDiagram::extract_2q_connects
   return connects;
 }
 
-bool Sharq::ZXDiagram::update_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz)
+bool Sharqit::ZXDiagram::update_frontier(std::vector<uint32_t>& frontier, Sharqit::QCirc& qc, const bool opt_cz)
 {
   /* frontier adjacent to input node or root of phase gadget */
   std::vector<uint8_t> frontier_prohibit;
   for (auto& idx:frontier) {
     uint8_t flg = 0;
     for (auto& e:adj_mat_[idx]) {
-      if (e.kind() == Sharq::ZXEdgeKind::Plain &&
-	  kind_of_node(e.to()) == Sharq::ZXNodeKind::Input) {
+      if (e.kind() == Sharqit::ZXEdgeKind::Plain &&
+	  kind_of_node(e.to()) == Sharqit::ZXNodeKind::Input) {
 	flg = 1;
 	break;
       }
@@ -128,7 +128,7 @@ bool Sharq::ZXDiagram::update_frontier(std::vector<uint32_t>& frontier, Sharq::Q
       else if (check_connect(frontier[i], neighbours[j])) elements[i][j] = 1;
     }
   }
-  Sharq::BinaryMatrix bmat(elements);
+  Sharqit::BinaryMatrix bmat(elements);
 
   /* gauss reduce */
   std::vector<std::pair<uint32_t, uint32_t>> row_ops = bmat.gauss_reduce();
@@ -155,7 +155,7 @@ bool Sharq::ZXDiagram::update_frontier(std::vector<uint32_t>& frontier, Sharq::Q
       if (neighbours_flg[s] == 0) continue;
       uint32_t n = neighbours[s];
       if (check_connect(f, n) && degree_of_node(f) == 1 &&
-	  kind_of_node(n) != Sharq::ZXNodeKind::Input && !check_pg_root_node(n)) {
+	  kind_of_node(n) != Sharqit::ZXNodeKind::Input && !check_pg_root_node(n)) {
 	uint32_t q = nodes_[f].q();
 	qc.h(q);
 	if (nodes_[n].phase().is_zero() == 0) {
@@ -215,14 +215,14 @@ bool Sharq::ZXDiagram::update_frontier(std::vector<uint32_t>& frontier, Sharq::Q
   /* return true if update is done */
   for (auto& f:frontier) {
     for (auto& e:adj_mat_[f]) {
-      if (kind_of_node(e.to()) != Sharq::ZXNodeKind::Input) return false;
+      if (kind_of_node(e.to()) != Sharqit::ZXNodeKind::Input) return false;
     }
   }
 
   return true;
 }
 
-bool Sharq::ZXDiagram::update_frontier_pg(std::vector<uint32_t>& frontier, Sharq::QCirc& qc)
+bool Sharqit::ZXDiagram::update_frontier_pg(std::vector<uint32_t>& frontier, Sharqit::QCirc& qc)
 {
   uint32_t idx_A = 0;
   uint32_t idx_B = 0;
@@ -249,10 +249,10 @@ bool Sharq::ZXDiagram::update_frontier_pg(std::vector<uint32_t>& frontier, Sharq
       pos = i;
       idx_C = append_node(ZXNode(ZXNodeKind::ZSpider, Phase(0), pos), ZXEdge(ZXEdgeKind::Hadamard, idx_A));
       idx_D = append_node(ZXNode(ZXNodeKind::ZSpider, Phase(0), pos), ZXEdge(ZXEdgeKind::Hadamard, idx_C));
-      connect_nodes(idx_D, outputs_[i], Sharq::ZXEdgeKind::Plain);
+      connect_nodes(idx_D, outputs_[i], Sharqit::ZXEdgeKind::Plain);
     }
     else {
-      connect_nodes(frontier[i], outputs_[i], Sharq::ZXEdgeKind::Plain);
+      connect_nodes(frontier[i], outputs_[i], Sharqit::ZXEdgeKind::Plain);
     }
   }
 
@@ -260,7 +260,7 @@ bool Sharq::ZXDiagram::update_frontier_pg(std::vector<uint32_t>& frontier, Sharq
   bool adj_input = false;
   uint32_t pos_input = 0;
   for (auto& e:adj_mat_[idx_A]) {
-    if (nodes_[e.to()].kind() == Sharq::ZXNodeKind::Input) {
+    if (nodes_[e.to()].kind() == Sharqit::ZXNodeKind::Input) {
       pos_input = nodes_[e.to()].q();
       adj_input = true;
     }
@@ -272,7 +272,7 @@ bool Sharq::ZXDiagram::update_frontier_pg(std::vector<uint32_t>& frontier, Sharq
     uint32_t idx_F = 0;
     idx_E = append_node(ZXNode(ZXNodeKind::ZSpider, Phase(0), pos_input), ZXEdge(ZXEdgeKind::Hadamard, idx_A));
     idx_F = append_node(ZXNode(ZXNodeKind::ZSpider, Phase(0), pos_input), ZXEdge(ZXEdgeKind::Hadamard, idx_E));
-    connect_nodes(idx_F, inputs_[pos_input], Sharq::ZXEdgeKind::Plain);
+    connect_nodes(idx_F, inputs_[pos_input], Sharqit::ZXEdgeKind::Plain);
     remove_edge(pos_input, idx_A);
   }
 
@@ -302,14 +302,14 @@ bool Sharq::ZXDiagram::update_frontier_pg(std::vector<uint32_t>& frontier, Sharq
   return false;
 }
 
-void Sharq::ZXDiagram::process_frontier(std::vector<uint32_t>& frontier, Sharq::QCirc& qc, const bool opt_cz)
+void Sharqit::ZXDiagram::process_frontier(std::vector<uint32_t>& frontier, Sharqit::QCirc& qc, const bool opt_cz)
 {
   std::vector<uint32_t> frontier_pre = frontier;
   for (uint32_t i = 0; i < frontier.size(); ++i) {
     uint32_t q = nodes_[frontier[i]].q();
     uint32_t to = frontier[i];
     uint32_t from = adj_mat_[frontier[i]][0].to();
-    if (adj_mat_[to][0].kind() == Sharq::ZXEdgeKind::Hadamard) {
+    if (adj_mat_[to][0].kind() == Sharqit::ZXEdgeKind::Hadamard) {
       qc.h(q);
     }
     if (nodes_[from].phase().is_zero() == false) {
@@ -350,9 +350,9 @@ void Sharq::ZXDiagram::process_frontier(std::vector<uint32_t>& frontier, Sharq::
   }
 }
 
-Sharq::QCirc Sharq::ZXDiagram::extract_qcirc()
+Sharqit::QCirc Sharqit::ZXDiagram::extract_qcirc()
 {
-  if (kind() != Sharq::ZXDiagramKind::GraphLike) {
+  if (kind() != Sharqit::ZXDiagramKind::GraphLike) {
     throw std::runtime_error("can't extract circuit not for simplified ZX diagram.");
   }
 
@@ -363,25 +363,25 @@ Sharq::QCirc Sharq::ZXDiagram::extract_qcirc()
   /* if input connected to Hadamard edge, convert Plain edge */
   for (auto& in:inputs_) {
     for (auto& e:adj_mat_[in]) {
-      if (e.kind() == Sharq::ZXEdgeKind::Hadamard) {
+      if (e.kind() == Sharqit::ZXEdgeKind::Hadamard) {
 	uint32_t to = e.to();
-	uint32_t mid = append_node(Sharq::ZXNode(Sharq::ZXNodeKind::ZSpider,
-						 Sharq::Phase(0), nodes_[in].q()),
-				   Sharq::ZXEdge(Sharq::ZXEdgeKind::Plain, in));
-	connect_nodes(mid, to, Sharq::ZXEdgeKind::Hadamard);
+	uint32_t mid = append_node(Sharqit::ZXNode(Sharqit::ZXNodeKind::ZSpider,
+						 Sharqit::Phase(0), nodes_[in].q()),
+				   Sharqit::ZXEdge(Sharqit::ZXEdgeKind::Plain, in));
+	connect_nodes(mid, to, Sharqit::ZXEdgeKind::Hadamard);
       }
     }
   }
   for (auto& in:inputs_) {
     for (auto& e:adj_mat_[in]) {
-      if (e.kind() == Sharq::ZXEdgeKind::Hadamard) {
+      if (e.kind() == Sharqit::ZXEdgeKind::Hadamard) {
 	remove_edge(in, e.to());
       }
     }
   }
 
   /* first step */
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   std::vector<uint32_t> frontier = outputs_;
   process_frontier(frontier, qc, true);
 

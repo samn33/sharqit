@@ -13,7 +13,7 @@
 
 #include "phase.h"
 
-namespace Sharq {
+namespace Sharqit {
 
   //! kind of quantum gate
   enum QGateKind {
@@ -268,7 +268,7 @@ namespace Sharq {
      * @param [in] other quantum gate
      * @return true if the quantum gate is overlap to the other, false otherwise
      */
-    bool overlap(const Sharq::QGate& other) const;
+    bool overlap(const Sharqit::QGate& other) const;
     /**
      * @brief mergeable or not
      * @param [in] other quantum gate

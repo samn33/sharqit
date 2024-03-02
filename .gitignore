@@ -1,5 +1,7 @@
 *.o
+*.a
 *.so
+build
 backup
 sandbox
 old

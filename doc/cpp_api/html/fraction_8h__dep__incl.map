@@ -1,7 +1,7 @@
 <map id="fraction.h" name="fraction.h">
 <area shape="rect" id="node1" title="include file of Fraction class" alt="" coords="435,5,511,32"/>
 <area shape="rect" id="node2" href="$phase_8h.html" title="include file of Phase class" alt="" coords="339,80,407,107"/>
-<area shape="rect" id="node9" href="$sharq_8h.html" title="include file of Sharq library" alt="" coords="263,528,329,555"/>
+<area shape="rect" id="node9" href="$sharqit_8h.html" title="include file of Sharqit library" alt="" coords="260,528,332,555"/>
 <area shape="rect" id="node15" href="$fraction_8cpp.html" title="member functions of Fraction class" alt="" coords="511,80,601,107"/>
 <area shape="rect" id="node3" href="$qgate_8h.html" title="include file of QGate class" alt="" coords="198,155,263,181"/>
 <area shape="rect" id="node14" href="$phase_8cpp.html" title="member functions of Phase class" alt="" coords="303,155,385,181"/>
@@ -12,6 +12,6 @@
 <area shape="rect" id="node6" href="$zx_8h.html" title="include file of ZXCalculus related classes (ZXNode, ZXEdge, ZXDiagram)" alt="" coords="186,379,233,405"/>
 <area shape="rect" id="node7" href="$optimizer_8h.html" title="include file of Optimizer class" alt="" coords="97,453,183,480"/>
 <area shape="rect" id="node8" href="$optimizer_8cpp.html" title="member functions of Optimizer class" alt="" coords="91,528,189,555"/>
-<area shape="rect" id="node10" href="$sharq_8cpp.html" title="source code of sharq command" alt="" coords="257,603,335,629"/>
+<area shape="rect" id="node10" href="$sharqit_8cpp.html" title="source code of sharqit command" alt="" coords="253,603,339,629"/>
 <area shape="rect" id="node12" href="$linear__map_8cpp.html" title="member functions of LinearMap class" alt="" coords="43,304,154,331"/>
 </map>

@@ -14,7 +14,7 @@
 #include "qgate.h"
 #include "qcirc.h"
 
-namespace Sharq {
+namespace Sharqit {
 
   class QCirc;
 
@@ -81,23 +81,23 @@ namespace Sharq {
      * @brief whether the node is an input node or not
      * @return true if the node is an input node, false otherwise
      */
-    bool is_innode() const { return kind_ == Sharq::DAGNodeKind::InNode; }
+    bool is_innode() const { return kind_ == Sharqit::DAGNodeKind::InNode; }
     /**
      * @brief whether the node is an output node or not
      * @return true if the node is an output node, false otherwise
      */
-    bool is_outnode() const { return kind_ == Sharq::DAGNodeKind::OutNode; }
+    bool is_outnode() const { return kind_ == Sharqit::DAGNodeKind::OutNode; }
     /**
      * @brief whether the node is an operation node (quantum gate) or not
      * @return true if the node is an operation node (quantum gate), false otherwise
      */
-    bool is_opnode() const { return kind_ == Sharq::DAGNodeKind::OpNode; }
+    bool is_opnode() const { return kind_ == Sharqit::DAGNodeKind::OpNode; }
     /**
      * @brief whether the node is an identity node (identity gate) or not
      * @return true if the node is an identity node, false otherwise
      */
     bool is_identity() const
-    { return (qgate_.kind() == Sharq::QGateKind::Id || qgate_.kind() == Sharq::QGateKind::Id2); }
+    { return (qgate_.kind() == Sharqit::QGateKind::Id || qgate_.kind() == Sharqit::QGateKind::Id2); }
     /**
      * @brief whether the node is an hadamard gate or not
      * @return true if the node is an hadamard gate, false otherwise
@@ -161,7 +161,7 @@ namespace Sharq {
      * @param [in] q qubit id of the edge
      * @param [in] to node index connected to the edge
      */
-    DAGEdge(const DAGEdgeKind kind = Sharq::DAGEdgeKind::Forward,
+    DAGEdge(const DAGEdgeKind kind = Sharqit::DAGEdgeKind::Forward,
 	    const uint32_t q = 0, const uint32_t to = 0) : kind_(kind), q_(q), to_(to) {}
     /**
      * @brief copy constructor of the DAGEdge
@@ -189,12 +189,12 @@ namespace Sharq {
      * @brief whether the edge is a forward one or not
      * @return true if the edge is a forward one, false otherwise
      */
-    bool is_forward() const { return kind_ == Sharq::DAGEdgeKind::Forward; }
+    bool is_forward() const { return kind_ == Sharqit::DAGEdgeKind::Forward; }
     /**
      * @brief whether the edge is a backward one or not
      * @return true if the edge is a backward one, false otherwise
      */
-    bool is_backward() const { return kind_ == Sharq::DAGEdgeKind::Backward; }
+    bool is_backward() const { return kind_ == Sharqit::DAGEdgeKind::Backward; }
   };
   
   /**
@@ -304,7 +304,7 @@ namespace Sharq {
      * @brief append a DAG node
      * @param [in] node a DAG node
      */
-    uint32_t append_node(const Sharq::DAGNode node);
+    uint32_t append_node(const Sharqit::DAGNode node);
     /**
      * @brief get a previous index of a DAG node related to the qubit id
      * @param [in] idx index of a DAG node

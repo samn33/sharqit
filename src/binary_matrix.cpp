@@ -5,7 +5,7 @@
 
 #include "binary_matrix.h"
 
-std::string Sharq::BinaryMatrix::to_string() const
+std::string Sharqit::BinaryMatrix::to_string() const
 {
   if (elements_.empty()) return "";
   
@@ -25,7 +25,7 @@ std::string Sharq::BinaryMatrix::to_string() const
   return s;
 }
 
-std::vector<std::pair<uint32_t, uint32_t>> Sharq::BinaryMatrix::gauss_reduce(const uint32_t num_of_sum1)
+std::vector<std::pair<uint32_t, uint32_t>> Sharqit::BinaryMatrix::gauss_reduce(const uint32_t num_of_sum1)
 {
   std::vector<std::pair<uint32_t, uint32_t>> row_ops;
   uint32_t sum1_count = 0;

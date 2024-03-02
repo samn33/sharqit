@@ -1,14 +1,14 @@
-#include "sharq.h"
+#include "sharqit/sharqit.h"
 
 void basic_optimization(const std::string& fin) {
 
   try {
-    Sharq::QCirc qc_in;
+    Sharqit::QCirc qc_in;
     qc_in.load(fin);
     std::cout << "file : " << fin << std::endl;
     qc_in.show();
 
-    Sharq::QCirc qc_out = qc_in;
+    Sharqit::QCirc qc_out = qc_in;
 
     qc_out.gate_cancel();
 

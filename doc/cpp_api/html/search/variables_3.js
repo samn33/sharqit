@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['elements_5f_629',['elements_',['../classSharq_1_1BinaryMatrix.html#a63c6d80a492f2611ae3bfcfb9e3333b9',1,'Sharq::BinaryMatrix']]],
-  ['eps_630',['EPS',['../linear__map_8h.html#accf25bf2ab325cb8828e61e8a4a8ca0a',1,'Sharq']]]
+  ['elements_5f_629',['elements_',['../classSharqit_1_1BinaryMatrix.html#a431076bf24618e811b9234ad175ba5fd',1,'Sharqit::BinaryMatrix']]],
+  ['eps_630',['EPS',['../linear__map_8h.html#ad1f10d4b8895def9e5190ea642806d3c',1,'Sharqit']]]
 ];

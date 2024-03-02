@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 
-#include "sharq.h"
+#include "sharqit/sharqit.h"
 
 TEST(QGate, X) {
-  Sharq::QGate qgate(Sharq::QGateKind::X, {1});
-  EXPECT_EQ(Sharq::QGateKind::X, qgate.kind());
+  Sharqit::QGate qgate(Sharqit::QGateKind::X, {1});
+  EXPECT_EQ(Sharqit::QGateKind::X, qgate.kind());
   EXPECT_EQ(1, qgate.qid()[0]);
-  EXPECT_EQ(true, qgate.phase() == Sharq::Phase(0));
+  EXPECT_EQ(true, qgate.phase() == Sharqit::Phase(0));
   EXPECT_EQ("X", qgate.name(true));
   EXPECT_EQ("X", qgate.name(false));
   EXPECT_EQ("X 1", qgate.to_string(true));
@@ -14,10 +14,10 @@ TEST(QGate, X) {
 }
 
 TEST(QGate, Z) {
-  Sharq::QGate qgate(Sharq::QGateKind::Z, {1});
-  EXPECT_EQ(Sharq::QGateKind::Z, qgate.kind());
+  Sharqit::QGate qgate(Sharqit::QGateKind::Z, {1});
+  EXPECT_EQ(Sharqit::QGateKind::Z, qgate.kind());
   EXPECT_EQ(1, qgate.qid()[0]);
-  EXPECT_EQ(true, qgate.phase() == Sharq::Phase(0));
+  EXPECT_EQ(true, qgate.phase() == Sharqit::Phase(0));
   EXPECT_EQ("Z", qgate.name(true));
   EXPECT_EQ("Z", qgate.name(false));
   EXPECT_EQ("Z 1", qgate.to_string(true));
@@ -25,10 +25,10 @@ TEST(QGate, Z) {
 }
 
 TEST(QGate, S) {
-  Sharq::QGate qgate(Sharq::QGateKind::S, {1});
-  EXPECT_EQ(Sharq::QGateKind::S, qgate.kind());
+  Sharqit::QGate qgate(Sharqit::QGateKind::S, {1});
+  EXPECT_EQ(Sharqit::QGateKind::S, qgate.kind());
   EXPECT_EQ(1, qgate.qid()[0]);
-  EXPECT_EQ(true, qgate.phase() == Sharq::Phase(0));
+  EXPECT_EQ(true, qgate.phase() == Sharqit::Phase(0));
   EXPECT_EQ("S", qgate.name(true));
   EXPECT_EQ("S", qgate.name(false));
   EXPECT_EQ("S 1", qgate.to_string(true));
@@ -36,10 +36,10 @@ TEST(QGate, S) {
 }
 
 TEST(QGate, Sdg) {
-  Sharq::QGate qgate(Sharq::QGateKind::Sdg, {1});
-  EXPECT_EQ(Sharq::QGateKind::Sdg, qgate.kind());
+  Sharqit::QGate qgate(Sharqit::QGateKind::Sdg, {1});
+  EXPECT_EQ(Sharqit::QGateKind::Sdg, qgate.kind());
   EXPECT_EQ(1, qgate.qid()[0]);
-  EXPECT_EQ(true, qgate.phase() == Sharq::Phase(0));
+  EXPECT_EQ(true, qgate.phase() == Sharqit::Phase(0));
   EXPECT_EQ("S+", qgate.name(true));
   EXPECT_EQ("S+", qgate.name(false));
   EXPECT_EQ("S+ 1", qgate.to_string(true));
@@ -47,10 +47,10 @@ TEST(QGate, Sdg) {
 }
 
 TEST(QGate, T) {
-  Sharq::QGate qgate(Sharq::QGateKind::T, {1});
-  EXPECT_EQ(Sharq::QGateKind::T, qgate.kind());
+  Sharqit::QGate qgate(Sharqit::QGateKind::T, {1});
+  EXPECT_EQ(Sharqit::QGateKind::T, qgate.kind());
   EXPECT_EQ(1, qgate.qid()[0]);
-  EXPECT_EQ(true, qgate.phase() == Sharq::Phase(0));
+  EXPECT_EQ(true, qgate.phase() == Sharqit::Phase(0));
   EXPECT_EQ("T", qgate.name(true));
   EXPECT_EQ("T", qgate.name(false));
   EXPECT_EQ("T 1", qgate.to_string(true));
@@ -58,10 +58,10 @@ TEST(QGate, T) {
 }
 
 TEST(QGate, Tdg) {
-  Sharq::QGate qgate(Sharq::QGateKind::Tdg, {1});
-  EXPECT_EQ(Sharq::QGateKind::Tdg, qgate.kind());
+  Sharqit::QGate qgate(Sharqit::QGateKind::Tdg, {1});
+  EXPECT_EQ(Sharqit::QGateKind::Tdg, qgate.kind());
   EXPECT_EQ(1, qgate.qid()[0]);
-  EXPECT_EQ(true, qgate.phase() == Sharq::Phase(0));
+  EXPECT_EQ(true, qgate.phase() == Sharqit::Phase(0));
   EXPECT_EQ("T+", qgate.name(true));
   EXPECT_EQ("T+", qgate.name(false));
   EXPECT_EQ("T+ 1", qgate.to_string(true));
@@ -69,10 +69,10 @@ TEST(QGate, Tdg) {
 }
 
 TEST(QGate, H) {
-  Sharq::QGate qgate(Sharq::QGateKind::H, {1});
-  EXPECT_EQ(Sharq::QGateKind::H, qgate.kind());
+  Sharqit::QGate qgate(Sharqit::QGateKind::H, {1});
+  EXPECT_EQ(Sharqit::QGateKind::H, qgate.kind());
   EXPECT_EQ(1, qgate.qid()[0]);
-  EXPECT_EQ(true, qgate.phase() == Sharq::Phase(0));
+  EXPECT_EQ(true, qgate.phase() == Sharqit::Phase(0));
   EXPECT_EQ("H", qgate.name(true));
   EXPECT_EQ("H", qgate.name(false));
   EXPECT_EQ("H 1", qgate.to_string(true));
@@ -80,9 +80,9 @@ TEST(QGate, H) {
 }
 
 TEST(QGate, RZ) {
-  Sharq::Phase PI("PI");
-  Sharq::QGate qgate(Sharq::QGateKind::RZ, {1}, 3*PI/4);
-  EXPECT_EQ(Sharq::QGateKind::RZ, qgate.kind());
+  Sharqit::Phase PI("PI");
+  Sharqit::QGate qgate(Sharqit::QGateKind::RZ, {1}, 3*PI/4);
+  EXPECT_EQ(Sharqit::QGateKind::RZ, qgate.kind());
   EXPECT_EQ(1, qgate.qid()[0]);
   EXPECT_EQ(true, qgate.phase() == 3*PI/4);
   EXPECT_EQ("RZ(3π/4)", qgate.name(true));
@@ -92,11 +92,11 @@ TEST(QGate, RZ) {
 }
 
 TEST(QGate, CX) {
-  Sharq::QGate qgate(Sharq::QGateKind::CX, {1,3});
-  EXPECT_EQ(Sharq::QGateKind::CX, qgate.kind());
+  Sharqit::QGate qgate(Sharqit::QGateKind::CX, {1,3});
+  EXPECT_EQ(Sharqit::QGateKind::CX, qgate.kind());
   EXPECT_EQ(1, qgate.qid()[0]);
   EXPECT_EQ(3, qgate.qid()[1]);
-  EXPECT_EQ(true, qgate.phase() == Sharq::Phase(0));
+  EXPECT_EQ(true, qgate.phase() == Sharqit::Phase(0));
   EXPECT_EQ("CX", qgate.name(true));
   EXPECT_EQ("CX", qgate.name(false));
   EXPECT_EQ("CX 1 3", qgate.to_string(true));

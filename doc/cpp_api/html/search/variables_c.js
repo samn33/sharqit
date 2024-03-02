@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['stats_5fin_5f_651',['stats_in_',['../classSharq_1_1Optimizer.html#a9423b9a5b1db0e0fc74a32738050ade1',1,'Sharq::Optimizer']]],
-  ['stats_5fout_5f_652',['stats_out_',['../classSharq_1_1Optimizer.html#a84f70169d58b0537d0591f36668567a9',1,'Sharq::Optimizer']]]
+  ['stats_5fin_5f_651',['stats_in_',['../classSharqit_1_1Optimizer.html#adace2f815efaeb96871157f75827a0a2',1,'Sharqit::Optimizer']]],
+  ['stats_5fout_5f_652',['stats_out_',['../classSharqit_1_1Optimizer.html#a5d5866e0d2427706d62b45b228407fea',1,'Sharqit::Optimizer']]]
 ];

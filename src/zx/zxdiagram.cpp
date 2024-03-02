@@ -5,33 +5,33 @@
 
 #include "zx.h"
 
-Sharq::ZXDiagram::ZXDiagram(uint32_t qubit_num)
+Sharqit::ZXDiagram::ZXDiagram(uint32_t qubit_num)
 {
-  kind_ = Sharq::ZXDiagramKind::General;
+  kind_ = Sharqit::ZXDiagramKind::General;
   qubit_num_ = qubit_num;
   inputs_.resize(qubit_num);
   outputs_.resize(qubit_num);
 
   for (uint32_t i = 0; i < qubit_num; ++i) {
-    ZXNode node_in(Sharq::ZXNodeKind::Input, Sharq::Phase(0), i);
+    ZXNode node_in(Sharqit::ZXNodeKind::Input, Sharqit::Phase(0), i);
     inputs_[i] = i;
     nodes_.push_back(node_in);
-    Sharq::ZXEdge edge(ZXEdgeKind::Plain, qubit_num + i);
+    Sharqit::ZXEdge edge(ZXEdgeKind::Plain, qubit_num + i);
     adj_mat_.push_back({edge});
   }
 
   for (uint32_t i = 0; i < qubit_num; ++i) {
-    ZXNode node_out(Sharq::ZXNodeKind::Output, Sharq::Phase(0), i);
+    ZXNode node_out(Sharqit::ZXNodeKind::Output, Sharqit::Phase(0), i);
     outputs_[i] = qubit_num + i;
     nodes_.push_back(node_out);
-    Sharq::ZXEdge edge(ZXEdgeKind::Plain, i);
+    Sharqit::ZXEdge edge(ZXEdgeKind::Plain, i);
     adj_mat_.push_back({edge});
   }
 
-  node_places_.assign(Sharq::DEF_NODE_PLACES_SIZE, Sharq::ZXNodePlace::Internal);
+  node_places_.assign(Sharqit::DEF_NODE_PLACES_SIZE, Sharqit::ZXNodePlace::Internal);
 }
 
-std::string Sharq::ZXDiagram::to_string() const
+std::string Sharqit::ZXDiagram::to_string() const
 {
   std::stringstream ss;
   std::vector<ZXNode> nodes = nodes_;
@@ -40,7 +40,7 @@ std::string Sharq::ZXDiagram::to_string() const
   ss << "adj_mat:" << std::endl;
   for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
     ss << " [" << i << "] " << nodes[i].name() + " ";
-    std::vector<Sharq::ZXEdge> edges = adj_mat_[i];
+    std::vector<Sharqit::ZXEdge> edges = adj_mat_[i];
     for (auto& edge:edges) {
       ss << edge.name() + ",";
     }
@@ -51,25 +51,25 @@ std::string Sharq::ZXDiagram::to_string() const
   return s;
 }
 
-std::map<std::string, uint32_t> Sharq::ZXDiagram::stats() const
+std::map<std::string, uint32_t> Sharqit::ZXDiagram::stats() const
 {
   std::map<std::string, uint32_t> sts;
   for (auto& node:nodes_) {
-    if (node.kind() == Sharq::ZXNodeKind::XSpider) sts["xspider"] = sts["xspider"] + 1;
-    if (node.kind() == Sharq::ZXNodeKind::ZSpider) sts["zspider"] = sts["zspider"] + 1;
-    if (node.phase() == Sharq::Phase(0) || node.phase() == Sharq::Phase(1) ||
-	node.phase() == Sharq::Phase(1,2) || node.phase() == Sharq::Phase(3,2)) {
+    if (node.kind() == Sharqit::ZXNodeKind::XSpider) sts["xspider"] = sts["xspider"] + 1;
+    if (node.kind() == Sharqit::ZXNodeKind::ZSpider) sts["zspider"] = sts["zspider"] + 1;
+    if (node.phase() == Sharqit::Phase(0) || node.phase() == Sharqit::Phase(1) ||
+	node.phase() == Sharqit::Phase(1,2) || node.phase() == Sharqit::Phase(3,2)) {
       sts["clifford"] = sts["clifford"] + 1;
     }
-    if (node.phase() != Sharq::Phase(0) && node.phase() != Sharq::Phase(1) &&
-	node.phase() != Sharq::Phase(1,2) && node.phase() != Sharq::Phase(3,2)) {
+    if (node.phase() != Sharqit::Phase(0) && node.phase() != Sharqit::Phase(1) &&
+	node.phase() != Sharqit::Phase(1,2) && node.phase() != Sharqit::Phase(3,2)) {
       sts["non-clifford"] = sts["non-clifford"] + 1;
     }
   }
   uint32_t hadamard_num = 0;
   for (auto& adj:adj_mat_) {
     for (auto& edge:adj) {
-      if (edge.kind() == Sharq::ZXEdgeKind::Hadamard) hadamard_num++;
+      if (edge.kind() == Sharqit::ZXEdgeKind::Hadamard) hadamard_num++;
     }
   }
   sts["hadamard"] = hadamard_num / 2;
@@ -77,7 +77,7 @@ std::map<std::string, uint32_t> Sharq::ZXDiagram::stats() const
   return sts;
 }
 
-void Sharq::ZXDiagram::to_dot_file(const std::string& file_name) const
+void Sharqit::ZXDiagram::to_dot_file(const std::string& file_name) const
 {
   std::vector<ZXNode> nodes = nodes_;
   std::string label = "";
@@ -121,7 +121,7 @@ void Sharq::ZXDiagram::to_dot_file(const std::string& file_name) const
     std::string color = "";
     std::string fillcolor = "";
     std::string fontcolor = "";
-    if (node.kind() == Sharq::ZXNodeKind::Input || node.kind() == Sharq::ZXNodeKind::Output) {
+    if (node.kind() == Sharqit::ZXNodeKind::Input || node.kind() == Sharqit::ZXNodeKind::Output) {
       label = node.name();
       width = "0.5";
       height = "0.2";
@@ -129,7 +129,7 @@ void Sharq::ZXDiagram::to_dot_file(const std::string& file_name) const
       fillcolor = "white";
       fontcolor = "black";
     }
-    else if (node.kind() == Sharq::ZXNodeKind::XSpider) {
+    else if (node.kind() == Sharqit::ZXNodeKind::XSpider) {
       color = "black";
       fillcolor = "\"#ff8888\"";
       fontcolor = "black";
@@ -143,7 +143,7 @@ void Sharq::ZXDiagram::to_dot_file(const std::string& file_name) const
 	label = node.phase().to_string();
       }
     }
-    else if (node.kind() == Sharq::ZXNodeKind::ZSpider) {
+    else if (node.kind() == Sharqit::ZXNodeKind::ZSpider) {
       color = "black";
       fillcolor = "\"#ddffdd\"";
       fontcolor = "black";
@@ -166,12 +166,12 @@ void Sharq::ZXDiagram::to_dot_file(const std::string& file_name) const
 
   /* edge definition */
   for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
-    std::vector<Sharq::ZXEdge> edges = adj_mat_[i];
+    std::vector<Sharqit::ZXEdge> edges = adj_mat_[i];
     for (auto& edge:edges) {
       if (i >= edge.to()) continue;
       std::string style = "solid";
       std::string color = "black";
-      if (edge.kind() == Sharq::ZXEdgeKind::Hadamard) {
+      if (edge.kind() == Sharqit::ZXEdgeKind::Hadamard) {
 	style = "dashed";
 	color = "blue";
       }
@@ -197,10 +197,10 @@ void Sharq::ZXDiagram::to_dot_file(const std::string& file_name) const
   std::vector<std::string> output_nodes;
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     std::string node_name = "node_" + std::to_string(i);
-    if (nodes_[i].kind() == Sharq::ZXNodeKind::Input) {
+    if (nodes_[i].kind() == Sharqit::ZXNodeKind::Input) {
       input_nodes.push_back(node_name);
     }
-    else if (nodes_[i].kind() == Sharq::ZXNodeKind::Output) {
+    else if (nodes_[i].kind() == Sharqit::ZXNodeKind::Output) {
       output_nodes.push_back(node_name);
     }
   }
@@ -221,7 +221,7 @@ void Sharq::ZXDiagram::to_dot_file(const std::string& file_name) const
   ofs.close();
 }
 
-void Sharq::ZXDiagram::to_svg_file(const std::string& file_name) const
+void Sharqit::ZXDiagram::to_svg_file(const std::string& file_name) const
 {
   std::string tmpfile_name = std::filesystem::temp_directory_path().native() + "/sharq_zxdiagram_to_svg_file.dot";
   to_dot_file(tmpfile_name);
@@ -234,43 +234,43 @@ void Sharq::ZXDiagram::to_svg_file(const std::string& file_name) const
   }
 }
 
-void Sharq::ZXDiagram::add_qgate(const QGate& qgate)
+void Sharqit::ZXDiagram::add_qgate(const QGate& qgate)
 {
   std::vector<uint32_t> qid = qgate.qid();
 
   /* X,Z,S,Sdg,T,Tdg,RX,RZ */
-  if (qgate.kind() != Sharq::QGateKind::H && qgate.kind() != Sharq::QGateKind::CX) {
+  if (qgate.kind() != Sharqit::QGateKind::H && qgate.kind() != Sharqit::QGateKind::CX) {
     uint32_t from = outputs_[qid[0]];
     uint32_t to = 0;
-    Sharq::ZXNodeKind kind = Sharq::ZXNodeKind::XSpider;
-    Sharq::Phase phase = Sharq::Phase(0);
+    Sharqit::ZXNodeKind kind = Sharqit::ZXNodeKind::XSpider;
+    Sharqit::Phase phase = Sharqit::Phase(0);
 
-    if (qgate.kind() == Sharq::QGateKind::X) {
-      kind = Sharq::ZXNodeKind::XSpider;
-      phase = Sharq::Phase(1);
+    if (qgate.kind() == Sharqit::QGateKind::X) {
+      kind = Sharqit::ZXNodeKind::XSpider;
+      phase = Sharqit::Phase(1);
     }
-    else if (qgate.kind() == Sharq::QGateKind::Z) {
-      kind = Sharq::ZXNodeKind::ZSpider;
-      phase = Sharq::Phase(1);
+    else if (qgate.kind() == Sharqit::QGateKind::Z) {
+      kind = Sharqit::ZXNodeKind::ZSpider;
+      phase = Sharqit::Phase(1);
     }
-    else if (qgate.kind() == Sharq::QGateKind::S) {
-      kind = Sharq::ZXNodeKind::ZSpider;
-      phase = Sharq::Phase(1, 2);
+    else if (qgate.kind() == Sharqit::QGateKind::S) {
+      kind = Sharqit::ZXNodeKind::ZSpider;
+      phase = Sharqit::Phase(1, 2);
     }
-    else if (qgate.kind() == Sharq::QGateKind::Sdg) {
-      kind = Sharq::ZXNodeKind::ZSpider;
-      phase = Sharq::Phase(3, 2);
+    else if (qgate.kind() == Sharqit::QGateKind::Sdg) {
+      kind = Sharqit::ZXNodeKind::ZSpider;
+      phase = Sharqit::Phase(3, 2);
     }
-    else if (qgate.kind() == Sharq::QGateKind::T) {
-      kind = Sharq::ZXNodeKind::ZSpider;
-      phase = Sharq::Phase(1, 4);
+    else if (qgate.kind() == Sharqit::QGateKind::T) {
+      kind = Sharqit::ZXNodeKind::ZSpider;
+      phase = Sharqit::Phase(1, 4);
     }
-    else if (qgate.kind() == Sharq::QGateKind::Tdg) {
-      kind = Sharq::ZXNodeKind::ZSpider;
-      phase = Sharq::Phase(7, 4);
+    else if (qgate.kind() == Sharqit::QGateKind::Tdg) {
+      kind = Sharqit::ZXNodeKind::ZSpider;
+      phase = Sharqit::Phase(7, 4);
     }
-    else if (qgate.kind() == Sharq::QGateKind::RZ) {
-      kind = Sharq::ZXNodeKind::ZSpider;
+    else if (qgate.kind() == Sharqit::QGateKind::RZ) {
+      kind = Sharqit::ZXNodeKind::ZSpider;
       phase = qgate.phase();
     }
 
@@ -278,32 +278,32 @@ void Sharq::ZXDiagram::add_qgate(const QGate& qgate)
     nodes_[from].phase(phase);
     nodes_[from].q(qid[0]);
 
-    Sharq::ZXNode out(Sharq::ZXNodeKind::Output, Sharq::Phase(0), qid[0]);
+    Sharqit::ZXNode out(Sharqit::ZXNodeKind::Output, Sharqit::Phase(0), qid[0]);
     nodes_.push_back(out);
     to = nodes_.size() - 1;
     outputs_[qid[0]] = to;
 
-    Sharq::ZXEdge edge_forward(ZXEdgeKind::Plain, to);
+    Sharqit::ZXEdge edge_forward(ZXEdgeKind::Plain, to);
     adj_mat_[from].push_back(edge_forward);
-    Sharq::ZXEdge edge_backward(ZXEdgeKind::Plain, from);
+    Sharqit::ZXEdge edge_backward(ZXEdgeKind::Plain, from);
     adj_mat_.push_back({edge_backward});
   }
   /* Hadamard */
-  else if (qgate.kind() == Sharq::QGateKind::H) {
+  else if (qgate.kind() == Sharqit::QGateKind::H) {
     uint32_t to = outputs_[qid[0]];
     if (adj_mat_[to].size() != 1) throw std::runtime_error("error.");
-    if (adj_mat_[to][0].kind() == Sharq::ZXEdgeKind::Plain) {
-      adj_mat_[to][0].kind(Sharq::ZXEdgeKind::Hadamard);
+    if (adj_mat_[to][0].kind() == Sharqit::ZXEdgeKind::Plain) {
+      adj_mat_[to][0].kind(Sharqit::ZXEdgeKind::Hadamard);
     }
     else {
-      adj_mat_[to][0].kind(Sharq::ZXEdgeKind::Plain);
+      adj_mat_[to][0].kind(Sharqit::ZXEdgeKind::Plain);
     }
 
     uint32_t from = adj_mat_[to][0].to();
     uint32_t e = 0;
     bool flg = false;
     for (uint32_t i = 0; i < adj_mat_[from].size(); ++i) {
-      if (kind_of_node(adj_mat_[from][i].to()) == Sharq::ZXNodeKind::Output) {
+      if (kind_of_node(adj_mat_[from][i].to()) == Sharqit::ZXNodeKind::Output) {
 	e = i;
 	flg = true;
 	break;
@@ -313,23 +313,23 @@ void Sharq::ZXDiagram::add_qgate(const QGate& qgate)
       throw std::runtime_error("error.");
     }
 
-    if (adj_mat_[from][e].kind() == Sharq::ZXEdgeKind::Plain) {
-      adj_mat_[from][e].kind(Sharq::ZXEdgeKind::Hadamard);
+    if (adj_mat_[from][e].kind() == Sharqit::ZXEdgeKind::Plain) {
+      adj_mat_[from][e].kind(Sharqit::ZXEdgeKind::Hadamard);
     }
     else {
-      adj_mat_[from][e].kind(Sharq::ZXEdgeKind::Plain);
+      adj_mat_[from][e].kind(Sharqit::ZXEdgeKind::Plain);
     }
     
   }
   /* CNOT */
-  else if (qgate.kind() == Sharq::QGateKind::CX) {
+  else if (qgate.kind() == Sharqit::QGateKind::CX) {
     /* 2 outputs -> control and target */
     uint32_t from_c = outputs_[qid[0]];
     uint32_t from_t = outputs_[qid[1]];
-    Sharq::ZXNodeKind kind_c = Sharq::ZXNodeKind::ZSpider;
-    Sharq::ZXNodeKind kind_t = Sharq::ZXNodeKind::XSpider;
-    Sharq::Phase phase_c = Sharq::Phase(0);
-    Sharq::Phase phase_t = Sharq::Phase(0);
+    Sharqit::ZXNodeKind kind_c = Sharqit::ZXNodeKind::ZSpider;
+    Sharqit::ZXNodeKind kind_t = Sharqit::ZXNodeKind::XSpider;
+    Sharqit::Phase phase_c = Sharqit::Phase(0);
+    Sharqit::Phase phase_t = Sharqit::Phase(0);
 
     nodes_[from_c].kind(kind_c);
     nodes_[from_c].phase(phase_c);
@@ -340,33 +340,33 @@ void Sharq::ZXDiagram::add_qgate(const QGate& qgate)
     nodes_[from_t].q(qid[1]);
 
     /* edges between control and target */
-    Sharq::ZXEdge edge_c_t(ZXEdgeKind::Plain, from_t);
+    Sharqit::ZXEdge edge_c_t(ZXEdgeKind::Plain, from_t);
     adj_mat_[from_c].push_back(edge_c_t);
-    Sharq::ZXEdge edge_t_c(ZXEdgeKind::Plain, from_c);
+    Sharqit::ZXEdge edge_t_c(ZXEdgeKind::Plain, from_c);
     adj_mat_[from_t].push_back(edge_t_c);
 
     /* new output (control) */
-    Sharq::ZXNode out_c(Sharq::ZXNodeKind::Output, Sharq::Phase(0), qid[0]);
+    Sharqit::ZXNode out_c(Sharqit::ZXNodeKind::Output, Sharqit::Phase(0), qid[0]);
     nodes_.push_back(out_c);
     uint32_t to_c = nodes_.size() - 1;
     outputs_[qid[0]] = to_c;
 
     /* edges between new control and new output(control) */
-    Sharq::ZXEdge edge_forward_c(ZXEdgeKind::Plain, to_c);
+    Sharqit::ZXEdge edge_forward_c(ZXEdgeKind::Plain, to_c);
     adj_mat_[from_c].push_back(edge_forward_c);
-    Sharq::ZXEdge edge_backward_c(ZXEdgeKind::Plain, from_c);
+    Sharqit::ZXEdge edge_backward_c(ZXEdgeKind::Plain, from_c);
     adj_mat_.push_back({edge_backward_c});
 
     /* new output (target) */
-    Sharq::ZXNode out_t(Sharq::ZXNodeKind::Output, Sharq::Phase(0), qid[1]);
+    Sharqit::ZXNode out_t(Sharqit::ZXNodeKind::Output, Sharqit::Phase(0), qid[1]);
     nodes_.push_back(out_t);
     uint32_t to_t = nodes_.size() - 1;
     outputs_[qid[1]] = to_t;
 
     /* edges between new target and new output(target) */
-    Sharq::ZXEdge edge_forward_t(ZXEdgeKind::Plain, to_t);
+    Sharqit::ZXEdge edge_forward_t(ZXEdgeKind::Plain, to_t);
     adj_mat_[from_t].push_back(edge_forward_t);
-    Sharq::ZXEdge edge_backward_t(ZXEdgeKind::Plain, from_t);
+    Sharqit::ZXEdge edge_backward_t(ZXEdgeKind::Plain, from_t);
     adj_mat_.push_back({edge_backward_t});
 
   }
@@ -375,7 +375,7 @@ void Sharq::ZXDiagram::add_qgate(const QGate& qgate)
   }
 }
 
-bool Sharq::ZXDiagram::check_connect(const uint32_t a, const uint32_t b) const
+bool Sharqit::ZXDiagram::check_connect(const uint32_t a, const uint32_t b) const
 {
   bool ans = false;
   for (auto& edge:adj_mat_[a]) {
@@ -398,12 +398,12 @@ bool Sharq::ZXDiagram::check_connect(const uint32_t a, const uint32_t b) const
   return true;
 }
 
-void Sharq::ZXDiagram::xor_hadamard_edge(const uint32_t a, const uint32_t b)
+void Sharqit::ZXDiagram::xor_hadamard_edge(const uint32_t a, const uint32_t b)
 {
   /* edge of a -> b */
   bool hadamard_edge_exist = false;
   for (auto it = adj_mat_[a].begin(); it != adj_mat_[a].end(); ++it) {
-    if (it->to() == b && it->kind() == Sharq::ZXEdgeKind::Hadamard) {
+    if (it->to() == b && it->kind() == Sharqit::ZXEdgeKind::Hadamard) {
       it = adj_mat_[a].erase(it);
       --it;
       hadamard_edge_exist = true;
@@ -411,14 +411,14 @@ void Sharq::ZXDiagram::xor_hadamard_edge(const uint32_t a, const uint32_t b)
     }
   }
   if (hadamard_edge_exist == false) {
-    Sharq::ZXEdge h_edge = Sharq::ZXEdge(Sharq::ZXEdgeKind::Hadamard, b);
+    Sharqit::ZXEdge h_edge = Sharqit::ZXEdge(Sharqit::ZXEdgeKind::Hadamard, b);
     adj_mat_[a].push_back(h_edge);
   }
 
   /* edge of b -> a */
   hadamard_edge_exist = false;
   for (auto it = adj_mat_[b].begin(); it != adj_mat_[b].end(); ++it) {
-    if (it->to() == a && it->kind() == Sharq::ZXEdgeKind::Hadamard) {
+    if (it->to() == a && it->kind() == Sharqit::ZXEdgeKind::Hadamard) {
       it = adj_mat_[b].erase(it);
       --it;
       hadamard_edge_exist = true;
@@ -426,12 +426,12 @@ void Sharq::ZXDiagram::xor_hadamard_edge(const uint32_t a, const uint32_t b)
     }
   }
   if (hadamard_edge_exist == false) {
-    Sharq::ZXEdge h_edge = Sharq::ZXEdge(Sharq::ZXEdgeKind::Hadamard, a);
+    Sharqit::ZXEdge h_edge = Sharqit::ZXEdge(Sharqit::ZXEdgeKind::Hadamard, a);
     adj_mat_[b].push_back(h_edge);
   }
 }
 
-void Sharq::ZXDiagram::xor_hadamard_edges(std::vector<uint32_t> node_indexes)
+void Sharqit::ZXDiagram::xor_hadamard_edges(std::vector<uint32_t> node_indexes)
 {
   std::sort(node_indexes.begin(), node_indexes.end());
 
@@ -443,7 +443,7 @@ void Sharq::ZXDiagram::xor_hadamard_edges(std::vector<uint32_t> node_indexes)
   }
 }
 
-Sharq::ZXNodeKind Sharq::ZXDiagram::remove_node(const uint32_t idx)
+Sharqit::ZXNodeKind Sharqit::ZXDiagram::remove_node(const uint32_t idx)
 {
   adj_mat_.erase(adj_mat_.begin() + idx);
   for (auto& node:adj_mat_) {
@@ -477,9 +477,9 @@ Sharq::ZXNodeKind Sharq::ZXDiagram::remove_node(const uint32_t idx)
   return nodes_[idx].kind();
 }
 
-Sharq::ZXEdgeKind Sharq::ZXDiagram::remove_edge(const uint32_t a, const uint32_t b)
+Sharqit::ZXEdgeKind Sharqit::ZXDiagram::remove_edge(const uint32_t a, const uint32_t b)
 {
-  ZXEdgeKind kind = Sharq::ZXEdgeKind::None;
+  ZXEdgeKind kind = Sharqit::ZXEdgeKind::None;
 
   if (a == b) return kind;
   
@@ -501,7 +501,7 @@ Sharq::ZXEdgeKind Sharq::ZXDiagram::remove_edge(const uint32_t a, const uint32_t
   return kind;
 }
 
-uint32_t Sharq::ZXDiagram::append_node(const Sharq::ZXNode node)
+uint32_t Sharqit::ZXDiagram::append_node(const Sharqit::ZXNode node)
 {
   nodes_.push_back(node);
   adj_mat_.resize(nodes_.size());
@@ -509,7 +509,7 @@ uint32_t Sharq::ZXDiagram::append_node(const Sharq::ZXNode node)
   return node_idx;
 }
 
-uint32_t Sharq::ZXDiagram::append_node(const Sharq::ZXNode node, const Sharq::ZXEdge edge)
+uint32_t Sharqit::ZXDiagram::append_node(const Sharqit::ZXNode node, const Sharqit::ZXEdge edge)
 {
   nodes_.push_back(node);
   adj_mat_.push_back({edge});
@@ -522,7 +522,7 @@ uint32_t Sharq::ZXDiagram::append_node(const Sharq::ZXNode node, const Sharq::ZX
   return node_idx;
 }
 
-void Sharq::ZXDiagram::connect_nodes(const uint32_t a, const uint32_t b, const Sharq::ZXEdgeKind kind)
+void Sharqit::ZXDiagram::connect_nodes(const uint32_t a, const uint32_t b, const Sharqit::ZXEdgeKind kind)
 {
   ZXEdge edge_forward(kind, b);
   ZXEdge edge_backward(kind, a);
@@ -530,10 +530,10 @@ void Sharq::ZXDiagram::connect_nodes(const uint32_t a, const uint32_t b, const S
   adj_mat_[b].push_back(edge_backward);
 }
 
-void Sharq::ZXDiagram::swap_nodes(uint32_t i, uint32_t j)
+void Sharqit::ZXDiagram::swap_nodes(uint32_t i, uint32_t j)
 {
-  Sharq::ZXNodeKind kind_tmp = nodes_[i].kind();
-  Sharq::Phase phase_tmp = nodes_[i].phase();
+  Sharqit::ZXNodeKind kind_tmp = nodes_[i].kind();
+  Sharqit::Phase phase_tmp = nodes_[i].phase();
   uint32_t q_tmp = nodes_[i].q();
 
   nodes_[i].kind(nodes_[j].kind());
@@ -545,7 +545,7 @@ void Sharq::ZXDiagram::swap_nodes(uint32_t i, uint32_t j)
   nodes_[j].q(q_tmp);
 }
 
-void Sharq::ZXDiagram::remove_isolated_spiders()
+void Sharqit::ZXDiagram::remove_isolated_spiders()
 {
   uint32_t size = adj_mat_.size();
   for (uint32_t i = 0; i < size; ++i) {
@@ -561,20 +561,20 @@ void Sharq::ZXDiagram::remove_isolated_spiders()
   }
 }
 
-void Sharq::ZXDiagram::row_operation(const uint32_t a, const uint32_t b)
+void Sharqit::ZXDiagram::row_operation(const uint32_t a, const uint32_t b)
 {
   for (auto& edge:adj_mat_[a]) {
-    if (edge.kind() == Sharq::ZXEdgeKind::Hadamard) {
+    if (edge.kind() == Sharqit::ZXEdgeKind::Hadamard) {
       xor_hadamard_edge(b, edge.to());
     }
   }
 }
 
-std::vector<uint32_t> Sharq::ZXDiagram::adjacent_node_indexes(uint32_t node_index)
+std::vector<uint32_t> Sharqit::ZXDiagram::adjacent_node_indexes(uint32_t node_index)
 {
   std::vector<uint32_t> indexes;
   for (auto& edge:adj_mat_[node_index]) {
-    if (edge.kind() != Sharq::ZXEdgeKind::Hadamard) {
+    if (edge.kind() != Sharqit::ZXEdgeKind::Hadamard) {
       throw std::runtime_error("This ZX Diagram is not a graph-like.");
     }
     indexes.push_back(edge.to());

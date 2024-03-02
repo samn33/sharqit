@@ -5,12 +5,12 @@
 
 #include "dag.h"
 
-std::string Sharq::DAGEdge::name() const
+std::string Sharqit::DAGEdge::name() const
 {
   std::string s;
-  if (kind_ == Sharq::DAGEdgeKind::Forward)
+  if (kind_ == Sharqit::DAGEdgeKind::Forward)
     s = "-" + std::to_string(q_) + "->[" + std::to_string(to_) + "]";
-  else if (kind_ == Sharq::DAGEdgeKind::Backward)
+  else if (kind_ == Sharqit::DAGEdgeKind::Backward)
     s = "<-" + std::to_string(q_) + "-[" + std::to_string(to_) + "]";
   return s;
 }

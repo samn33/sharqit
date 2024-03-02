@@ -1,16 +1,16 @@
-#include "sharq.h"
+#include "sharqit/sharqit.h"
 
 void test_load(const std::string& s) {
 
   try {
-    Sharq::Optimizer opt;
+    Sharqit::Optimizer opt;
 
-    Sharq::QCirc qc_in;
+    Sharqit::QCirc qc_in;
     qc_in.load("../src/sandbox/" + s + ".sqc");
     std::cout << "file : " << "../src/sandbox/" + s + ".sqc" << std::endl;
     qc_in.show();
 
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharqit::QCirc qc_out = opt.execute(qc_in);
 
     std::cout << "T-count: " << qc_in.t_count() << ","<< qc_out.t_count() << std::endl;
     std::cout << "equal? " << qc_in.is_equal(qc_out) << std::endl;
@@ -27,9 +27,9 @@ void test_load(const std::string& s) {
 void test(int n) {
 
   try {
-    Sharq::Optimizer opt;
-    Sharq::Phase PI("PI");
-    Sharq::QCirc qc_in;
+    Sharqit::Optimizer opt;
+    Sharqit::Phase PI("PI");
+    Sharqit::QCirc qc_in;
 
     if (n == 1) {
       qc_in.h(0).s(1).s(2).h(1).s(1).h(1).cx(2,1).z(0).h(1).cx(0,2).x(0).t(1).x(2);
@@ -70,7 +70,7 @@ void test(int n) {
       qc_in.cx(1,0).cx(0,1).cx(0,1).t(0).s(1).s(1).cx(0,1).cx(1,0).h(0).s(1);
     }
     
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharqit::QCirc qc_out = opt.execute(qc_in);
     std::cout << "equal? " << qc_in.is_equal(qc_out) << std::endl;
   }
   catch (std::runtime_error& e) {
@@ -81,8 +81,8 @@ void test(int n) {
 bool test_random(int qubit_num, int gate_num) {
 
   try {
-    Sharq::Optimizer opt;
-    Sharq::QCirc qc_in;
+    Sharqit::Optimizer opt;
+    Sharqit::QCirc qc_in;
     qc_in.add_random((uint32_t)qubit_num, (uint32_t)gate_num,
 		     {{"X", 1},
 		      {"Z", 1},
@@ -94,7 +94,7 @@ bool test_random(int qubit_num, int gate_num) {
 
     qc_in.save("sandbox/hoge.sqc");
 
-    Sharq::QCirc qc_out = opt.execute(qc_in);
+    Sharqit::QCirc qc_out = opt.execute(qc_in);
     std::cout << "qgate_num = " << qc_out.qgate_num() << std::endl;
     std::cout << "equal? " << qc_in.is_equal(qc_out) << std::endl;
     if (!qc_in.is_equal(qc_out)) return false;
@@ -110,7 +110,7 @@ bool test_random(int qubit_num, int gate_num) {
 void test_random_2(int qubit_num, int gate_num) {
 
   try {
-    Sharq::QCirc qc_in;
+    Sharqit::QCirc qc_in;
     qc_in.add_random((uint32_t)qubit_num, (uint32_t)gate_num,
 		     {{"X", 1},
 		      {"Z", 1},
@@ -119,7 +119,7 @@ void test_random_2(int qubit_num, int gate_num) {
 		      {"T", 1},
 		      {"CX", 1}});
 
-    Sharq::ZXDiagram zx = qc_in.to_zxdiagram();
+    Sharqit::ZXDiagram zx = qc_in.to_zxdiagram();
 
     /* clock start */
     auto start = std::chrono::system_clock::now();
@@ -141,9 +141,9 @@ void test_random_2(int qubit_num, int gate_num) {
 void test_qcirc_stats()
 {
   try {
-    Sharq::Phase PI("PI");
-    Sharq::Optimizer opt;
-    Sharq::QCirc qc;
+    Sharqit::Phase PI("PI");
+    Sharqit::Optimizer opt;
+    Sharqit::QCirc qc;
     qc.x(0).z(1).s(0).sdg(1).t(0).tdg(1).h(2).rz(0,PI/2).rz(1,PI/4);
     qc.show();
 
@@ -161,13 +161,13 @@ void test_qcirc_stats()
 void test_zxdiagram_stats()
 {
   try {
-    Sharq::Phase PI("PI");
-    Sharq::Optimizer opt;
-    Sharq::QCirc qc;
+    Sharqit::Phase PI("PI");
+    Sharqit::Optimizer opt;
+    Sharqit::QCirc qc;
     qc.x(0).z(1).s(0).cz(1,2).sdg(1).h(0).t(0).tdg(1).h(2).rz(0,PI/2).rz(2,PI/4).cx(0,1);
     qc.show();
 
-    Sharq::ZXDiagram zx = qc.to_zxdiagram();
+    Sharqit::ZXDiagram zx = qc.to_zxdiagram();
     zx.show();
 
     std::map<std::string, uint32_t> sts = zx.stats();
@@ -184,40 +184,40 @@ void test_zxdiagram_stats()
 void test_gfusion(int pg_num, int leaf_num)
 {
   uint32_t qubit_num = 1;
-  Sharq::ZXDiagram zx(qubit_num);
+  Sharqit::ZXDiagram zx(qubit_num);
   std::vector<uint32_t> inputs = zx.inputs();
   std::vector<uint32_t> outputs = zx.outputs();
   zx.remove_edge(inputs[0], outputs[0]);
 
   std::vector<uint32_t> leafs(leaf_num);
   for (int i = 0; i < leaf_num; ++i) {
-    leafs[i] = zx.append_node(Sharq::ZXNode(Sharq::ZXNodeKind::ZSpider, Sharq::Phase(1,4)));
+    leafs[i] = zx.append_node(Sharqit::ZXNode(Sharqit::ZXNodeKind::ZSpider, Sharqit::Phase(1,4)));
   }
 
   std::vector<uint32_t> roots(pg_num);
   std::vector<uint32_t> phases(pg_num);
   for (int i = 0; i < pg_num; ++i) {
-    roots[i] = zx.append_node(Sharq::ZXNode(Sharq::ZXNodeKind::ZSpider, Sharq::Phase(0)));
-    phases[i] = zx.append_node(Sharq::ZXNode(Sharq::ZXNodeKind::ZSpider, Sharq::Phase(1,2)));
+    roots[i] = zx.append_node(Sharqit::ZXNode(Sharqit::ZXNodeKind::ZSpider, Sharqit::Phase(0)));
+    phases[i] = zx.append_node(Sharqit::ZXNode(Sharqit::ZXNodeKind::ZSpider, Sharqit::Phase(1,2)));
   }
 
-  zx.connect_nodes(inputs[0], leafs[0], Sharq::ZXEdgeKind::Plain);
+  zx.connect_nodes(inputs[0], leafs[0], Sharqit::ZXEdgeKind::Plain);
   for (int i = 1; i < leaf_num; ++i) {
-    zx.connect_nodes(leafs[i-1], leafs[i], Sharq::ZXEdgeKind::Hadamard);
+    zx.connect_nodes(leafs[i-1], leafs[i], Sharqit::ZXEdgeKind::Hadamard);
   }
-  zx.connect_nodes(leafs[leaf_num-1], outputs[0], Sharq::ZXEdgeKind::Plain);
+  zx.connect_nodes(leafs[leaf_num-1], outputs[0], Sharqit::ZXEdgeKind::Plain);
 
   for (int i = 0; i < pg_num; ++i) {
-    zx.connect_nodes(roots[i], phases[i], Sharq::ZXEdgeKind::Hadamard);
+    zx.connect_nodes(roots[i], phases[i], Sharqit::ZXEdgeKind::Hadamard);
   }
 
   for (int i = 0; i < pg_num; ++i) {
     for (int j = 0; j < leaf_num; ++j) {
-      zx.connect_nodes(roots[i], leafs[j], Sharq::ZXEdgeKind::Hadamard);
+      zx.connect_nodes(roots[i], leafs[j], Sharqit::ZXEdgeKind::Hadamard);
     }
   }
 
-  zx.kind(Sharq::ZXDiagramKind::GraphLike);
+  zx.kind(Sharqit::ZXDiagramKind::GraphLike);
   
   zx.show();
   zx.to_svg_file("sandbox/hoge_in.svg");

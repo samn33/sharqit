@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['def_5fnode_5fplaces_5fsize_625',['DEF_NODE_PLACES_SIZE',['../zx_8h.html#a5a9cfcc1bd96f56e925bc4a63ec98141',1,'Sharq']]],
-  ['def_5fzxedgekind_626',['DEF_ZXEDGEKIND',['../zx_8h.html#a127b71fce2b712652cd51c8065fc99a7',1,'Sharq']]],
-  ['def_5fzxnodekind_627',['DEF_ZXNODEKIND',['../zx_8h.html#a22b3dfcd5f7d001149f944f4006150fc',1,'Sharq']]],
-  ['denominator_5f_628',['denominator_',['../classSharq_1_1Fraction.html#a7e4b39961877c7bbff343f2d23ce0f83',1,'Sharq::Fraction']]]
+  ['def_5fnode_5fplaces_5fsize_625',['DEF_NODE_PLACES_SIZE',['../zx_8h.html#a0ea31adc86c0a83721dfa9851888eacb',1,'Sharqit']]],
+  ['def_5fzxedgekind_626',['DEF_ZXEDGEKIND',['../zx_8h.html#af3ff074326c0c43546eee8a1802ae43c',1,'Sharqit']]],
+  ['def_5fzxnodekind_627',['DEF_ZXNODEKIND',['../zx_8h.html#a533aab3f93295eb5f0928f50949d6f95',1,'Sharqit']]],
+  ['denominator_5f_628',['denominator_',['../classSharqit_1_1Fraction.html#ae82aa6408d6794f53c16f1741c5d9af5',1,'Sharqit::Fraction']]]
 ];

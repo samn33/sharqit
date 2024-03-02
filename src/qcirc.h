@@ -21,7 +21,7 @@
 #include "zx.h"
 #include "dag.h"
 
-namespace Sharq {
+namespace Sharqit {
 
   class ZXDiagram;
   class DAGCirc;

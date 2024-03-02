@@ -5,7 +5,7 @@
 
 #include "optimizer.h"
 
-std::string Sharq::Optimizer::to_string() const
+std::string Sharqit::Optimizer::to_string() const
 {
   std::map<std::string, uint32_t> stats_in = stats_in_;
   std::map<std::string, uint32_t> stats_out = stats_out_;
@@ -17,7 +17,7 @@ std::string Sharq::Optimizer::to_string() const
     return "Optimization has not executed yet.";
   }
 
-  if (kind_ == Sharq::OptimizerKind::ZXCalculus) {
+  if (kind_ == Sharqit::OptimizerKind::ZXCalculus) {
     ss << "[zx diagram]" << std::endl;
     ss << "xspider       = " << zx_stats_in["xspider"] << " -> " << zx_stats_out["xspider"] << std::endl;
     ss << "zspider       = " << zx_stats_in["zspider"] << " -> " << zx_stats_out["zspider"] << std::endl;
@@ -48,18 +48,18 @@ std::string Sharq::Optimizer::to_string() const
   return s;
 }
 
-std::string Sharq::Optimizer::name() const
+std::string Sharqit::Optimizer::name() const
 {
   std::string kind_str;
-  if (kind_ == Sharq::OptimizerKind::ZXCalculus) kind_str = "ZX-calculus";
-  else if (kind_ == Sharq::OptimizerKind::PhasePolynomial) kind_str = "Phase Polynomial";
+  if (kind_ == Sharqit::OptimizerKind::ZXCalculus) kind_str = "ZX-calculus";
+  else if (kind_ == Sharqit::OptimizerKind::PhasePolynomial) kind_str = "Phase Polynomial";
   else {
     throw std::runtime_error("invalid kind of optimizer.");
   }
   return kind_str;
 }
 
-Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in, const OptimizerKind kind)
+Sharqit::QCirc Sharqit::Optimizer::execute(const Sharqit::QCirc& qc_in, const OptimizerKind kind)
 {
   auto start = std::chrono::system_clock::now();
 
@@ -69,16 +69,16 @@ Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in, const Optimize
   /* stats (in) */
   stats_in_ = qc_in.stats();
 
-  Sharq::QCirc qc_out;
+  Sharqit::QCirc qc_out;
 
-  if (kind_ == Sharq::OptimizerKind::ZXCalculus) {
+  if (kind_ == Sharqit::OptimizerKind::ZXCalculus) {
     /* rule-based gate reduction */
-    Sharq::DAGCirc dc = qc_in.to_dagcirc();
+    Sharqit::DAGCirc dc = qc_in.to_dagcirc();
     dc.rule_based_gate_reduction();
     qc_out = dc.to_qcirc();
 
     /* convert to ZX-Diagram */
-    Sharq::ZXDiagram zx = qc_out.to_zxdiagram();
+    Sharqit::ZXDiagram zx = qc_out.to_zxdiagram();
     zx_stats_in_ = zx.stats();
 
     /* T-count reduction using ZX-calculus */
@@ -93,9 +93,9 @@ Sharq::QCirc Sharq::Optimizer::execute(const Sharq::QCirc& qc_in, const Optimize
     dc.rule_based_gate_reduction();
     qc_out = dc.to_qcirc();
   }
-  else if (kind_ == Sharq::OptimizerKind::PhasePolynomial) {
+  else if (kind_ == Sharqit::OptimizerKind::PhasePolynomial) {
     /* rule-based gate reduction */
-    Sharq::DAGCirc dc = qc_in.to_dagcirc();
+    Sharqit::DAGCirc dc = qc_in.to_dagcirc();
     dc.rule_based_gate_reduction();
     qc_out = dc.to_qcirc();
 

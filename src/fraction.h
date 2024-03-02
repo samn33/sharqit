@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 
-namespace Sharq {
+namespace Sharqit {
 
   /**
    * @class Fraction
@@ -59,7 +59,7 @@ namespace Sharq {
     {
       int32_t n = numerator_ * other.denominator() + other.numerator() * denominator_;
       int32_t d = denominator_ * other.denominator();
-      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+      return Fraction(n / Sharqit::Fraction::gcd(n, d), d / Sharqit::Fraction::gcd(n, d));
     }
     /**
      * @brief add the fraction
@@ -76,7 +76,7 @@ namespace Sharq {
     {
       int n = numerator_ * other.denominator() - other.numerator() * denominator_;
       int d = denominator_ * other.denominator();
-      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+      return Fraction(n / Sharqit::Fraction::gcd(n, d), d / Sharqit::Fraction::gcd(n, d));
     }
     /**
      * @brief subtract the fraction
@@ -93,7 +93,7 @@ namespace Sharq {
     {
       int n = numerator_ * other.numerator();
       int d = denominator_ * other.denominator();
-      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+      return Fraction(n / Sharqit::Fraction::gcd(n, d), d / Sharqit::Fraction::gcd(n, d));
     }
     /**
      * @brief multiply the fraction
@@ -110,7 +110,7 @@ namespace Sharq {
     {
       int n = numerator_ * other.denominator();
       int d = denominator_ * other.numerator();
-      return Fraction(n / Sharq::Fraction::gcd(n, d), d / Sharq::Fraction::gcd(n, d));
+      return Fraction(n / Sharqit::Fraction::gcd(n, d), d / Sharqit::Fraction::gcd(n, d));
     }
     /**
      * @brief divide the fraction

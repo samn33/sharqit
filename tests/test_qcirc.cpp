@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "sharq.h"
+#include "sharqit/sharqit.h"
 
 TEST(QCirc, Reverse) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc;
   qc.x(0);
   qc.z(0);
   qc.s(1);
@@ -15,7 +15,7 @@ TEST(QCirc, Reverse) {
   qc.cx(0,2);
   qc.h(1);
 
-  Sharq::QCirc qc_rev = qc.reverse();
+  Sharqit::QCirc qc_rev = qc.reverse();
   EXPECT_EQ(3, qc_rev.qubit_num());
   EXPECT_EQ("X 0", qc_rev.qgates()[8].to_string());
   EXPECT_EQ("Z 0", qc_rev.qgates()[7].to_string());
@@ -29,8 +29,8 @@ TEST(QCirc, Reverse) {
 }
 
 TEST(QCirc, Inverse) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc;
   qc.x(0);
   qc.z(0);
   qc.s(1);
@@ -41,7 +41,7 @@ TEST(QCirc, Inverse) {
   qc.cx(0,2);
   qc.h(1);
 
-  Sharq::QCirc qc_inv = qc.inverse();
+  Sharqit::QCirc qc_inv = qc.inverse();
   EXPECT_EQ(3, qc_inv.qubit_num());
   EXPECT_EQ("X 0", qc_inv.qgates()[8].to_string());
   EXPECT_EQ("Z 0", qc_inv.qgates()[7].to_string());
@@ -55,8 +55,8 @@ TEST(QCirc, Inverse) {
 }
 
 TEST(QCirc, AddQGate) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc;
   qc.x(0);
   qc.z(0);
   qc.s(1);
@@ -80,8 +80,8 @@ TEST(QCirc, AddQGate) {
 }
 
 TEST(QCirc, Identical01) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc_A;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc_A;
   qc_A.x(0);
   qc_A.z(0);
   qc_A.s(1);
@@ -93,7 +93,7 @@ TEST(QCirc, Identical01) {
   qc_A.cx(0,2);
   qc_A.h(1);
 
-  Sharq::QCirc qc_B;
+  Sharqit::QCirc qc_B;
   qc_B.x(0);
   qc_B.z(0);
   qc_B.s(1);
@@ -109,8 +109,8 @@ TEST(QCirc, Identical01) {
 }
 
 TEST(QCirc, Identical02) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc_A;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc_A;
   qc_A.x(0);
   qc_A.z(0);
   qc_A.s(1);
@@ -122,7 +122,7 @@ TEST(QCirc, Identical02) {
   qc_A.cx(0,2);
   qc_A.h(1);
 
-  Sharq::QCirc qc_B;
+  Sharqit::QCirc qc_B;
   qc_B.x(0);
   qc_B.z(0);
   qc_B.s(1);
@@ -138,8 +138,8 @@ TEST(QCirc, Identical02) {
 }
 
 TEST(QCirc, Equal01) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc_A;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc_A;
   qc_A.x(0);
   qc_A.z(0);
   qc_A.s(1);
@@ -151,7 +151,7 @@ TEST(QCirc, Equal01) {
   qc_A.cx(0,2);
   qc_A.h(1);
 
-  Sharq::QCirc qc_B;
+  Sharqit::QCirc qc_B;
   qc_B.x(0);
   qc_B.z(0);
   qc_B.s(1);
@@ -167,8 +167,8 @@ TEST(QCirc, Equal01) {
 }
 
 TEST(QCirc, Equal02) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc_A;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc_A;
   qc_A.x(0);
   qc_A.z(0);
   qc_A.s(1);
@@ -180,7 +180,7 @@ TEST(QCirc, Equal02) {
   qc_A.cx(0,2);
   qc_A.h(1);
 
-  Sharq::QCirc qc_B;
+  Sharqit::QCirc qc_B;
   qc_B.x(0);
   qc_B.z(0);
   qc_B.s(1);
@@ -196,10 +196,10 @@ TEST(QCirc, Equal02) {
 }
 
 TEST(QCirc, Equal03) {
-  Sharq::QCirc qc_A;
+  Sharqit::QCirc qc_A;
   qc_A.cx(1, 0);
 
-  Sharq::QCirc qc_B;
+  Sharqit::QCirc qc_B;
   qc_B.h(0).h(1);
   qc_B.cx(0, 1);
   qc_B.h(0).h(1);
@@ -208,8 +208,8 @@ TEST(QCirc, Equal03) {
 }
 
 TEST(QCirc, ToString) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc;
   qc.x(0);
   qc.z(0);
   qc.s(1);
@@ -238,20 +238,20 @@ TEST(QCirc, ToString) {
 }
 
 TEST(QCirc, AddQcirc) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc_A;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc_A;
   qc_A.x(0);
   qc_A.z(0);
   qc_A.s(1);
   qc_A.sdg(2);
   qc_A.t(1);
   qc_A.tdg(2);
-  Sharq::QCirc qc_B;
+  Sharqit::QCirc qc_B;
   qc_B.rz(0, PI/4);
   qc_B.rz(1, 3*PI/4);
   qc_B.cx(0,2);
   qc_B.h(1);
-  Sharq::QCirc qc = qc_A + qc_B;
+  Sharqit::QCirc qc = qc_A + qc_B;
   std::string s = "";
   s += "q[0] --X--Z--RZ(1/4)--*-----\n";
   s += "q[1] --S--T--RZ(3/4)--|--H--\n";
@@ -263,8 +263,8 @@ TEST(QCirc, AddQcirc) {
 }
 
 TEST(QCirc, ToDotFile) {
-  Sharq::Phase PI = Sharq::Phase("PI");
-  Sharq::QCirc qc;
+  Sharqit::Phase PI = Sharqit::Phase("PI");
+  Sharqit::QCirc qc;
   qc.x(0);
   qc.z(0);
   qc.s(1);
@@ -283,426 +283,426 @@ TEST(QCirc, ToDotFile) {
 /* fundamental gates */
 
 TEST(QCirc, X) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.x(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{0.0, 1.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{0.0, 1.0},
 				{1.0, 0.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, Z) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.z(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0},
 				{0.0, -1.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, S) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.s(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0},
 				{0.0, I}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, Sdg) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.sdg(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0},
 				{0.0, -I}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, T) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.t(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0},
 				{0.0, std::exp(I*M_PI/4.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, Tdg) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.tdg(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0},
 				{0.0, std::exp(-I*M_PI/4.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, H) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.h(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0/std::sqrt(2.0), 1.0/std::sqrt(2.0)},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0/std::sqrt(2.0), 1.0/std::sqrt(2.0)},
 				{1.0/std::sqrt(2.0), -1.0/std::sqrt(2.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, Rx) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.rx(0, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0/std::sqrt(2.0), -I/std::sqrt(2.0)},
+  Sharqit::QCirc qc;
+  qc.rx(0, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0/std::sqrt(2.0), -I/std::sqrt(2.0)},
 				{-I/std::sqrt(2.0), 1.0/std::sqrt(2.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, Rz) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.rz(0, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{std::exp(-I*M_PI/4.0), 0.0},
+  Sharqit::QCirc qc;
+  qc.rz(0, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{std::exp(-I*M_PI/4.0), 0.0},
 				{0.0, std::exp(I*M_PI/4.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CX) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.cx(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 0.0, 1.0},
 				{0.0, 0.0, 1.0, 0.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 /* compound gates */
 
 TEST(QCirc, Y) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.y(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{0.0, -I},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{0.0, -I},
 				{I, 0.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) -1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) -1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, SX) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.sx(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{I, 1.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{I, 1.0},
 				{1.0, I}});
   lmap_expect *= (1.0 - I)/2.0;
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) -1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) -1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, SXdg) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.sxdg(0);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{-I, 1.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{-I, 1.0},
 				{1.0, -I}});
   lmap_expect *= (1.0 + I)/2.0;
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) -1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) -1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, Ry) {
-  Sharq::QCirc qc;
-  qc.ry(0, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0/std::sqrt(2.0), -1.0/std::sqrt(2.0)},
+  Sharqit::QCirc qc;
+  qc.ry(0, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0/std::sqrt(2.0), -1.0/std::sqrt(2.0)},
 				{1.0/std::sqrt(2.0), 1.0/std::sqrt(2.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, P) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.p(0, Sharq::Phase(1,4));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0},
+  Sharqit::QCirc qc;
+  qc.p(0, Sharqit::Phase(1,4));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0},
 				{0.0, std::exp(I*M_PI/4.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CY) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.cy(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 0.0, -I},
 				{0.0, 0.0, I, 0.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CZ) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.cz(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0, 0.0},
 				{0.0, 0.0, 0.0, -1.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CSX) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.csx(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, I*(1.0-I)/2.0, (1.0-I)/2.0},
 				{0.0, 0.0, (1.0-I)/2.0, I*(1.0-I)/2.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CSXdg) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.csxdg(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, -I*(1.0+I)/2.0, (1.0+I)/2.0},
 				{0.0, 0.0, (1.0+I)/2.0, -I*(1.0+I)/2.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CH) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.ch(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0/std::sqrt(2.0), 1.0/std::sqrt(2.0)},
 				{0.0, 0.0, 1.0/std::sqrt(2.0), -1.0/std::sqrt(2.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CS) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.cs(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0, 0.0},
 				{0.0, 0.0, 0.0, I}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CSdg) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.csdg(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0, 0.0},
 				{0.0, 0.0, 0.0, -I}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CT) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.ct(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0, 0.0},
 				{0.0, 0.0, 0.0, std::exp(I*M_PI/4.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CTdg) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.ctdg(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0, 0.0},
 				{0.0, 0.0, 0.0, std::exp(-I*M_PI/4.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CRx) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.crx(0, 1, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::QCirc qc;
+  qc.crx(0, 1, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0/std::sqrt(2.0), -I/std::sqrt(2.0)},
 				{0.0, 0.0, -I/std::sqrt(2.0), 1.0/std::sqrt(2.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CRy) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.cry(0, 1, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::QCirc qc;
+  qc.cry(0, 1, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0/std::sqrt(2.0), -1.0/std::sqrt(2.0)},
 				{0.0, 0.0, 1.0/std::sqrt(2.0), 1.0/std::sqrt(2.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CRz) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.crz(0, 1, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::QCirc qc;
+  qc.crz(0, 1, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, std::exp(-I*M_PI/4.0), 0.0},
 				{0.0, 0.0, 0.0, std::exp(I*M_PI/4.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CP) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.cp(0, 1, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::QCirc qc;
+  qc.cp(0, 1, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0, 0.0},
 				{0.0, 0.0, 0.0, std::exp(I*M_PI/2.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, Rxx) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.rxx(0, 1, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0/std::sqrt(2.0), 0.0, 0.0, -I/std::sqrt(2.0)},
+  Sharqit::QCirc qc;
+  qc.rxx(0, 1, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0/std::sqrt(2.0), 0.0, 0.0, -I/std::sqrt(2.0)},
 				{0.0, 1.0/std::sqrt(2.0), -I/std::sqrt(2.0), 0.0},
 				{0.0, -I/std::sqrt(2.0), 1.0/std::sqrt(2.0), 0.0},
 				{-I/std::sqrt(2.0), 0.0, 0.0, 1.0/std::sqrt(2.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, Ryy) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.ryy(0, 1, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0/std::sqrt(2.0), 0.0, 0.0, I/std::sqrt(2.0)},
+  Sharqit::QCirc qc;
+  qc.ryy(0, 1, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0/std::sqrt(2.0), 0.0, 0.0, I/std::sqrt(2.0)},
 				{0.0, 1.0/std::sqrt(2.0), -I/std::sqrt(2.0), 0.0},
 				{0.0, -I/std::sqrt(2.0), 1.0/std::sqrt(2.0), 0.0},
 				{I/std::sqrt(2.0), 0.0, 0.0, 1.0/std::sqrt(2.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, Rzz) {
   std::complex<double> I(0.0, 1.0);
-  Sharq::QCirc qc;
-  qc.rzz(0, 1, Sharq::Phase(1,2));
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{std::exp(-I*M_PI/4.0), 0.0, 0.0, 0.0},
+  Sharqit::QCirc qc;
+  qc.rzz(0, 1, Sharqit::Phase(1,2));
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{std::exp(-I*M_PI/4.0), 0.0, 0.0, 0.0},
 				{0.0, std::exp(I*M_PI/4.0), 0.0, 0.0},
 				{0.0, 0.0, std::exp(I*M_PI/4.0), 0.0},
 				{0.0, 0.0, 0.0, std::exp(-I*M_PI/4.0)}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, SW) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.sw(0, 1);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 0.0, 1.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CSW) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.csw(0, 1, 2);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 				{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0},
@@ -711,15 +711,15 @@ TEST(QCirc, CSW) {
 				{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0},
 				{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, CCX) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
   qc.ccx(0, 1, 2);
-  Sharq::LinearMap lmap_actual = qc.to_linearmap();
-  Sharq::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+  Sharqit::LinearMap lmap_actual = qc.to_linearmap();
+  Sharqit::LinearMap lmap_expect({{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 				{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 				{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0},
 				{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0},
@@ -728,17 +728,17 @@ TEST(QCirc, CCX) {
 				{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0},
 				{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0}});
   lmap_expect.adjointInPlace();
-  Sharq::LinearMap lmap = lmap_expect * lmap_actual;
-  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharq::EPS) && lmap.is_identity_multiple_constant(), true);
+  Sharqit::LinearMap lmap = lmap_expect * lmap_actual;
+  EXPECT_EQ((std::abs(std::abs(lmap(0,0)) - 1.0) < Sharqit::EPS) && lmap.is_identity_multiple_constant(), true);
 }
 
 TEST(QCirc, SaveLoad) {
-  Sharq::Phase PI("PI");
-  Sharq::QCirc qc_A;
+  Sharqit::Phase PI("PI");
+  Sharqit::QCirc qc_A;
   qc_A.h(0).x(0).z(1).cx(0,1).s(0).t(1).rz(0,PI/4).rx(1,-PI/4).cz(0,1).sdg(1).tdg(1);
   qc_A.save("hoge.qc");
 
-  Sharq::QCirc qc_B;
+  Sharqit::QCirc qc_B;
   qc_B.load("hoge.qc");
 
   int ret = system("rm -f hoge.qc");
@@ -747,8 +747,8 @@ TEST(QCirc, SaveLoad) {
 }
 
 TEST(QCirc, Stats) {
-  Sharq::Phase PI("PI");
-  Sharq::QCirc qc;
+  Sharqit::Phase PI("PI");
+  Sharqit::QCirc qc;
 
   qc.x(0).z(1).s(0).sdg(1).t(0).tdg(1).h(2).rz(0,PI/2).id(3).rz(1,PI/4);
   std::map<std::string, uint32_t> sts = qc.stats();
@@ -766,7 +766,7 @@ TEST(QCirc, Stats) {
 }
 
 TEST(QCirc, Stats00) {
-  Sharq::QCirc qc;
+  Sharqit::QCirc qc;
 
   qc.load("data/00.sqc");
   std::map<std::string, uint32_t> sts = qc.stats();

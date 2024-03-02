@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace Sharq {
+namespace Sharqit {
   
   /**
    * @brief split the string with separator character

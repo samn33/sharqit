@@ -5,19 +5,19 @@
 
 #include "dag.h"
 
-Sharq::DAGCirc::DAGCirc(uint32_t qubit_num)
+Sharqit::DAGCirc::DAGCirc(uint32_t qubit_num)
 {
   qubit_num_ = qubit_num;
   inputs_.resize(qubit_num);
   outputs_.resize(qubit_num);
 
   for (uint32_t i = 0; i < qubit_num; ++i) {
-    DAGNode node_in(Sharq::DAGNodeKind::InNode, Sharq::QGate(Sharq::QGateKind::Id, {i}));
+    DAGNode node_in(Sharqit::DAGNodeKind::InNode, Sharqit::QGate(Sharqit::QGateKind::Id, {i}));
     inputs_[i] = append_node(node_in);
   }
 
   for (uint32_t i = 0; i < qubit_num; ++i) {
-    DAGNode node_out(Sharq::DAGNodeKind::OutNode, Sharq::QGate(Sharq::QGateKind::Id, {i}));
+    DAGNode node_out(Sharqit::DAGNodeKind::OutNode, Sharqit::QGate(Sharqit::QGateKind::Id, {i}));
     outputs_[i] = append_node(node_out);
   }
 
@@ -26,7 +26,7 @@ Sharq::DAGCirc::DAGCirc(uint32_t qubit_num)
   }
 }
 
-Sharq::DAGCirc::DAGCirc(const QCirc& qc)
+Sharqit::DAGCirc::DAGCirc(const QCirc& qc)
 {
   uint32_t qubit_num = qc.qubit_num();
   qubit_num_ = qubit_num;
@@ -34,12 +34,12 @@ Sharq::DAGCirc::DAGCirc(const QCirc& qc)
   outputs_.resize(qubit_num);
 
   for (uint32_t i = 0; i < qubit_num; ++i) {
-    DAGNode node_in(Sharq::DAGNodeKind::InNode, Sharq::QGate(Sharq::QGateKind::Id, {i}));
+    DAGNode node_in(Sharqit::DAGNodeKind::InNode, Sharqit::QGate(Sharqit::QGateKind::Id, {i}));
     inputs_[i] = append_node(node_in);
   }
 
   for (uint32_t i = 0; i < qubit_num; ++i) {
-    DAGNode node_out(Sharq::DAGNodeKind::OutNode, Sharq::QGate(Sharq::QGateKind::Id, {i}));
+    DAGNode node_out(Sharqit::DAGNodeKind::OutNode, Sharqit::QGate(Sharqit::QGateKind::Id, {i}));
     outputs_[i] = append_node(node_out);
   }
 
@@ -50,10 +50,10 @@ Sharq::DAGCirc::DAGCirc(const QCirc& qc)
   for (auto& qgate:qc.qgates()) add_qgate(qgate);
 }
 
-std::string Sharq::DAGCirc::to_string() const
+std::string Sharqit::DAGCirc::to_string() const
 {
   std::stringstream ss;
-  std::vector<Sharq::DAGNode> nodes = nodes_;
+  std::vector<Sharqit::DAGNode> nodes = nodes_;
   
   ss << "qubit_num: " << qubit_num_ << std::endl;
   ss << "adj_mat:" << std::endl;
@@ -69,7 +69,7 @@ std::string Sharq::DAGCirc::to_string() const
   return s;
 }
 
-uint32_t Sharq::DAGCirc::append_node(const Sharq::DAGNode node)
+uint32_t Sharqit::DAGCirc::append_node(const Sharqit::DAGNode node)
 {
   nodes_.push_back(node);
   adj_mat_.resize(nodes_.size());
@@ -77,7 +77,7 @@ uint32_t Sharq::DAGCirc::append_node(const Sharq::DAGNode node)
   return node_idx;
 }
 
-uint32_t Sharq::DAGCirc::prev_node(const uint32_t idx, const uint32_t q)
+uint32_t Sharqit::DAGCirc::prev_node(const uint32_t idx, const uint32_t q)
 {
   if (!nodes_[idx].is_included(q)) {
     throw std::runtime_error("invalid node id or qubit id.");
@@ -96,7 +96,7 @@ uint32_t Sharq::DAGCirc::prev_node(const uint32_t idx, const uint32_t q)
   return prev_idx;
 }
 
-uint32_t Sharq::DAGCirc::next_node(const uint32_t idx, const uint32_t q)
+uint32_t Sharqit::DAGCirc::next_node(const uint32_t idx, const uint32_t q)
 {
   if (!nodes_[idx].is_included(q)) {
     throw std::runtime_error("invalid node id or qubit id.");
@@ -115,18 +115,18 @@ uint32_t Sharq::DAGCirc::next_node(const uint32_t idx, const uint32_t q)
   return next_idx;
 }
 
-void Sharq::DAGCirc::connect_nodes(const uint32_t a, const uint32_t b, const uint32_t q)
+void Sharqit::DAGCirc::connect_nodes(const uint32_t a, const uint32_t b, const uint32_t q)
 {
   /* check two nodes (two gates) include q (qubit id) */
   if (!nodes_[a].is_included(q) && !nodes_[b].is_included(q)) {
     throw std::runtime_error("can't connect two nodes have different qid.");
   }
   /* connect two nodes */
-  adj_mat_[a].push_back(Sharq::DAGEdge(Sharq::DAGEdgeKind::Forward, q, b));
-  adj_mat_[b].push_back(Sharq::DAGEdge(Sharq::DAGEdgeKind::Backward, q, a));
+  adj_mat_[a].push_back(Sharqit::DAGEdge(Sharqit::DAGEdgeKind::Forward, q, b));
+  adj_mat_[b].push_back(Sharqit::DAGEdge(Sharqit::DAGEdgeKind::Backward, q, a));
 }
 
-void Sharq::DAGCirc::remove_node(const uint32_t idx)
+void Sharqit::DAGCirc::remove_node(const uint32_t idx)
 {
   adj_mat_.erase(adj_mat_.begin() + idx);
   for (auto& node:adj_mat_) {
@@ -158,7 +158,7 @@ void Sharq::DAGCirc::remove_node(const uint32_t idx)
   }
 }
 
-void Sharq::DAGCirc::remove_edge(const uint32_t a, const uint32_t b)
+void Sharqit::DAGCirc::remove_edge(const uint32_t a, const uint32_t b)
 {
   if (a == b) return;
   
@@ -176,7 +176,7 @@ void Sharq::DAGCirc::remove_edge(const uint32_t a, const uint32_t b)
   }
 }
 
-void Sharq::DAGCirc::remove_edge(const uint32_t a, const uint32_t b, const uint32_t q)
+void Sharqit::DAGCirc::remove_edge(const uint32_t a, const uint32_t b, const uint32_t q)
 {
   if (a == b) return;
   
@@ -194,7 +194,7 @@ void Sharq::DAGCirc::remove_edge(const uint32_t a, const uint32_t b, const uint3
   }
 }
 
-void Sharq::DAGCirc::remove_edges_of_node(const uint32_t idx)
+void Sharqit::DAGCirc::remove_edges_of_node(const uint32_t idx)
 {
   adj_mat_[idx].clear();
   for (uint32_t i = 0; i < adj_mat_.size(); ++i) {
@@ -208,7 +208,7 @@ void Sharq::DAGCirc::remove_edges_of_node(const uint32_t idx)
   }
 }
 
-void Sharq::DAGCirc::remove_isolated_nodes()
+void Sharqit::DAGCirc::remove_isolated_nodes()
 {
   uint32_t size = adj_mat_.size();
   for (uint32_t i = 0; i < size; ++i) {
@@ -224,9 +224,9 @@ void Sharq::DAGCirc::remove_isolated_nodes()
   }
 }
 
-Sharq::DAGCirc& Sharq::DAGCirc::add_qgate(const QGate& qgate)
+Sharqit::DAGCirc& Sharqit::DAGCirc::add_qgate(const QGate& qgate)
 {
-  DAGNode node(Sharq::DAGNodeKind::OpNode, qgate);
+  DAGNode node(Sharqit::DAGNodeKind::OpNode, qgate);
   nodes_.push_back(node);
   uint32_t new_idx = nodes_.size() - 1;
   adj_mat_.push_back({});
@@ -261,13 +261,13 @@ Sharq::DAGCirc& Sharq::DAGCirc::add_qgate(const QGate& qgate)
   return *this;
 }
 
-Sharq::QCirc Sharq::DAGCirc::to_qcirc() const
+Sharqit::QCirc Sharqit::DAGCirc::to_qcirc() const
 {
   /* topological sort using BFS(Breadth-First Search) */
   std::vector<uint32_t> indim(nodes_.size(), 0);
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     for (auto& e:adj_mat_[i]) {
-      if (e.kind() == Sharq::DAGEdgeKind::Forward) indim[e.to()]++;
+      if (e.kind() == Sharqit::DAGEdgeKind::Forward) indim[e.to()]++;
     }
   }
 
@@ -276,7 +276,7 @@ Sharq::QCirc Sharq::DAGCirc::to_qcirc() const
     if (indim[i] == 0) que.push(i);
   }
 
-  Sharq::QCirc qc(qubit_num());
+  Sharqit::QCirc qc(qubit_num());
   uint32_t q_max = 0;
   while (!que.empty()) {
     uint32_t idx = que.front();
@@ -286,7 +286,7 @@ Sharq::QCirc Sharq::DAGCirc::to_qcirc() const
       for (auto& q:nodes_[idx].qgate().qid()) { if (q > q_max) q_max = q; }
     }
     for (auto& e:adj_mat_[idx]) {
-      if (e.kind() == Sharq::DAGEdgeKind::Forward) {
+      if (e.kind() == Sharqit::DAGEdgeKind::Forward) {
 	indim[e.to()]--;
 	if (indim[e.to()] == 0) {
 	  que.push(e.to());
@@ -297,13 +297,13 @@ Sharq::QCirc Sharq::DAGCirc::to_qcirc() const
   }
 
   if (q_max < qubit_num_ - 1) {
-    qc.add_qgate(Sharq::QGate(Sharq::QGateKind::Id, {qubit_num_ - 1}));
+    qc.add_qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {qubit_num_ - 1}));
   }
   
   return qc;
 }
 
-void Sharq::DAGCirc::id_removal()
+void Sharqit::DAGCirc::id_removal()
 {
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     if (nodes_[i].is_opnode() && nodes_[i].qgate().is_Id_gate()) {
@@ -326,7 +326,7 @@ void Sharq::DAGCirc::id_removal()
   remove_isolated_nodes();
 }
 
-void Sharq::DAGCirc::cx_to_cz_gate()
+void Sharqit::DAGCirc::cx_to_cz_gate()
 {
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     uint32_t con = 0;
@@ -348,15 +348,15 @@ void Sharq::DAGCirc::cx_to_cz_gate()
 
     if (!match) continue;
 
-    nodes_[idx_p].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
-    nodes_[idx_c].qgate(Sharq::QGate(Sharq::QGateKind::CZ, {con,tar}));
-    nodes_[idx_n].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
+    nodes_[idx_p].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
+    nodes_[idx_c].qgate(Sharqit::QGate(Sharqit::QGateKind::CZ, {con,tar}));
+    nodes_[idx_n].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
   }
 
   id_removal();
 }
 
-void Sharq::DAGCirc::cz_to_cx_gate()
+void Sharqit::DAGCirc::cz_to_cx_gate()
 {
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     uint32_t con = 0;
@@ -376,14 +376,14 @@ void Sharq::DAGCirc::cz_to_cx_gate()
       idx_tar_p = prev_node(i, tar);
       idx_tar_n = next_node(i, tar);
       if ((nodes_[idx_con_p].qgate().is_H_gate() && nodes_[idx_con_n].qgate().is_H_gate())) {
-	nodes_[idx_con_p].qgate(Sharq::QGate(Sharq::QGateKind::Id, {con}));
-	nodes_[idx_c].qgate(Sharq::QGate(Sharq::QGateKind::CX, {tar, con}));
-	nodes_[idx_con_n].qgate(Sharq::QGate(Sharq::QGateKind::Id, {con}));
+	nodes_[idx_con_p].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {con}));
+	nodes_[idx_c].qgate(Sharqit::QGate(Sharqit::QGateKind::CX, {tar, con}));
+	nodes_[idx_con_n].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {con}));
       }
       else if ((nodes_[idx_tar_p].qgate().is_H_gate() && nodes_[idx_tar_n].qgate().is_H_gate())) {
-	nodes_[idx_tar_p].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
-	nodes_[idx_c].qgate(Sharq::QGate(Sharq::QGateKind::CX, {con, tar}));
-	nodes_[idx_tar_n].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
+	nodes_[idx_tar_p].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
+	nodes_[idx_c].qgate(Sharqit::QGate(Sharqit::QGateKind::CX, {con, tar}));
+	nodes_[idx_tar_n].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
       }
     }
   }
@@ -391,7 +391,7 @@ void Sharq::DAGCirc::cz_to_cx_gate()
   id_removal();
 }
 
-void Sharq::DAGCirc::hadamard_gate_reduction_1()
+void Sharqit::DAGCirc::hadamard_gate_reduction_1()
 {
   uint32_t a = 0; // node id
   uint32_t b = 0; // node id
@@ -416,22 +416,22 @@ void Sharq::DAGCirc::hadamard_gate_reduction_1()
 
     if (!match) continue;
 
-    Sharq::QGate s_gate = nodes_[b].qgate();
-    if (s_gate.kind() == Sharq::QGateKind::S ||
-	(s_gate.kind() == Sharq::QGateKind::RZ && s_gate.phase() == Sharq::Phase(1,2))) {
-      nodes_[a].qgate(Sharq::QGate(Sharq::QGateKind::Sdg, {q}));
-      nodes_[b].qgate(Sharq::QGate(Sharq::QGateKind::H, {q}));
-      nodes_[c].qgate(Sharq::QGate(Sharq::QGateKind::Sdg, {q}));
+    Sharqit::QGate s_gate = nodes_[b].qgate();
+    if (s_gate.kind() == Sharqit::QGateKind::S ||
+	(s_gate.kind() == Sharqit::QGateKind::RZ && s_gate.phase() == Sharqit::Phase(1,2))) {
+      nodes_[a].qgate(Sharqit::QGate(Sharqit::QGateKind::Sdg, {q}));
+      nodes_[b].qgate(Sharqit::QGate(Sharqit::QGateKind::H, {q}));
+      nodes_[c].qgate(Sharqit::QGate(Sharqit::QGateKind::Sdg, {q}));
     }
     else {
-      nodes_[a].qgate(Sharq::QGate(Sharq::QGateKind::S, {q}));
-      nodes_[b].qgate(Sharq::QGate(Sharq::QGateKind::H, {q}));
-      nodes_[c].qgate(Sharq::QGate(Sharq::QGateKind::S, {q}));
+      nodes_[a].qgate(Sharqit::QGate(Sharqit::QGateKind::S, {q}));
+      nodes_[b].qgate(Sharqit::QGate(Sharqit::QGateKind::H, {q}));
+      nodes_[c].qgate(Sharqit::QGate(Sharqit::QGateKind::S, {q}));
     }
   }
 }
 
-void Sharq::DAGCirc::hadamard_gate_reduction_2()
+void Sharqit::DAGCirc::hadamard_gate_reduction_2()
 {
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     uint32_t con = 0;
@@ -462,17 +462,17 @@ void Sharq::DAGCirc::hadamard_gate_reduction_2()
 
     if (!match) continue;
 
-    nodes_[idx_con_prev].qgate(Sharq::QGate(Sharq::QGateKind::Id, {con}));
-    nodes_[idx_tar_prev].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
-    nodes_[idx].qgate(Sharq::QGate(Sharq::QGateKind::CX, {tar,con}));
-    nodes_[idx_con_next].qgate(Sharq::QGate(Sharq::QGateKind::Id, {con}));
-    nodes_[idx_tar_next].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
+    nodes_[idx_con_prev].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {con}));
+    nodes_[idx_tar_prev].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
+    nodes_[idx].qgate(Sharqit::QGate(Sharqit::QGateKind::CX, {tar,con}));
+    nodes_[idx_con_next].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {con}));
+    nodes_[idx_tar_next].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
   }
 
   id_removal();
 }
 
-void Sharq::DAGCirc::hadamard_gate_reduction_3()
+void Sharqit::DAGCirc::hadamard_gate_reduction_3()
 {
   for (uint32_t i = 0; i < nodes_.size(); ++i) {
     uint32_t con = 0;
@@ -512,25 +512,25 @@ void Sharq::DAGCirc::hadamard_gate_reduction_3()
     if (!match1 && !match2) continue;
 
     if (match1) {
-      nodes_[idx_pp].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
-      nodes_[idx_p].qgate(Sharq::QGate(Sharq::QGateKind::Sdg, {tar}));
-      nodes_[idx_c].qgate(Sharq::QGate(Sharq::QGateKind::CX, {con,tar}));
-      nodes_[idx_n].qgate(Sharq::QGate(Sharq::QGateKind::S, {tar}));
-      nodes_[idx_nn].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
+      nodes_[idx_pp].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
+      nodes_[idx_p].qgate(Sharqit::QGate(Sharqit::QGateKind::Sdg, {tar}));
+      nodes_[idx_c].qgate(Sharqit::QGate(Sharqit::QGateKind::CX, {con,tar}));
+      nodes_[idx_n].qgate(Sharqit::QGate(Sharqit::QGateKind::S, {tar}));
+      nodes_[idx_nn].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
     }
     else if (match2) {
-      nodes_[idx_pp].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
-      nodes_[idx_p].qgate(Sharq::QGate(Sharq::QGateKind::S, {tar}));
-      nodes_[idx_c].qgate(Sharq::QGate(Sharq::QGateKind::CX, {con,tar}));
-      nodes_[idx_n].qgate(Sharq::QGate(Sharq::QGateKind::Sdg, {tar}));
-      nodes_[idx_nn].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
+      nodes_[idx_pp].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
+      nodes_[idx_p].qgate(Sharqit::QGate(Sharqit::QGateKind::S, {tar}));
+      nodes_[idx_c].qgate(Sharqit::QGate(Sharqit::QGateKind::CX, {con,tar}));
+      nodes_[idx_n].qgate(Sharqit::QGate(Sharqit::QGateKind::Sdg, {tar}));
+      nodes_[idx_nn].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
     }
   }
 
   id_removal();
 }
 
-uint32_t Sharq::DAGCirc::hadamard_gate_reduction()
+uint32_t Sharqit::DAGCirc::hadamard_gate_reduction()
 {
   cx_to_cz_gate();
   cz_to_cx_gate();
@@ -541,7 +541,7 @@ uint32_t Sharq::DAGCirc::hadamard_gate_reduction()
   return gate_count();
 }
 
-uint32_t Sharq::DAGCirc::single_qubit_gate_cancellation()
+uint32_t Sharqit::DAGCirc::single_qubit_gate_cancellation()
 {
   for (uint32_t q = 0; q < qubit_num_; ++q) {
 
@@ -566,7 +566,7 @@ uint32_t Sharq::DAGCirc::single_qubit_gate_cancellation()
 	  }
 	  else if (nodes_[ori].mergeable(nodes_[pre])) {
 	    nodes_[pre].merge(nodes_[ori]);
-	    nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id, {q}));
+	    nodes_[ori].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {q}));
 	    break;
 	  }
 	  else if (nodes_[ori].is_rotation()) {
@@ -575,7 +575,7 @@ uint32_t Sharq::DAGCirc::single_qubit_gate_cancellation()
 	    remove_edge(pre, now, q);
 	    connect_nodes(pre, ins, q);
 	    connect_nodes(ins, now, q);
-	    nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id, {q}));
+	    nodes_[ori].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {q}));
 	    break;
 	  }
 	  else {
@@ -625,7 +625,7 @@ uint32_t Sharq::DAGCirc::single_qubit_gate_cancellation()
 		remove_edge(now_tar, next_tar, tar);
 		connect_nodes(now_tar, ins, tar);
 		connect_nodes(ins, next_tar, tar);
-		nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id, {tar}));
+		nodes_[ori].qgate(Sharqit::QGate(Sharqit::QGateKind::Id, {tar}));
 	      }
 	    }
 	  }
@@ -639,7 +639,7 @@ uint32_t Sharq::DAGCirc::single_qubit_gate_cancellation()
   return gate_count();
 }
 
-uint32_t Sharq::DAGCirc::two_qubit_gate_cancellation()
+uint32_t Sharqit::DAGCirc::two_qubit_gate_cancellation()
 {
   for (uint32_t q = 0; q < qubit_num_; ++q) {
 
@@ -661,7 +661,7 @@ uint32_t Sharq::DAGCirc::two_qubit_gate_cancellation()
 	do {
 	  if (nodes_[ori].mergeable(nodes_[now_con]) && nodes_[ori].mergeable(nodes_[now_tar])) {
 	    nodes_[now_con].merge(nodes_[ori]);
-	    nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id2, {con, tar}));
+	    nodes_[ori].qgate(Sharqit::QGate(Sharqit::QGateKind::Id2, {con, tar}));
 	    break;
 	  }
 	  else if (nodes_[ori].commutable(nodes_[now_con]) && nodes_[ori].mergeable(nodes_[now_tar])) {
@@ -716,7 +716,7 @@ uint32_t Sharq::DAGCirc::two_qubit_gate_cancellation()
 	      uint32_t now_con = next_node(ori, con);
 	      if (!nodes_[now_con].is_outnode() && now_con == now_tar && nodes_[now_con].mergeable(nodes_[ori])) {
 		nodes_[now_con].merge(nodes_[ori]);
-		nodes_[ori].qgate(Sharq::QGate(Sharq::QGateKind::Id2, {con, tar}));
+		nodes_[ori].qgate(Sharqit::QGate(Sharqit::QGateKind::Id2, {con, tar}));
 	      }
 	    }
 	  }
@@ -729,7 +729,7 @@ uint32_t Sharq::DAGCirc::two_qubit_gate_cancellation()
   return gate_count();
 }
 
-void Sharq::DAGCirc::rule_based_gate_reduction()
+void Sharqit::DAGCirc::rule_based_gate_reduction()
 {
   hadamard_gate_reduction();
   two_qubit_gate_cancellation();

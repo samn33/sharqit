@@ -6,7 +6,7 @@
 #include "qcirc.h"
 
 /* propagate pauli x gates after cnot gates */
-void Sharq::QCirc::propagate_pauli_x()
+void Sharqit::QCirc::propagate_pauli_x()
 {
   /* propagate X gates */
   std::list<QGate> qgates_list(qgates_.begin(), qgates_.end());
@@ -24,17 +24,17 @@ void Sharq::QCirc::propagate_pauli_x()
 	x_find = true;
       }
       else if (x_find && it->is_X_gate() && it->qid()[0] == q) {
-	it_x->kind(Sharq::QGateKind::Id);
-	it->kind(Sharq::QGateKind::Id);
+	it_x->kind(Sharqit::QGateKind::Id);
+	it->kind(Sharqit::QGateKind::Id);
 	++it_x;
 	x_prop = true;
 	break;
       }
       else if (x_find && it->is_RZ_gate() && it->qid()[0] == q) {
-	it_x->kind(Sharq::QGateKind::RZ);
+	it_x->kind(Sharqit::QGateKind::RZ);
 	it_x->phase(-it->phase());
-	it->kind(Sharq::QGateKind::X);
-	it->phase(Sharq::Phase(0));
+	it->kind(Sharqit::QGateKind::X);
+	it->phase(Sharqit::Phase(0));
 	++it_x;
 	x_prop = true;
 	break;
@@ -43,12 +43,12 @@ void Sharq::QCirc::propagate_pauli_x()
 	       std::find(qid_buf.begin(), qid_buf.end(), it->qid()[0]) == qid_buf.end()) { // propagate
 	uint32_t con = it->qid()[0];
 	uint32_t tar = it->qid()[1];
-	it_x->kind(Sharq::QGateKind::Id);
+	it_x->kind(Sharqit::QGateKind::Id);
 	it_x->qid({q});
 	++it;
-	it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::X, {con}));
+	it = qgates_list.insert(it, Sharqit::QGate(Sharqit::QGateKind::X, {con}));
 	++it;
-	it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::X, {tar}));
+	it = qgates_list.insert(it, Sharqit::QGate(Sharqit::QGateKind::X, {tar}));
 	--it;
 	++it_x;
 	x_prop = true;
@@ -57,10 +57,10 @@ void Sharq::QCirc::propagate_pauli_x()
       else if (x_find && it->is_CX_gate() && it->qid()[1] == q &&
 	       std::find(qid_buf.begin(), qid_buf.end(), it->qid()[1]) == qid_buf.end()) { // commute
 	uint32_t tar = it->qid()[1];
-	it_x->kind(Sharq::QGateKind::Id);
+	it_x->kind(Sharqit::QGateKind::Id);
 	it_x->qid({q});
 	++it;
-	it = qgates_list.insert(it, Sharq::QGate(Sharq::QGateKind::X, {tar}));
+	it = qgates_list.insert(it, Sharqit::QGate(Sharqit::QGateKind::X, {tar}));
 	++it_x;
 	x_prop = true;
 	break;

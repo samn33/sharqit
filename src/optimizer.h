@@ -13,7 +13,7 @@
 #include "qcirc.h"
 #include "zx.h"
 
-namespace Sharq {
+namespace Sharqit {
 
   //! kind of optimizer
   enum OptimizerKind {
