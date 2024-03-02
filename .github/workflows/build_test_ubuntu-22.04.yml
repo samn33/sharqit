@@ -34,15 +34,15 @@ jobs:
       run: |
         echo $GITHUB_WORKSPACE
         pwd
-        mkdir -p ~/lib ~/include
+        mkdir -p ~/lib ~/include/sharqit
         export LD_LIBRARY_PATH="${GITHUB_WORKSPACE}/lib:$LD_LIBRARY_PATH"
         cd src
         make
         make install
         ls ~/lib
-        ls ~/include
+        ls ~/include/sharqit
         cd ../tests
-        cp ../src/libsharq.so .
+        cp ../src/libshrqt.so .
         ls -al
         make
-        ./test_sharq
+        ./test_sharqit
