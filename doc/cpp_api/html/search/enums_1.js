@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['optimizerkind_659',['OptimizerKind',['../optimizer_8h.html#a5da0a0c51b20f897859b51ba5e73015d',1,'Sharq']]]
+  ['optimizerkind_687',['OptimizerKind',['../optimizer_8h.html#a3682ee81e0a88372a3a57c009a2883dd',1,'Sharqit']]]
 ];

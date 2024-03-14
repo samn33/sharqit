@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['z_693',['Z',['../qgate_8h.html#a98321dabde428a5558608a1f1275f928ae4340067cd3e9343480f7e4d74d688b5',1,'Sharq']]],
-  ['zspider_694',['ZSpider',['../zx_8h.html#a02d92af0ad71fc8475cc293d5406577fa9ad474bd10c59c896ddf716c0ba3da76',1,'Sharq']]],
-  ['zxcalculus_695',['ZXCalculus',['../optimizer_8h.html#a5da0a0c51b20f897859b51ba5e73015da66618a54dd8cad02788d725a174fa45a',1,'Sharq']]]
+  ['z_721',['Z',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606abc37edc97fd79d878aecfe01149c2b31',1,'Sharqit']]],
+  ['zspider_722',['ZSpider',['../zx_8h.html#a54e98198a3a6549ebb7b154384a5a28dad2c8cf7cd1cfbfb283e537bc6bba7c2a',1,'Sharqit']]],
+  ['zxcalculus_723',['ZXCalculus',['../optimizer_8h.html#a3682ee81e0a88372a3a57c009a2883dda05f8ab159822617387ef62efa17e3186',1,'Sharqit']]]
 ];

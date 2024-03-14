@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['main_500',['main',['../sharq_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'sharq.cpp']]],
-  ['max_5fadj_5fnum_501',['max_adj_num',['../classSharq_1_1ZXDiagram.html#acd3b54fc3e1682a5e65728bcf93ea92e',1,'Sharq::ZXDiagram']]],
-  ['merge_502',['merge',['../classSharq_1_1DAGNode.html#a006199b561dd393105a06ab94eecbafb',1,'Sharq::DAGNode::merge()'],['../classSharq_1_1QGate.html#a63d8665aac4bba22170efcd774c059c0',1,'Sharq::QGate::merge()']]],
-  ['merge_5frotation_503',['merge_rotation',['../classSharq_1_1QCirc.html#af6d79d58bcfdbbc5571c65b31065311e',1,'Sharq::QCirc']]],
-  ['merge_5frotation_5fone_5ftime_504',['merge_rotation_one_time',['../classSharq_1_1QCirc.html#acc76db3304fa71d92e33c5ab2358f94d',1,'Sharq::QCirc']]],
-  ['mergeable_505',['mergeable',['../classSharq_1_1DAGNode.html#aab383e7a53effafcfad51a6596641414',1,'Sharq::DAGNode::mergeable()'],['../classSharq_1_1QGate.html#a1ada1191069041adda271a504434673a',1,'Sharq::QGate::mergeable()']]],
-  ['mod_5f2pi_506',['mod_2pi',['../classSharq_1_1Phase.html#accfc88342090faef83de150697b61201',1,'Sharq::Phase']]],
-  ['mul_507',['mul',['../classSharq_1_1Fraction.html#ad020da706ef8e0ae7f626f1ed29387d8',1,'Sharq::Fraction::mul(const Fraction &amp;other) const'],['../classSharq_1_1Fraction.html#a6ab05abfba9732995ff75c276c4da64c',1,'Sharq::Fraction::mul(const int32_t other) const']]]
+  ['main_525',['main',['../sharqit_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'sharqit.cpp']]],
+  ['max_5fadj_5fnum_526',['max_adj_num',['../classSharqit_1_1ZXDiagram.html#ace461dfcd62ab985418cfd29732ac7e2',1,'Sharqit::ZXDiagram']]],
+  ['merge_527',['merge',['../classSharqit_1_1DAGNode.html#ac54f3789a2028fd91f8dc63c7d2be544',1,'Sharqit::DAGNode::merge()'],['../classSharqit_1_1QGate.html#a46ce800677abc630682988fb37d9c083',1,'Sharqit::QGate::merge()']]],
+  ['merge_5frotation_528',['merge_rotation',['../classSharqit_1_1QCirc.html#a1ddb5012b33b88529b6df496ad09dc96',1,'Sharqit::QCirc']]],
+  ['merge_5frotation_5fone_5ftime_529',['merge_rotation_one_time',['../classSharqit_1_1QCirc.html#a12b070aea39273dd5a1ffe5b386ffda3',1,'Sharqit::QCirc']]],
+  ['mergeable_530',['mergeable',['../classSharqit_1_1DAGNode.html#a5a87722a9cb5da7a62cb78e7dbc62324',1,'Sharqit::DAGNode::mergeable()'],['../classSharqit_1_1QGate.html#a3fc158cf21f0087af20d3c2da87fe90e',1,'Sharqit::QGate::mergeable()']]],
+  ['mod_5f2pi_531',['mod_2pi',['../classSharqit_1_1Phase.html#a20d35b8b2f26ec1639a97307f5e70c90',1,'Sharqit::Phase']]],
+  ['mul_532',['mul',['../classSharqit_1_1Fraction.html#aed3621961bafdb91ae2375f44aeb8da0',1,'Sharqit::Fraction::mul(const Fraction &amp;other) const'],['../classSharqit_1_1Fraction.html#a5b2fe9e6fc38e06890a32d0b25d691d7',1,'Sharqit::Fraction::mul(const int32_t other) const']]]
 ];

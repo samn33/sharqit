@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Sharq: dag.h File Reference</title>
+<title>Sharqit: dag.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Sharq
+   <div id="projectname">Sharqit
    </div>
   </td>
  </tr>
@@ -113,13 +113,22 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="dag_8h__dep__incl.png" border="0" usemap="#dag_8hdep" alt=""/></div>
 <map name="dag_8hdep" id="dag_8hdep">
-<area shape="rect" title="include file of DAG (directed acyclic graph) related classes (DAGNode, DAGEdge, DAGCirc)" alt="" coords="97,5,151,32"/>
-<area shape="rect" href="qcirc_8h.html" title="include file of QCirc class" alt="" coords="93,80,155,107"/>
-<area shape="rect" href="sharq_8h.html" title="include file of Sharq library" alt="" coords="141,304,206,331"/>
-<area shape="rect" href="zx_8h.html" title="include file of ZXCalculus related classes (ZXNode, ZXEdge, ZXDiagram)" alt="" coords="101,155,147,181"/>
-<area shape="rect" href="optimizer_8h.html" title="include file of Optimizer class" alt="" coords="12,229,97,256"/>
-<area shape="rect" href="optimizer_8cpp.html" title="member functions of Optimizer class" alt="" coords="5,304,104,331"/>
-<area shape="rect" href="sharq_8cpp.html" title="source code of sharq command" alt="" coords="134,379,213,405"/>
+<area shape="rect" title="include file of DAG (directed acyclic graph) related classes (DAGNode, DAGEdge, DAGCirc)" alt="" coords="305,5,360,32"/>
+<area shape="rect" href="qcirc_8h.html" title="include file of QCirc class" alt="" coords="253,80,314,107"/>
+<area shape="rect" href="sharqit_8h.html" title="include file of Sharqit library" alt="" coords="225,304,297,331"/>
+<area shape="rect" href="dagcirc_8cpp.html" title="member functions of DAGCirc class" alt="" coords="339,80,428,107"/>
+<area shape="rect" href="dagedge_8cpp.html" title="member functions of DAGEdge class" alt="" coords="453,80,549,107"/>
+<area shape="rect" href="dagnode_8cpp.html" title="member functions of DAGNode class" alt="" coords="573,80,669,107"/>
+<area shape="rect" href="zx_8h.html" title="include file of ZXCalculus related classes (ZXNode, ZXEdge, ZXDiagram)" alt="" coords="317,155,364,181"/>
+<area shape="rect" href="optimizer_8h.html" title="include file of Optimizer class" alt="" coords="591,229,677,256"/>
+<area shape="rect" href="merge__rotation_8cpp.html" title="member functions of QCirc class related to the algorithm to merge rotation gates" alt="" coords="159,155,293,181"/>
+<area shape="rect" href="extract__qcirc_8cpp.html" title="member functions of ZXDiagram class related to the algorithm to extract quantum circuit" alt="" coords="149,229,271,256"/>
+<area shape="rect" href="simplify_8cpp.html" title="member functions of ZXDiagram class related to the algorithm to simplify ZX&#45;diagram" alt="" coords="295,229,386,256"/>
+<area shape="rect" href="zxdiagram_8cpp.html" title="member functions of ZXDiagram class" alt="" coords="410,229,517,256"/>
+<area shape="rect" href="zxnode_8cpp.html" title="member functions of ZXNode class" alt="" coords="35,229,124,256"/>
+<area shape="rect" href="nb__sharqit_8cpp.html" title="definition of python&#45;wrapper using nanobind" alt="" coords="147,379,254,405"/>
+<area shape="rect" href="sharqit_8cpp.html" title="source code of sharqit command" alt="" coords="279,379,365,405"/>
+<area shape="rect" href="optimizer_8cpp.html" title="member functions of Optimizer class" alt="" coords="585,304,683,331"/>
 </map>
 </div>
 </div>
@@ -127,74 +136,74 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSharq_1_1DAGNode.html">Sharq::DAGNode</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">node of DAG (directed acyclic graph)  <a href="classSharq_1_1DAGNode.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSharqit_1_1DAGNode.html">Sharqit::DAGNode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">node of DAG (directed acyclic graph)  <a href="classSharqit_1_1DAGNode.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSharq_1_1DAGEdge.html">Sharq::DAGEdge</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">edge of DAG (directed acyclic graph)  <a href="classSharq_1_1DAGEdge.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSharqit_1_1DAGEdge.html">Sharqit::DAGEdge</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">edge of DAG (directed acyclic graph)  <a href="classSharqit_1_1DAGEdge.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSharq_1_1DAGCirc.html">Sharq::DAGCirc</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DAG (directed acyclic graph) for quantum circuit.  <a href="classSharq_1_1DAGCirc.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSharqit_1_1DAGCirc.html">Sharqit::DAGCirc</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DAG (directed acyclic graph) for quantum circuit.  <a href="classSharqit_1_1DAGCirc.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a8763a0385c7d4f3e3bb0ac7b0010b194"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dag_8h.html#a8763a0385c7d4f3e3bb0ac7b0010b194">Sharq::DAGNodeKind</a> { <a class="el" href="dag_8h.html#a8763a0385c7d4f3e3bb0ac7b0010b194a14fd07f3e750d220d912e83e78a493c3">Sharq::OpNode</a>, 
-<a class="el" href="dag_8h.html#a8763a0385c7d4f3e3bb0ac7b0010b194a842b6257a9b76dd725e8396341509aba">Sharq::InNode</a>, 
-<a class="el" href="dag_8h.html#a8763a0385c7d4f3e3bb0ac7b0010b194a0446316ee002e7a7cdc58934dc933f96">Sharq::OutNode</a>
+<tr class="memitem:a39ae4e590d5b1e30151016fc62d2bd6a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dag_8h.html#a39ae4e590d5b1e30151016fc62d2bd6a">Sharqit::DAGNodeKind</a> { <a class="el" href="dag_8h.html#a39ae4e590d5b1e30151016fc62d2bd6aa227c842ad37f1b8ef96535f0a844b49c">Sharqit::OpNode</a>, 
+<a class="el" href="dag_8h.html#a39ae4e590d5b1e30151016fc62d2bd6aa95cb415a8597a4cead50cca909c9a048">Sharqit::InNode</a>, 
+<a class="el" href="dag_8h.html#a39ae4e590d5b1e30151016fc62d2bd6aa75368f7a713e14d0e6ea9bcfd565960c">Sharqit::OutNode</a>
  }</td></tr>
-<tr class="memdesc:a8763a0385c7d4f3e3bb0ac7b0010b194"><td class="mdescLeft">&#160;</td><td class="mdescRight">node kind of the DAG  <a href="dag_8h.html#a8763a0385c7d4f3e3bb0ac7b0010b194">More...</a><br /></td></tr>
-<tr class="separator:a8763a0385c7d4f3e3bb0ac7b0010b194"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab08172561c75d6d31efdc9eb88b43276"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dag_8h.html#ab08172561c75d6d31efdc9eb88b43276">Sharq::DAGEdgeKind</a> { <a class="el" href="dag_8h.html#ab08172561c75d6d31efdc9eb88b43276a9cbb6db52198423280814b200528beb5">Sharq::Forward</a>, 
-<a class="el" href="dag_8h.html#ab08172561c75d6d31efdc9eb88b43276aad7497ed13cfb1d48cdcded626f75ec9">Sharq::Backward</a>
+<tr class="memdesc:a39ae4e590d5b1e30151016fc62d2bd6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">node kind of the DAG  <a href="dag_8h.html#a39ae4e590d5b1e30151016fc62d2bd6a">More...</a><br /></td></tr>
+<tr class="separator:a39ae4e590d5b1e30151016fc62d2bd6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f45670ad580cc2da638927dcdb98af7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dag_8h.html#a3f45670ad580cc2da638927dcdb98af7">Sharqit::DAGEdgeKind</a> { <a class="el" href="dag_8h.html#a3f45670ad580cc2da638927dcdb98af7a14f8fe13235b311dc3c943bf2d40f58d">Sharqit::Forward</a>, 
+<a class="el" href="dag_8h.html#a3f45670ad580cc2da638927dcdb98af7a6ee7708bb5eea47bcde74ca53c69c755">Sharqit::Backward</a>
  }</td></tr>
-<tr class="memdesc:ab08172561c75d6d31efdc9eb88b43276"><td class="mdescLeft">&#160;</td><td class="mdescRight">edge kind of the DAG  <a href="dag_8h.html#ab08172561c75d6d31efdc9eb88b43276">More...</a><br /></td></tr>
-<tr class="separator:ab08172561c75d6d31efdc9eb88b43276"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a3f45670ad580cc2da638927dcdb98af7"><td class="mdescLeft">&#160;</td><td class="mdescRight">edge kind of the DAG  <a href="dag_8h.html#a3f45670ad580cc2da638927dcdb98af7">More...</a><br /></td></tr>
+<tr class="separator:a3f45670ad580cc2da638927dcdb98af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>include file of DAG (directed acyclic graph) related classes (DAGNode, DAGEdge, DAGCirc) </p>
 </div><h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="ab08172561c75d6d31efdc9eb88b43276"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab08172561c75d6d31efdc9eb88b43276">&#9670;&nbsp;</a></span>DAGEdgeKind</h2>
+<a id="a3f45670ad580cc2da638927dcdb98af7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f45670ad580cc2da638927dcdb98af7">&#9670;&nbsp;</a></span>DAGEdgeKind</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="dag_8h.html#ab08172561c75d6d31efdc9eb88b43276">Sharq::DAGEdgeKind</a></td>
+          <td class="memname">enum <a class="el" href="dag_8h.html#a3f45670ad580cc2da638927dcdb98af7">Sharqit::DAGEdgeKind</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>edge kind of the DAG </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab08172561c75d6d31efdc9eb88b43276a9cbb6db52198423280814b200528beb5"></a>Forward&#160;</td><td class="fielddoc"><p>forward direction </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a3f45670ad580cc2da638927dcdb98af7a14f8fe13235b311dc3c943bf2d40f58d"></a>Forward&#160;</td><td class="fielddoc"><p>forward direction </p>
 </td></tr>
-<tr><td class="fieldname"><a id="ab08172561c75d6d31efdc9eb88b43276aad7497ed13cfb1d48cdcded626f75ec9"></a>Backward&#160;</td><td class="fielddoc"><p>backward direction </p>
+<tr><td class="fieldname"><a id="a3f45670ad580cc2da638927dcdb98af7a6ee7708bb5eea47bcde74ca53c69c755"></a>Backward&#160;</td><td class="fielddoc"><p>backward direction </p>
 </td></tr>
 </table>
 
 </div>
 </div>
-<a id="a8763a0385c7d4f3e3bb0ac7b0010b194"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8763a0385c7d4f3e3bb0ac7b0010b194">&#9670;&nbsp;</a></span>DAGNodeKind</h2>
+<a id="a39ae4e590d5b1e30151016fc62d2bd6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39ae4e590d5b1e30151016fc62d2bd6a">&#9670;&nbsp;</a></span>DAGNodeKind</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="dag_8h.html#a8763a0385c7d4f3e3bb0ac7b0010b194">Sharq::DAGNodeKind</a></td>
+          <td class="memname">enum <a class="el" href="dag_8h.html#a39ae4e590d5b1e30151016fc62d2bd6a">Sharqit::DAGNodeKind</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>node kind of the DAG </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8763a0385c7d4f3e3bb0ac7b0010b194a14fd07f3e750d220d912e83e78a493c3"></a>OpNode&#160;</td><td class="fielddoc"><p>operation node (= quantum gate) </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a39ae4e590d5b1e30151016fc62d2bd6aa227c842ad37f1b8ef96535f0a844b49c"></a>OpNode&#160;</td><td class="fielddoc"><p>operation node (= quantum gate) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a8763a0385c7d4f3e3bb0ac7b0010b194a842b6257a9b76dd725e8396341509aba"></a>InNode&#160;</td><td class="fielddoc"><p>input node </p>
+<tr><td class="fieldname"><a id="a39ae4e590d5b1e30151016fc62d2bd6aa95cb415a8597a4cead50cca909c9a048"></a>InNode&#160;</td><td class="fielddoc"><p>input node </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a8763a0385c7d4f3e3bb0ac7b0010b194a0446316ee002e7a7cdc58934dc933f96"></a>OutNode&#160;</td><td class="fielddoc"><p>ouput node </p>
+<tr><td class="fieldname"><a id="a39ae4e590d5b1e30151016fc62d2bd6aa75368f7a713e14d0e6ea9bcfd565960c"></a>OutNode&#160;</td><td class="fielddoc"><p>ouput node </p>
 </td></tr>
 </table>
 

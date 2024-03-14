@@ -18,9 +18,9 @@ jobs:
         cd build
         cmake ..
         make
-        cd ../../tests
-        cp -r ../googletest/googletest/include/gtest .
-        cp -r ../googletest/build/lib/* .
+        cd ../../tests/cpp
+        cp -r ../../googletest/googletest/include/gtest .
+        cp -r ../../googletest/build/lib/* .
     - name: eigen
       run: |
         sudo apt install libeigen3-dev
@@ -34,15 +34,15 @@ jobs:
       run: |
         echo $GITHUB_WORKSPACE
         pwd
-        mkdir -p ~/lib ~/include
+        mkdir -p ~/lib ~/include/sharqit
         export LD_LIBRARY_PATH="${GITHUB_WORKSPACE}/lib:$LD_LIBRARY_PATH"
-        cd src
+        cd sharqit/cpp
         make
         make install
         ls ~/lib
-        ls ~/include
-        cd ../tests
-        cp ../src/libsharq.so .
+        ls ~/include/sharqit
+        cd ../../tests/cpp
+        cp ../../sharqit/cpp/libshrqt.so .
         ls -al
         make
-        ./test_sharq
+        ./test_sharqit

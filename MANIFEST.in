@@ -1,0 +1,4 @@
+include CMakeLists.txt
+include sharqit/cpp/*
+include LICENSE
+include README.md

@@ -1,6 +1,12 @@
 *.o
+*.a
 *.so
+build
 backup
 sandbox
 old
+build
+dist
 TAGS
+__pycache__
+*.egg-info

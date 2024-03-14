@@ -1,21 +1,17 @@
 CC = g++
 CFLAG = -fPIC -Wall -O4 -fopenmp -std=c++17
 
-#PROG = eval_sharq
-#PROG_OBJ = eval_sharq.o
-#PROG_SRC = eval_sharq.cpp
-
 IFLAG = -I . -I ~/include -I /usr/include/eigen3
 LFLAG = -L . -L ~/lib
 
 all:
-	make eval_sharq_zx; make eval_sharq_pp
+	make eval_sharqit_zx; make eval_sharqit_pp
 
-eval_sharq_zx: eval_sharq_zx.cpp
-	$(CC) -o $@ $(CFLAG) $(IFLAG) $(LFLAG) $< -lsharq
+eval_sharqit_zx: eval_sharqit_zx.cpp
+	$(CC) -o $@ $(CFLAG) $(IFLAG) $(LFLAG) $< -lshrqt
 
-eval_sharq_pp: eval_sharq_pp.cpp
-	$(CC) -o $@ $(CFLAG) $(IFLAG) $(LFLAG) $< -lsharq
+eval_sharqit_pp: eval_sharqit_pp.cpp
+	$(CC) -o $@ $(CFLAG) $(IFLAG) $(LFLAG) $< -lshrqt
 
-cleanall:
-	rm -f eval_sharq_zx eval_sharq_pp
+clean:
+	rm -f eval_sharqit_zx eval_sharqit_pp

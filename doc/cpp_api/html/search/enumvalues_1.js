@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['cx_667',['CX',['../qgate_8h.html#a98321dabde428a5558608a1f1275f928a507221c5b2d9cdba35e94415f2479ee1',1,'Sharq']]],
-  ['cz_668',['CZ',['../qgate_8h.html#a98321dabde428a5558608a1f1275f928aa1873085ab0b92d311067ecd279f809c',1,'Sharq']]]
+  ['cx_695',['CX',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606a61744a68529fd8b316d00b51008cd6d5',1,'Sharqit']]],
+  ['cz_696',['CZ',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606acdc03f56b794c2e6d50a220063d60576',1,'Sharqit']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['value_608',['value',['../classSharq_1_1Phase.html#ab040948d760bccf4109e9d3e6a561631',1,'Sharq::Phase']]],
-  ['verify_5fequality_609',['verify_equality',['../sharq_8cpp.html#acafc4323c4b3dc78bd616e1a0f193dd4',1,'sharq.cpp']]]
+  ['value_636',['value',['../classSharqit_1_1Phase.html#aedf9c77f5d97ee7cd83c94bf0e396882',1,'Sharqit::Phase']]],
+  ['verify_5fequality_637',['verify_equality',['../sharqit_8cpp.html#acafc4323c4b3dc78bd616e1a0f193dd4',1,'sharqit.cpp']]]
 ];

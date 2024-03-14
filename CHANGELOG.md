@@ -1,5 +1,15 @@
 # Change Log
 
+## [0.2.0] - 2024-03-14
+### Added
+- python-sdk
+### Changed
+- project name: sharq -> sharqit
+- command name: sharq -> sharqit
+- library name: libsharq.so -> libshrqt.so
+- insall location of header files: ~/include/ -> ~/include/sharqit/
+- Optimizer::execute -> Optimizer::reduce_gates
+
 ## [0.1.1] - 2024-03-01
 ### Added
 - tutorial (japanese)

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Sharq: util.h Source File</title>
+<title>Sharqit: util.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Sharq
+   <div id="projectname">Sharqit
    </div>
   </td>
  </tr>
@@ -73,9 +73,9 @@ $(function() {
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>Sharq {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>Sharqit {</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="util_8h.html#ad76549213a3a4829b37bcb3a1afce011">   21</a></span>&#160;  <span class="keyword">inline</span> std::vector&lt;std::string&gt; <a class="code" href="util_8h.html#ad76549213a3a4829b37bcb3a1afce011">split</a>(<span class="keyword">const</span> std::string&amp; str, <span class="keyword">const</span> <span class="keywordtype">char</span> sep)</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="util_8h.html#a8775e9ae966df8caf1032113ae927269">   21</a></span>&#160;  <span class="keyword">inline</span> std::vector&lt;std::string&gt; <a class="code" href="util_8h.html#a8775e9ae966df8caf1032113ae927269">split</a>(<span class="keyword">const</span> std::string&amp; str, <span class="keyword">const</span> <span class="keywordtype">char</span> sep)</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  {</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    std::vector&lt;std::string&gt; v;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    std::stringstream ss(str);</div>
@@ -85,20 +85,20 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    }</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">return</span> v;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  }</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="util_8h.html#a4083799f83efd35807a8f452928f418e">   37</a></span>&#160;  <span class="keyword">inline</span> std::string <a class="code" href="util_8h.html#a4083799f83efd35807a8f452928f418e">ltrim</a>(std::string &amp;str, std::string <span class="keyword">const</span> &amp;whitespace = <span class="stringliteral">&quot; \r\n\t\v\f&quot;</span>)</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="util_8h.html#acb1eeef9c25b929a9a8697e527ed1915">   37</a></span>&#160;  <span class="keyword">inline</span> std::string <a class="code" href="util_8h.html#acb1eeef9c25b929a9a8697e527ed1915">ltrim</a>(std::string &amp;str, std::string <span class="keyword">const</span> &amp;whitespace = <span class="stringliteral">&quot; \r\n\t\v\f&quot;</span>)</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    str.erase(0, str.find_first_not_of(whitespace));</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">return</span> str;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  }</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="util_8h.html#af683e3f2d3092a34ca95852674470edd">   48</a></span>&#160;  <span class="keyword">inline</span> std::string <a class="code" href="util_8h.html#af683e3f2d3092a34ca95852674470edd">rtrim</a>(std::string &amp;str, std::string <span class="keyword">const</span> &amp;whitespace = <span class="stringliteral">&quot; \r\n\t\v\f&quot;</span>)</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="util_8h.html#af51378387f44c2c24cf3812ef610b9d5">   48</a></span>&#160;  <span class="keyword">inline</span> std::string <a class="code" href="util_8h.html#af51378387f44c2c24cf3812ef610b9d5">rtrim</a>(std::string &amp;str, std::string <span class="keyword">const</span> &amp;whitespace = <span class="stringliteral">&quot; \r\n\t\v\f&quot;</span>)</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    str.erase(str.find_last_not_of(whitespace) + 1);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">return</span> str;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  }</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="util_8h.html#a4ada4943339fe58ed4c0f77281be8ca2">   59</a></span>&#160;  <span class="keyword">inline</span> std::string <a class="code" href="util_8h.html#a4ada4943339fe58ed4c0f77281be8ca2">trim</a>(std::string &amp;str, std::string <span class="keyword">const</span> &amp;whitespace=<span class="stringliteral">&quot; \r\n\t\v\f&quot;</span>)</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="util_8h.html#a5be45d002c125b451b61d767bafa7c15">   59</a></span>&#160;  <span class="keyword">inline</span> std::string <a class="code" href="util_8h.html#a5be45d002c125b451b61d767bafa7c15">trim</a>(std::string &amp;str, std::string <span class="keyword">const</span> &amp;whitespace=<span class="stringliteral">&quot; \r\n\t\v\f&quot;</span>)</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    std::string rstr = <a class="code" href="util_8h.html#af683e3f2d3092a34ca95852674470edd">rtrim</a>(str, whitespace);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="util_8h.html#a4083799f83efd35807a8f452928f418e">ltrim</a>(rstr, whitespace);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    std::string rstr = <a class="code" href="util_8h.html#af51378387f44c2c24cf3812ef610b9d5">rtrim</a>(str, whitespace);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="util_8h.html#acb1eeef9c25b929a9a8697e527ed1915">ltrim</a>(rstr, whitespace);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  }</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="comment">//inline std::string stats_to_string(const std::map&lt;std::string, uint32_t&gt;&amp; sts)</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="comment">//{</span></div>
@@ -112,10 +112,10 @@ $(function() {
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="autil_8h_html_a4ada4943339fe58ed4c0f77281be8ca2"><div class="ttname"><a href="util_8h.html#a4ada4943339fe58ed4c0f77281be8ca2">Sharq::trim</a></div><div class="ttdeci">std::string trim(std::string &amp;str, std::string const &amp;whitespace=&quot; \r\n\t\v\f&quot;)</div><div class="ttdoc">remove white spaces of the both righthand and lefthand sides of the string</div><div class="ttdef"><b>Definition:</b> util.h:59</div></div>
-<div class="ttc" id="autil_8h_html_ad76549213a3a4829b37bcb3a1afce011"><div class="ttname"><a href="util_8h.html#ad76549213a3a4829b37bcb3a1afce011">Sharq::split</a></div><div class="ttdeci">std::vector&lt; std::string &gt; split(const std::string &amp;str, const char sep)</div><div class="ttdoc">split the string with separator character</div><div class="ttdef"><b>Definition:</b> util.h:21</div></div>
-<div class="ttc" id="autil_8h_html_a4083799f83efd35807a8f452928f418e"><div class="ttname"><a href="util_8h.html#a4083799f83efd35807a8f452928f418e">Sharq::ltrim</a></div><div class="ttdeci">std::string ltrim(std::string &amp;str, std::string const &amp;whitespace=&quot; \r\n\t\v\f&quot;)</div><div class="ttdoc">remove white spaces of the lefthand side of the string</div><div class="ttdef"><b>Definition:</b> util.h:37</div></div>
-<div class="ttc" id="autil_8h_html_af683e3f2d3092a34ca95852674470edd"><div class="ttname"><a href="util_8h.html#af683e3f2d3092a34ca95852674470edd">Sharq::rtrim</a></div><div class="ttdeci">std::string rtrim(std::string &amp;str, std::string const &amp;whitespace=&quot; \r\n\t\v\f&quot;)</div><div class="ttdoc">remove white spaces of the righthand side of the string</div><div class="ttdef"><b>Definition:</b> util.h:48</div></div>
+<div class="ttc" id="autil_8h_html_acb1eeef9c25b929a9a8697e527ed1915"><div class="ttname"><a href="util_8h.html#acb1eeef9c25b929a9a8697e527ed1915">Sharqit::ltrim</a></div><div class="ttdeci">std::string ltrim(std::string &amp;str, std::string const &amp;whitespace=&quot; \r\n\t\v\f&quot;)</div><div class="ttdoc">remove white spaces of the lefthand side of the string</div><div class="ttdef"><b>Definition:</b> util.h:37</div></div>
+<div class="ttc" id="autil_8h_html_a8775e9ae966df8caf1032113ae927269"><div class="ttname"><a href="util_8h.html#a8775e9ae966df8caf1032113ae927269">Sharqit::split</a></div><div class="ttdeci">std::vector&lt; std::string &gt; split(const std::string &amp;str, const char sep)</div><div class="ttdoc">split the string with separator character</div><div class="ttdef"><b>Definition:</b> util.h:21</div></div>
+<div class="ttc" id="autil_8h_html_af51378387f44c2c24cf3812ef610b9d5"><div class="ttname"><a href="util_8h.html#af51378387f44c2c24cf3812ef610b9d5">Sharqit::rtrim</a></div><div class="ttdeci">std::string rtrim(std::string &amp;str, std::string const &amp;whitespace=&quot; \r\n\t\v\f&quot;)</div><div class="ttdoc">remove white spaces of the righthand side of the string</div><div class="ttdef"><b>Definition:</b> util.h:48</div></div>
+<div class="ttc" id="autil_8h_html_a5be45d002c125b451b61d767bafa7c15"><div class="ttname"><a href="util_8h.html#a5be45d002c125b451b61d767bafa7c15">Sharqit::trim</a></div><div class="ttdeci">std::string trim(std::string &amp;str, std::string const &amp;whitespace=&quot; \r\n\t\v\f&quot;)</div><div class="ttdoc">remove white spaces of the both righthand and lefthand sides of the string</div><div class="ttdef"><b>Definition:</b> util.h:59</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
