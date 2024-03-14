@@ -5,31 +5,30 @@ Quantum Circuit Optimizer
 
 ## Feature
 
-- Support two types of gate-count reduction methods: 1) using ZX-calculus, 2) using Phase Polynomial 
-- Implemented in C++ language
+- Support two types of gate-count reduction methods:
+	- 1) using ZX-calculus
+	- 2) using Phase Polynomial
+- Provide SDK for both C++ and Python.
 
 ## Install
 
-Install the following software first.
+Install the following softwares first.
 
     $ sudo apt install nlohmann-json3-dev 
 	$ sudo apt install graphviz
 	$ sudo apt install libeigen3-dev
 
-Install the library 'libshrqt.so' and 'sharqit' command using Makefile as follows,
+For Python SDK, need to install the folloing package.
+
+    $ pip install nanobind
+
+### C++ SDK
+
+Install sharqit command, sharqit library and related hedder files as follows,
 
     $ git clone https://github.com/samn33/sharqit.git
     $ mkdir -p ~/lib ~/bin ~/include/sharqit
-    $ cd src
-    $ make
-    $ make install
-
-Or install them using CMake as follows,
-
-    $ git clone https://github.com/samn33/sharqit.git
-    $ mkdir -p ~/lib ~/bin ~/include/sharqit
-    $ cd sharqit; mkdir build; cd build
-    $ cmake ..
+    $ cd sharqit/sharqit/cpp
     $ make
     $ make install
 
@@ -38,14 +37,31 @@ Add following lines to your ~/.bashrc. (If you are using another shell, replace 
     export LD_LIBRARY_PATH="${HOME}/lib:$LD_LIBRARY_PATH"
     export PATH="${HOME}/bin:$PATH"
 
+### Python SDK
+
+Install sharqit package as follows,
+
+    $ git clone https://github.com/samn33/sharqit.git
+    $ cd sharqit
+    $ python setup.py install --user
+
+
 ## Uninstall
+
+### Python SDK
+
+    $ pip uninstall sharqit
+
+### C++ SDK
 
     $ make uninstall
 
 
 ## Usage
 
-### Sharqit command
+### C++ SDK
+
+#### sharqit command
 
 Prepare the quantum circuit you want to optimize as follows.
 
@@ -58,7 +74,7 @@ Prepare the quantum circuit you want to optimize as follows.
     H 1
     T+ 1
 
-You can display this quantum circuit.
+You can display the quantum circuit.
 
     $ sharqit --show sample.sqc
 	q[0] --H-----*--H------
@@ -75,23 +91,29 @@ Print help message.
 
     $ sharqit --help
 
-### Sharqit library
+#### sharqit library
 
-An example of C++ code that calls the Sharqit library.
+An example of C++ code that uses the sharqit c++ library.
 
     $ cat sample.cpp
     #include "sharqit/sharqit.h"
-    
+        
     int main()
     {
       Sharqit::QCirc qc_in;
-	  qc_in.t(1).h(0).h(1).cx(0,1).h(0).h(1).tdg(1);
-	  qc_in.show();
-
-      Sharqit::Optimizer opt;
-      Sharqit::QCirc qc_out = opt.execute(qc_in);
-      qc_out.show();
+      qc_in.t(1);
+      qc_in.h(0);
+      qc_in.h(1);
+      qc_in.cx(0,1);
+      qc_in.h(0);
+      qc_in.h(1);
+      qc_in.tdg(1);
+      qc_in.show();
     
+      Sharqit::Optimizer opt;
+      Sharqit::QCirc qc_out = opt.reduce_gates(qc_in, "zx");
+      qc_out.show();
+        
       return 0;
     }
 
@@ -102,6 +124,37 @@ Build it.
 Execute a.out.
 
     $ ./a.out
+    q[0] --H-----*--H------
+    q[1] --T--H--X--H--T+--
+    q[0] --X--
+    q[1] --*--
+
+### Python API
+
+#### sharqit package
+
+An example of Python code that uses the sharqit package.
+
+    $ cat sample.py
+    from sharqit import Phase, QCirc, Optimizer
+    
+    qc_in = QCirc()
+    qc_in.t(1)
+    qc_in.h(0)
+    qc_in.h(1)
+    qc_in.cx(0,1)
+    qc_in.h(0)
+    qc_in.h(1)
+    qc_in.tdg(1)
+    qc_in.show()
+    
+    opt = Optimizer()
+    qc_out = opt.reduce_gates(qc_in, "zx")
+    qc_out.show()
+
+Execute the code.
+
+    $ python sample.py
     q[0] --H-----*--H------
     q[1] --T--H--X--H--T+--
     q[0] --X--
@@ -119,6 +172,7 @@ Processing time, T-count, 2Q-count, Gate-count of 'sharqit' are compared with [P
 ![benchmarks](/benchmarks/plot.png)
 
 Quantum circuit data used in the benchmarks are from [optimizer: Benchmark quantum circuits before and after optimization](https://github.com/njross/optimizer).
+
 
 ## Documents
 
