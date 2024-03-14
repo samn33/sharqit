@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['optimizer_342',['Optimizer',['../classSharqit_1_1Optimizer.html',1,'Sharqit']]]
+  ['optimizer_356',['Optimizer',['../classSharqit_1_1Optimizer.html',1,'Sharqit']]]
 ];

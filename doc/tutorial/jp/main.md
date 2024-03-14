@@ -3,7 +3,9 @@
 
 ## Sharqitとは
 
-sharqitは量子回路最適化のためのC++ライブラリです。現在実装されている機能は以下の2つです。
+sharqitは量子回路最適化のためのライブラリです。
+C++およびPythonプログラムから呼び出して使用することができるSDKとして提供しています。
+現在実装されている最適化の機能は以下の2つです。
 
 - ZX-calculusを用いたTゲートの削減
 - Phase Polynomialを用いた量子ゲートの削減
@@ -13,30 +15,27 @@ sharqitは量子回路最適化のためのC++ライブラリです。現在実�
 
 ## インストール
 
-まず、sharqitの動作に必要となる以下のソフトウェアをインストールします。
+まず、Sharqitの動作に必要となる以下のソフトウェアをインストールします。
 
     $ sudo apt install nlohmann-json3-dev 
 	$ sudo apt install libeigen3-dev
 	$ sudo apt install graphviz
 
-次に、sharqitをビルドして、インストールします。
+Python SDKを使用する場合、以下のパッケージも必要です。
+
+    $ pip install nanobind
+
+### C++ SDK
+
+以下のようにsharqitコマンドとsharqitライブラリおよび関連するヘッダーファイルをインストールします。
 
 	$ git clone https://github.com/samn33/sharqit.git
-    $ cd sharqit/src
+    $ cd sharqit/sharqit/cpp
     $ mkdir -p ~/lib ~/include ~/bin
     $ make
     $ make install
 
-CMakeでインストールすることもできます。
-
-    $ git clone https://github.com/samn33/sharqit.git
-    $ mkdir -p ~/lib ~/bin ~/include/sharqit
-    $ cd sharqit; mkdir build; cd build
-    $ cmake ..
-    $ make
-    $ make install
-
-sharqtiライブラリとsharqitコマンドを使用可能とするために、以下の環境変数を設定します。
+sharqtiコマンドとsharqitライブラリを使用可能とするために、以下の環境変数を設定します。
 
     export LD_LIBRARY_PATH="${HOME}/lib:$LD_LIBRARY_PATH"
     export PATH="${HOME}/bin:$PATH"
@@ -44,12 +43,24 @@ sharqtiライブラリとsharqitコマンドを使用可能とするために、
 ここで、bashの場合の例を示しましたが、別のシェルの場合は適宜読み替えてください。
 
 アンインストールする場合は、以下のようにします。
-これで、SharqitコマンドとSharqitライブラリ(およびインクルードファイル)が削除されます。
+これで、sharqitコマンドとsharqitライブラリ(およびヘッダーファイル)が削除されます。
 
     $ make uninstall
 
+### Python SDK
 
-## Sharqitコマンド
+以下のようにsharqitパッケージをビルドしてインストールします。
+
+    $ git clone https://github.com/samn33/sharqit.git
+    $ cd sharqit
+    $ python setup.py install --user
+
+アンインストールする場合は、以下のようにします。
+
+    $ pip uninstall sharqit
+
+
+## sharqitコマンドの使用方法
 
 ### 量子回路のファイル形式
 
@@ -82,6 +93,44 @@ RZはZ軸周りの回転を表しています。回転角は、
 
 のように括弧内の分数で表します。
 角度の単位はPIラジアンです。したがって1/2はPI/2、-3/4は-3PI/4を表します。
+
+#### 参考: 他の量子回路ファイル形式からSharqit形式への変換
+
+OpenQASM2.0で記述されたClifford-T回路からSharqit形式に変換するPythonコード例を以下に示します。
+[PyZX](https://github.com/Quantomatic/pyzx)の機能を使っています。
+
+    $ cat qasm_to_sqc.py
+    import pyzx as zx
+    
+    def gate_str(gate):
+        gstr = ""
+        if gate.name == "NOT":
+            gstr = "X " + str(gate.target)
+        elif gate.name == "Z":
+            gstr = "Z " + str(gate.target)
+        elif gate.name == "S" and gate.adjoint is False:
+            gstr = "S " + str(gate.target)
+        elif gate.name == "S" and gate.adjoint is True:
+            gstr = "S+ " + str(gate.target)
+        elif gate.name == "T" and gate.adjoint is False:
+            gstr = "T " + str(gate.target)
+        elif gate.name == "T" and gate.adjoint is True:
+            gstr = "T+ " + str(gate.target)
+        elif gate.name == "HAD":
+            gstr = "H " + str(gate.target)
+        elif gate.name == "CNOT":
+            gstr = "CX " + str(gate.control) + " " + str(gate.target)
+        elif gate.name == "CZ":
+            gstr = "CZ " + str(gate.control) + " " + str(gate.target)
+        return gstr
+    
+    if __name__ == '__main__':
+        qc_src = zx.Circuit.load("sample.qasm")
+        qc_bas = qc_src.to_basic_gates()
+        with open("sample.sqc", mode='w') as f:
+            for gate in qc_bas.gates:
+                f.write(gate_str(gate) + "\n")
+
 
 ### 量子回路図の表示
 
@@ -170,7 +219,7 @@ RZはZ軸周りの回転を表しています。回転角は、
 
 という2つの最適化機能が搭載されていると「Sharqitとは」で述べました。
 実は、上の--optオプションで計算したのはZX-calculusを用いた方法になります。
-Phase Polynomialを用いた方法は以下のように--opt=ppオプションで計算できます(ZX-calculusの場合は--opt=zxでも可)。
+Phase Polynomialを用いた方法は以下のように--opt=ppオプションで計算できます(ZX-calculusの場合は--opt=zxです)。
 
     $ sharqit --opt=pp sample.sqc > foo.sqc
     [quantum circuit]
@@ -326,11 +375,11 @@ Sharqitコマンドの説明の最後に、--helpで表示されるヘルプメ�
     The unit of phase factor is PI radian, so 3/4 means 3PI/4, 1 means PI, and so on.
 
 
-## Sharqitライブラリ
+## sharqitライブラリの使用方法
 
 ### 簡単な例
 
-何はともあれ、Sharqitライブラリを呼び出す簡単なプログラムを作ってみることから始めてみましょう。
+何はともあれ、Sharqitライブラリを呼び出す簡単なC++プログラムを作ってみることから始めてみましょう。
 まず、以下のようなC++プログラムをコピペしてどこかのディレクトリに置いてみてください。
 
     $ cat sample.cpp
@@ -339,11 +388,17 @@ Sharqitコマンドの説明の最後に、--helpで表示されるヘルプメ�
     int main()
     {
       Sharqit::QCirc qc_in;
-	  qc_in.t(1).h(0).h(1).cx(0,1).h(0).h(1).tdg(1);
+	  qc_in.t(1);
+	  qc_in.h(0);
+	  qc_in.h(1);
+	  qc_in.cx(0,1);
+	  qc_in.h(0);
+	  qc_in.h(1);
+	  qc_in.tdg(1);
 	  qc_in.show();
 
       Sharqit::Optimizer opt;
-      Sharqit::QCirc qc_out = opt.execute(qc_in);
+      Sharqit::QCirc qc_out = opt.reduce_gates(qc_in, "zx");
       qc_out.show();
     
       return 0;
@@ -369,16 +424,26 @@ Sharqitコマンドを説明したときに例として上げた量子回路の�
 
     #include "sharqit/sharqit.h"
 
-で、Sharqitライブラリに対応したインクルードファイルをインクルードします。main関数の中の
+で、Sharqitライブラリに対応したヘッダーファイルをインクルードします。main関数の中の
 
     Sharqit::QCirc qc_in;
 	
 で、SharqitのQCircクラスのオブジェクトを生成します。この時点で量子回路は空です。次の
 	
-    qc_in.t(1).h(0).h(1).cx(0,1).h(0).h(1).tdg(1);
+	qc_in.t(1);
+	qc_in.h(0);
+	qc_in.h(1);
+	qc_in.cx(0,1);
+	qc_in.h(0);
+	qc_in.h(1);
+	qc_in.tdg(1);
 
 で空の量子回路に順番に量子ゲートを追加していきます。
-t,h,cx,tdgというメソッドを適用するのですが引数に記載されている数字は適用したい量子ビット番号を表しています。
+
+    qc_in.t(1).h(0).h(1).cx(0,1).h(0).h(1).tdg(1);
+
+のようにメソッドチェーンで記述することもできます。
+ここで、t,h,cx,tdgというメソッドを適用していますが引数に記載されている数字は適用したい量子ビット番号を表しています。
 2量子ビットゲートの場合は引数が2つ必要です。
 最初の引数が制御側の量子ビット番号で2番目の引数が標的側の量子ビット番号を表します。
 作成した量子回路はshowメソッドで表示することができます。
@@ -389,10 +454,12 @@ t,h,cx,tdgというメソッドを適用するのですが引数に記載され�
 
     Sharqit::Optimizer opt;
 
-で良いです。最適化を実行するメソッドはexecute()です。引数に最適化したい元になる量子回路オブジェクトを指定します。
+で良いです。最適化を実行するメソッドはreduce_gatesです。引数に最適化したい元になる量子回路オブジェクトを指定します。
 
-    Sharqit::QCirc qc_out = opt.execute(qc_in);
+    Sharqit::QCirc qc_out = opt.reduce_gates(qc_in, "zx");
 
+第1引数に最適化したい元になる量子回路オブジェクトを指定します。
+第2引数に最適化の手法("zx"または"pp")を指定します。"zx"はZXCalculus、"pp"はPhasePolynomialを表します。
 返却値は最適化後の量子回路オブジェクトになるので、それをqc_outという変数で受けるようにします。最後に、
 
     qc_out.show();
@@ -461,16 +528,26 @@ Sharqitでは、あらゆる量子回路をこの量子ゲートによって内�
 これらメソッドの引数について説明します。
 回転角指定のない1量子ビットゲートの場合の引数は1つで、適用する量子ビット番号を指定します。
 回転角指定のない2量子ビットゲートの場合の引数は2つで、制御ビット番号、標的ビット番号の順に指定します。
-回転角指定のない3量子ビットゲートの場合の引数は3つで、制御ビット番号、制御ビット番号、標的ビット番号の順で指定します。
+回転角指定のない3量子ビットゲートであるccxゲートの場合の引数は3つで、制御ビット番号、制御ビット番号、標的ビット番号の順で指定します。
+回転角指定のない3量子ビットゲートであるcswゲートの場合の引数は3つで、制御ビット番号、標的ビット番号、標的ビット番号の順で指定します
+(2つの標的ビットを制御ビットに応じてスワップします)。
 回転角の指定がある量子ゲートの場合、上記引数に加えて、最後に角度を指定する必要があります。
 
-例を示します。
+いくつかの例を示します。
 
     Sharqit::QCirc qc;
-    Sharqit::Phase PI("PI"); // 角度PIを表すPhaseクラスのオブジェクト
-    qc.h(0).t(0); // 回転角指定のない1量子ビットゲート
-	qc.cx(0,1).csw(0,1,2).crx(1,2); // 回転角指定のない2,3量子ビットゲート
-	qc.rz(2, 3*PI/4).crx(1,2,PI/2); // 回転角指定のある1,2量子ビットゲート
+	// 角度PIを表すPhaseクラスのオブジェクト
+    Sharqit::Phase PI("PI");
+	// 回転角指定のない1量子ビットゲート
+    qc.h(0);
+    qc.t(0);
+    // 回転角指定のない2,3量子ビットゲート
+    qc.cx(0,1);
+    qc.csw(0,1,2);
+    qc.crx(1,2);
+    // 回転角指定のある1,2量子ビットゲート
+    qc.rz(2, 3*PI/4);
+    qc.crx(1,2,PI/2);
 
 回転角はPhaseクラスのオブジェクトとして定義します。典型的な使い方は、上に示したように、PIラジアンを
 
@@ -521,7 +598,7 @@ add_randomメソッドを使って、
 
 「簡単な例」で、
 
-    qc_in.show()
+    qc_in.show();
 	
 のように実行しました。この例の場合
 
@@ -544,7 +621,7 @@ add_randomメソッドを使って、
 
 折返しの位置は、デフォルトでは100文字になっていますが、showメソッドの引数で指定することもできます。
 
-    qc_in.show(50)
+    qc_in.show(50);
 
 ### 量子回路の統計情報の取得
 
@@ -552,7 +629,13 @@ statsメソッドによって、std::map<std::string, uint32_t>のオブジェ�
 文字列をキーとしたした整数値によって各種情報が表現されているので、各々を以下のようにして取得することがきます。
 
     Sharqit::QCirc qc_in;
-    qc_in.t(1).h(0).h(1).cx(0,1).h(0).h(1).tdg(1);
+    qc_in.t(1);
+    qc_in.h(0);
+    qc_in.h(1);
+    qc_in.cx(0,1);
+    qc_in.h(0);
+    qc_in.h(1);
+    qc_in.tdg(1);
     std::map<std::string, uint32_t> stats = qc_in.stats();
     std::cout << "X-count  = " << stats["x_count"] << std::endl;
     std::cout << "Z-count  = " << stats["z_count"] << std::endl;
@@ -584,18 +667,14 @@ statsメソッドによって、std::map<std::string, uint32_t>のオブジェ�
 
 「簡単な例」で、
 
-    Sharqit::QCirc qc_out = opt.execute(qc_in);
+    Sharqit::QCirc qc_out = opt.reduce_gates(qc_in, "zx");
 
-のように実行しました。このときexecuteメソッドに2番目の引数を指定しない場合、ZX-calculusを用いた手法で最適化計算がなされます。
+のように実行しました。ここでreduce_gatesメソッドの2番目の引数に"zx"が指定されているので、
+ZX-calculusを用いた手法で最適化計算がなされます。
 Phase Polynomialを用いた手法で最適化計算をしたい場合、以下のように2番目の引数に手法を指定します。
 
-    Sharqit::QCirc qc_out = opt.execute(qc_in, Sharqit::OptimizerKind::PhasePolynomial);
+    Sharqit::QCirc qc_out = opt.reduce_gates(qc_in, "pp");
 
-ZX-calculusを用いた手法での計算を
-
-    Sharqit::QCirc qc_out = opt.execute(qc_in, Sharqit::OptimizerKind::ZXCalculus);
-
-のように明示的に指定することもできます。
 
 ### 量子回路の等価判定
 
@@ -620,42 +699,306 @@ Sharqitコマンド同様、ひとつ注意点があります。
     qc_out.to_svg_file("bar.svg");
 
 
-## 他の量子回路ファイル形式からSharqit形式への変換
+## sharqitパッケージの使用方法
 
-OpenQASM2.0で記述されたClifford-T回路からSharqit形式に変換するPythonコード例を以下に示します。
-[PyZX](https://github.com/Quantomatic/pyzx)の機能を使っています。
+### 簡単な例
 
-    $ cat qasm_to_sqc.py
-    import pyzx as zx
+何はともあれ、Sharqitパッケージを呼び出す簡単なPythonプログラムを作ってみることから始めてみましょう。
+まず、以下のようなPythonプログラムをコピペしてどこかのディレクトリに置いてみてください。
+
+    $ cat sample.py
+    from sharqit import QCirc, Optimizer
     
-    def gate_str(gate):
-        gstr = ""
-        if gate.name == "NOT":
-            gstr = "X " + str(gate.target)
-        elif gate.name == "Z":
-            gstr = "Z " + str(gate.target)
-        elif gate.name == "S" and gate.adjoint is False:
-            gstr = "S " + str(gate.target)
-        elif gate.name == "S" and gate.adjoint is True:
-            gstr = "S+ " + str(gate.target)
-        elif gate.name == "T" and gate.adjoint is False:
-            gstr = "T " + str(gate.target)
-        elif gate.name == "T" and gate.adjoint is True:
-            gstr = "T+ " + str(gate.target)
-        elif gate.name == "HAD":
-            gstr = "H " + str(gate.target)
-        elif gate.name == "CNOT":
-            gstr = "CX " + str(gate.control) + " " + str(gate.target)
-        elif gate.name == "CZ":
-            gstr = "CZ " + str(gate.control) + " " + str(gate.target)
-        return gstr
+    def main():
+        qc_in = QCirc()
+        qc_in.t(1)
+        qc_in.h(0)
+        qc_in.h(1)
+        qc_in.cx(0,1)
+        qc_in.h(0)
+        qc_in.h(1)
+        qc_in.tdg(1);
+        qc_in.show()
+	    
+        opt = Optimizer()
+        qc_out = opt.reduce_gates(qc_in, "zx")
+        qc_out.show()
     
     if __name__ == '__main__':
-        qc_src = zx.Circuit.load("sample.qasm")
-        qc_bas = qc_src.to_basic_gates()
-        with open("sample.sqc", mode='w') as f:
-            for gate in qc_bas.gates:
-                f.write(gate_str(gate) + "\n")
+        main()
 
+これを実行すると、
+
+    $ python sample.py
+    q[0] --H-----*--H------
+    q[1] --T--H--X--H--T+--
+    q[0] --X--
+    q[1] --*--
+
+のようになります。最初の2行が最適化前の量子回路で後の2行が最適化後の量子回路を表しています。
+
+一応、プログラムの中身を説明します。一行目の
+
+    from sharqit import Phase, QCirc, Optimizer
+
+で、sharqitパッケージから3つのクラス(Phase, QCirc, Optimizer)をインポートします。
+main関数の中の
+
+    qc_in = QCirc()
+
+で、QCircクラスのインスタンスを生成します。この時点で量子回路は空です。次の
+
+    qc_in.t(1)
+    qc_in.h(0)
+    qc_in.h(1)
+    qc_in.cx(0,1)
+    qc_in.h(0)
+    qc_in.h(1)
+    qc_in.tdg(1);
+
+で空の量子回路に順番に量子ゲートを追加していきます。
+
+ここで、t,h,cx,tdgというメソッドを適用していますが引数に記載されている数字は適用したい量子ビット番号を表しています。
+2量子ビットゲートの場合は引数が2つ必要です。
+最初の引数が制御側の量子ビット番号で2番目の引数が標的側の量子ビット番号を表します。
+作成した量子回路はshowメソッドで表示することができます。
+
+    qc_in.show()
+
+次に量子回路を最適化するOptimizerクラスのオブジェクトを生成します。
+
+    opt = Optimizer()
+
+で良いです。最適化を実行するメソッドはreduce_gates()です。
+
+    qc_out = opt.reduce_gates(qc_in, "zx")
+
+第1引数に最適化したい元になる量子回路オブジェクトを指定します。
+第2引数に最適化の手法("zx"または"pp")を指定します。"zx"はZXCalculus、"pp"はPhasePolynomialを表します。
+返却値は最適化後の量子回路オブジェクトになるので、それをqc_outという変数で受けるようにします。最後に、
+
+    qc_out.show()
+
+で、結果の量子回路を表示します。以上です。
+
+
+### 量子回路の作成
+
+量子回路オブジェクトの作成にはいくつかの方法があります。
+
+- 量子ゲートメソッドを追加していく方法
+- 量子回路を記述したファイルを読み込む方法
+
+以下、順に説明します。
+
+#### 量子ゲートメソッドを追加していく方法
+
+「簡単な例」で示した方法です。
+例で示した量子ゲート以外に多数の量子ゲートに対応したメソッドが用意されています。
+
+ベーシックな量子ゲートとして、以下が定義されています。
+
+- x ... Xゲート
+- z ... Zゲート
+- s ... Sゲート
+- sdg ... Sゲートのエルミート共役
+- t ... Tゲート
+- tdg ... Tゲートのエルミート共役
+- h ... Hゲート
+- rz ... RZゲート(Z軸まわりの回転ゲート)
+- cx ... CNOTゲート
+- cz ... CZゲート
+- id ... 1量子ビットの恒等演算ゲート(何もしないゲート)
+- id2 ... 2量子ビットの恒等演算ゲート(何もしないゲート)
+
+Sharqitでは、あらゆる量子回路をこの量子ゲートによって内部的に表現するようにしています。
+加えて、以下の量子ゲートに対応したメソッドを使うこともできます。
+ベーシックな量子ゲートを組み合わせることで、これらメソッドを実現しています。
+
+- y ... Yゲート
+- rx ... RXゲート(X軸まわりの回転ゲート)
+- ry ... RYゲート(Y軸まわりの回転ゲート)
+- sx ... ルートXゲート(2乗するとXゲートになる)
+- sxdg ... ルートXゲートのエルミート共役
+- p ... 位相シフトゲート(グローバル位相を除きRZゲートと同等)
+- cy ... 制御Yゲート
+- csx ... 制御ルートXゲート
+- csxdg ... 制御ルートXゲートのエルミート共役
+- ch ... 制御Hゲート
+- cs ... 制御Sゲート
+- csdg ... 制御ルートXゲートのエルミート共役
+- ct ... 制御Tゲート
+- ctdg ... 制御Tゲートのエルミート共役
+- crx ... 制御RXゲート
+- cry ... 制御RYゲート
+- crz ... 制御RZゲート
+- cp ... 制御位相シフトゲート
+- rxx ... イジングカップリングゲート(XX結合)
+- ryy ... イジングカップリングゲート(YY結合)
+- rzz ... イジングカップリングゲート(ZZ結合)
+- sw ... swapゲート
+- csw ... 制御swapゲート(フレドキンゲート)
+- ccx ... 制御CNOTゲート(トフォリゲート)
+
+これらメソッドの引数について説明します。
+回転角指定のない1量子ビットゲートの場合の引数は1つで、適用する量子ビット番号を指定します。
+回転角指定のない2量子ビットゲートの場合の引数は2つで、制御ビット番号、標的ビット番号の順に指定します。
+回転角指定のない3量子ビットゲートの場合の引数は3つで、制御ビット番号、制御ビット番号、標的ビット番号の順で指定します。
+回転角の指定がある量子ゲートの場合、上記引数に加えて、最後に角度を指定する必要があります。
+
+例を示します。
+
+    from sharqit import Phase, QCirc
+    qc = QCirc()
+    # 角度PIを表すPhaseクラスのインスタンス
+    PI = Phase("PI")
+    # 回転角指定のない1量子ビットゲート
+    qc.h(0)
+    qc.t(0)
+    # 回転角指定のない2-3量子ビットゲート
+    qc.cx(0, 1)
+    qc.csw(0, 1, 2)
+    qc.crx(1, 2)
+    # 回転角指定のある1,2量子ビットゲート
+    qc.rz(2, 3*PI/4)
+    qc.crx(1, 2, PI/2)
+
+回転角はPhaseクラスのオブジェクトとして定義します。典型的な使い方は、上に示したように、PIラジアンを
+
+    PI = Phase("PI");
+
+のように定義して、3*PI/4, PI/2, -PI/4, ...のように指定するやり方です。それ以外にも、
+
+    p = Phase(3, 4) # 3*PI/4を表す
+    q = Phase(-1, 2) # -PI/2を表す
+
+のように指定するやり方もあります。
+
+#### 量子回路を記述したファイルを読み込む方法
+
+Sharqit形式の量子回路ファイルを読み込んで、量子回路オブジェクトとする方法もあります。
+以下のようなファイルがあるとします。
+
+    $ cat sample.sqc
+    T 1
+    H 0
+    H 1
+    CX 0 1
+    H 0
+    H 1
+    T+ 1
+
+loadメソッドを使って、
+
+    qc_in = QCirc()
+    qc_in.load("sample.sqc")
+
+のようにすることで、ファイルに記述されたものと同じ量子回路オブジェクトが作成されます。
+
+
+### 量子回路の表示
+
+「簡単な例」で、
+
+    qc_in.show()
+	
+のように実行しました。この例の場合
+
+    q[0] --H-----*--H------
+    q[1] --T--H--X--H--T+--
+
+のようになりますが、非常に深い回路の場合、以下のように折り返して表示されます。
+
+    q[0] --X--T-----X--X-----*-----X--*--T--*--X--*--T--T--------------X--*--*-----*--X--T-----X--T--T-- ...
+    q[1] -----------*--*-----|--X--*--X--T--|-----X--T--T--------*--*-----X--|--T--X--|--T--T--*--T----- ...
+    q[2] --T--T--T--------T--X--T--------X--X--------T--T--X--T--X--X--T-----X--T-----*--T--T-----T----- ...
+    
+    T--X-----*-----X--------*--T--------*--*--------X-----X--------X--T--*--*--------*--T--T-----*--X--- ...
+    ------*--X-----|--X--T--X--X--T--T--|--|--T--X--------|--X-----|--T--X--X--*--T--X--T--T-----X--*--T ...
+    ------X-----T--*--T--T-----T--------X--X-----*--T--T--*--*--T--*--T--------X--T-----T--T--T--------- ...
+    
+    --------*--X--*--------
+    --*--T--|--*--X--X--X--
+    --X-----X--------------
+
+折返しの位置は、デフォルトでは100文字になっていますが、showメソッドのwidthオプションで指定することもできます。
+
+    qc_in.show(width=50)
+
+
+### 量子回路の統計情報の取得
+
+量子回路に含まれている各種ゲートの数や深さや量子ビット数は、以下のように取得・表示することができます。
+
+    qc_in = QCirc()
+    qc_in.t(1)
+    qc_in.h(0)
+    qc_in.h(1)
+    qc_in.cx(0,1)
+    qc_in.h(0)
+    qc_in.h(1)
+    qc_in.tdg(1)
+    print("X_count =", qc_in.x_count())
+    print("Z_count =", qc_in.z_count())
+    print("H_count =", qc_in.h_count())
+    print("S_count =", qc_in.s_count())
+    print("T_count =", qc_in.t_count())
+    print("RZ_count =", qc_in.rz_count())
+    print("CX_count =", qc_in.cx_count())
+    print("2Q_count =", qc_in.twoq_count())
+    print("gate_count =", qc_in.gate_count())
+    print("depth =", qc_in.depth())
+    print("qubit_num =", qc_in.qubit_num())
+
+この場合、以下のように表示されます。
+
+    X-count  = 0
+    Z-count  = 0
+    H-count  = 4
+    S-count  = 0
+    T-count  = 2
+    RZ-count = 2
+    CX-count = 1
+    2Q-count = 1
+    gate-count = 7
+    depth      = 5
+    qubit_num  = 2
+
+また、print_statsメソッドでこれと同様な情報を一気に表示することもできます。
+
+    qc_in.print_stats()
+
+
+### 量子回路の最適化
+
+「簡単な例」で、
+
+    qc_out = opt.reduce_gates(qc_in, "zx")
+
+のように実行しました。ここでreduce_gatesメソッドの2番目の引数に"zx"が指定されているので、
+ZX-calculusを用いた手法で最適化計算がなされます。
+Phase Polynomialを用いた手法で最適化計算をしたい場合、以下のように2番目の引数に手法を指定します。
+
+    qc_out = opt.reduce_gates(qc_in, "pp")
+
+
+### 量子回路の等価判定
+
+2つの量子回路が等価かどうか、量子回路クラスのis_equalメソッドで以下のように確認することができます。
+
+    print(qc_in.is_equal(qc_out))
+
+SharqitコマンドやSharqitライブラリ同様、ひとつ注意点があります。
+内部で量子回路を行列に展開して行列同士の等価判定を行っているため、
+量子ビット数があまり大きな回路でこれを実行すると、
+なかなか結果が返ってこなかったり、メモリが足りなくなることに起因したエラーが発生する可能性があります。
+
+
+### 量子回路の保存
+
+量子回路をSharqit独自のファイル形式で出力する場合、saveメソッドを使います。
+
+    qc_out.save("bar.sqc")
+	
 
 以上

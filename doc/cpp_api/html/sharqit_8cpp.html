@@ -113,9 +113,9 @@ Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sharqit_8cpp.html#a853216ac51aa181669ff4d3de74058a7">print_help</a> ()</td></tr>
 <tr class="memdesc:a853216ac51aa181669ff4d3de74058a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">print help message <br /></td></tr>
 <tr class="separator:a853216ac51aa181669ff4d3de74058a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af446a68519de551c5f1865d73bab34ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sharqit_8cpp.html#af446a68519de551c5f1865d73bab34ef">optimize</a> (std::string &amp;fin, <a class="el" href="optimizer_8h.html#a3682ee81e0a88372a3a57c009a2883dd">Sharqit::OptimizerKind</a> kind)</td></tr>
-<tr class="memdesc:af446a68519de551c5f1865d73bab34ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">optimize the file  <a href="sharqit_8cpp.html#af446a68519de551c5f1865d73bab34ef">More...</a><br /></td></tr>
-<tr class="separator:af446a68519de551c5f1865d73bab34ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a486685719e665e2bbbb009e665ad56a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sharqit_8cpp.html#a486685719e665e2bbbb009e665ad56a7">optimize</a> (std::string &amp;fin, std::string &amp;method)</td></tr>
+<tr class="memdesc:a486685719e665e2bbbb009e665ad56a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">optimize the file  <a href="sharqit_8cpp.html#a486685719e665e2bbbb009e665ad56a7">More...</a><br /></td></tr>
+<tr class="separator:a486685719e665e2bbbb009e665ad56a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acafc4323c4b3dc78bd616e1a0f193dd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sharqit_8cpp.html#acafc4323c4b3dc78bd616e1a0f193dd4">verify_equality</a> (std::string &amp;fin_A, std::string &amp;fin_B)</td></tr>
 <tr class="memdesc:acafc4323c4b3dc78bd616e1a0f193dd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">verify equality of two quantum circuit  <a href="sharqit_8cpp.html#acafc4323c4b3dc78bd616e1a0f193dd4">More...</a><br /></td></tr>
 <tr class="separator:acafc4323c4b3dc78bd616e1a0f193dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,8 +172,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shar
 
 </div>
 </div>
-<a id="af446a68519de551c5f1865d73bab34ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af446a68519de551c5f1865d73bab34ef">&#9670;&nbsp;</a></span>optimize()</h2>
+<a id="a486685719e665e2bbbb009e665ad56a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a486685719e665e2bbbb009e665ad56a7">&#9670;&nbsp;</a></span>optimize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,8 +187,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shar
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="optimizer_8h.html#a3682ee81e0a88372a3a57c009a2883dd">Sharqit::OptimizerKind</a>&#160;</td>
-          <td class="paramname"><em>kind</em>&#160;</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>method</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -202,7 +202,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shar
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">fin</td><td>quantum circuit file name </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">kind</td><td>kind of optimization method </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">method</td><td>optimization method ("zx" or "pp") </td></tr>
   </table>
   </dd>
 </dl>

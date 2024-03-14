@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['optimizer_2ecpp_356',['optimizer.cpp',['../optimizer_8cpp.html',1,'']]],
-  ['optimizer_2eh_357',['optimizer.h',['../optimizer_8h.html',1,'']]]
+  ['linear_5fmap_2ecpp_372',['linear_map.cpp',['../linear__map_8cpp.html',1,'']]],
+  ['linear_5fmap_2eh_373',['linear_map.h',['../linear__map_8h.html',1,'']]]
 ];
