@@ -36,13 +36,13 @@ jobs:
         pwd
         mkdir -p ~/lib ~/include/sharqit
         export LD_LIBRARY_PATH="${GITHUB_WORKSPACE}/lib:$LD_LIBRARY_PATH"
-        cd src
+        cd sharqit/cpp
         make
         make install
         ls ~/lib
         ls ~/include/sharqit
-        cd ../tests
-        cp ../src/libshrqt.so .
+        cd ../../tests/cpp
+        cp ../../sharqit/cpp/libshrqt.so .
         ls -al
         make
         ./test_sharqit

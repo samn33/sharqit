@@ -1,12 +1,14 @@
 # Change Log
 
-## [0.1.2 - beta] - 2024-xx-xx
+## [0.2.0] - 2024-03-14
 ### Added
-- installation using CMake
+- python-sdk
 ### Changed
+- project name: sharq -> sharqit
 - command name: sharq -> sharqit
 - library name: libsharq.so -> libshrqt.so
-- insall location of include files: ~/include/ -> ~/include/sharqit/
+- insall location of header files: ~/include/ -> ~/include/sharqit/
+- Optimizer::execute -> Optimizer::reduce_gates
 
 ## [0.1.1] - 2024-03-01
 ### Added
