@@ -18,9 +18,9 @@ jobs:
         cd build
         cmake ..
         make
-        cd ../../tests
-        cp -r ../googletest/googletest/include/gtest .
-        cp -r ../googletest/build/lib/* .
+        cd ../../tests/cpp
+        cp -r ../../googletest/googletest/include/gtest .
+        cp -r ../../googletest/build/lib/* .
     - name: eigen
       run: |
         sudo apt install libeigen3-dev
