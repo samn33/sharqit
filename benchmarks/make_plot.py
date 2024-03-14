@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 
 ORI_LABEL="original"
 PYZX_LABEL="pyzx-0.8.0"
-SHARQIT_ZX_LABEL="sharqit-0.1.2 (zx)"
-SHARQIT_PP_LABEL="sharqit-0.1.2 (pp)"
+SHARQIT_ZX_LABEL="sharqit-0.2.0 (zx)"
+SHARQIT_PP_LABEL="sharqit-0.2.0 (pp)"
 
 def main():
 

@@ -11,7 +11,7 @@ void eval_sharq(const std::string& name, const std::string& path_in, const std::
     /* clock start */
     auto start = std::chrono::system_clock::now();
 
-    Sharqit::QCirc qc_out = opt.execute(qc_in, Sharqit::OptimizerKind::PhasePolynomial);
+    Sharqit::QCirc qc_out = opt.reduce_gates(qc_in, "pp");
     qc_out.save(path_out);
 
     /* clock end */
