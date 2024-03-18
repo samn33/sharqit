@@ -1,18 +1,18 @@
 <map id="zx.h" name="zx.h">
-<area shape="rect" id="node1" title="include file of ZXCalculus related classes (ZXNode, ZXEdge, ZXDiagram)" alt="" coords="476,5,523,32"/>
-<area shape="rect" id="node2" href="$qcirc_8h.html" title="include file of QCirc class" alt="" coords="301,80,362,107"/>
-<area shape="rect" id="node7" href="$sharqit_8h.html" title="include file of Sharqit library" alt="" coords="359,229,431,256"/>
-<area shape="rect" id="node11" href="$optimizer_8h.html" title="include file of Optimizer class" alt="" coords="437,155,522,181"/>
-<area shape="rect" id="node13" href="$extract__qcirc_8cpp.html" title="member functions of ZXDiagram class related to the algorithm to extract quantum circuit" alt="" coords="487,80,610,107"/>
-<area shape="rect" id="node14" href="$simplify_8cpp.html" title="member functions of ZXDiagram class related to the algorithm to simplify ZX&#45;diagram" alt="" coords="634,80,725,107"/>
-<area shape="rect" id="node15" href="$zxdiagram_8cpp.html" title="member functions of ZXDiagram class" alt="" coords="749,80,855,107"/>
-<area shape="rect" id="node16" href="$zxnode_8cpp.html" title="member functions of ZXNode class" alt="" coords="880,80,969,107"/>
-<area shape="rect" id="node3" href="$dag_8h.html" title="include file of DAG (directed acyclic graph) related classes (DAGNode, DAGEdge, DAGCirc)" alt="" coords="256,155,311,181"/>
-<area shape="rect" id="node10" href="$merge__rotation_8cpp.html" title="member functions of QCirc class related to the algorithm to merge rotation gates" alt="" coords="98,155,231,181"/>
-<area shape="rect" id="node4" href="$dagcirc_8cpp.html" title="member functions of DAGCirc class" alt="" coords="5,229,95,256"/>
-<area shape="rect" id="node5" href="$dagedge_8cpp.html" title="member functions of DAGEdge class" alt="" coords="119,229,215,256"/>
-<area shape="rect" id="node6" href="$dagnode_8cpp.html" title="member functions of DAGNode class" alt="" coords="239,229,335,256"/>
-<area shape="rect" id="node8" href="$nb__sharqit_8cpp.html" title="definition of python&#45;wrapper using nanobind" alt="" coords="281,304,387,331"/>
-<area shape="rect" id="node9" href="$sharqit_8cpp.html" title="source code of sharqit command" alt="" coords="412,304,499,331"/>
-<area shape="rect" id="node12" href="$optimizer_8cpp.html" title="member functions of Optimizer class" alt="" coords="455,229,554,256"/>
+<area shape="rect" id="node1" title="include file of ZXCalculus related classes (ZXNode, ZXEdge, ZXDiagram)" alt="" coords="273,5,322,32"/>
+<area shape="rect" id="node2" href="$extract__qcirc_8cpp.html" title="member functions of ZXDiagram class related to the algorithm to extract quantum circuit" alt="" coords="5,80,139,107"/>
+<area shape="rect" id="node3" href="$optimizer_8h.html" title="include file of Optimizer class" alt="" coords="94,155,189,181"/>
+<area shape="rect" id="node5" href="$sharqit_8h.html" title="include file of Sharqit library" alt="" coords="190,229,269,256"/>
+<area shape="rect" id="node8" href="$qcirc_8h.html" title="include file of QCirc class" alt="" coords="265,80,330,107"/>
+<area shape="rect" id="node14" href="$simplify_8cpp.html" title="member functions of ZXDiagram class related to the algorithm to simplify ZX&#45;diagram" alt="" coords="355,80,453,107"/>
+<area shape="rect" id="node15" href="$zxdiagram_8cpp.html" title="member functions of ZXDiagram class" alt="" coords="478,80,597,107"/>
+<area shape="rect" id="node16" href="$zxnode_8cpp.html" title="member functions of ZXNode class" alt="" coords="621,80,717,107"/>
+<area shape="rect" id="node4" href="$optimizer_8cpp.html" title="member functions of Optimizer class" alt="" coords="55,229,166,256"/>
+<area shape="rect" id="node6" href="$nb__sharqit_8cpp.html" title="definition of python&#45;wrapper using nanobind" alt="" coords="105,304,223,331"/>
+<area shape="rect" id="node7" href="$sharqit_8cpp.html" title="source code of sharqit command" alt="" coords="247,304,342,331"/>
+<area shape="rect" id="node9" href="$dag_8h.html" title="include file of DAG (directed acyclic graph) related classes (DAGNode, DAGEdge, DAGCirc)" alt="" coords="315,155,373,181"/>
+<area shape="rect" id="node13" href="$merge__rotation_8cpp.html" title="member functions of QCirc class related to the algorithm to merge rotation gates" alt="" coords="397,155,547,181"/>
+<area shape="rect" id="node10" href="$dagcirc_8cpp.html" title="member functions of DAGCirc class" alt="" coords="293,229,389,256"/>
+<area shape="rect" id="node11" href="$dagedge_8cpp.html" title="member functions of DAGEdge class" alt="" coords="414,229,519,256"/>
+<area shape="rect" id="node12" href="$dagnode_8cpp.html" title="member functions of DAGNode class" alt="" coords="543,229,649,256"/>
 </map>
