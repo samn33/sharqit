@@ -1,0 +1,2 @@
+Intel(R) Core(TM) i5-3320M CPU @ 2.60GHz
+16GB RAM

@@ -1,2 +1,2 @@
-Intel(R) Core(TM) i5-3320M CPU @ 2.60GHz
+13th Gen Intel(R) Core(TM) i7-1355U @5GHz
 16GB RAM
