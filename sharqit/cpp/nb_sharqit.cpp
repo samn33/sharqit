@@ -81,6 +81,7 @@ NB_MODULE(sharqit_base, m) {
     .def("gate_count", &Sharqit::QCirc::gate_count)
     .def("depth", &Sharqit::QCirc::depth)
     .def("qubit_num", &Sharqit::QCirc::get_qubit_num)
+    .def("add_random", &Sharqit::QCirc::add_random_str)
     ;
   nb::class_<Sharqit::Optimizer>(m, "Optimizer")
     .def(nb::init<>())

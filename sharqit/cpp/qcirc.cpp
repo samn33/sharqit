@@ -271,16 +271,8 @@ Sharqit::QCirc& Sharqit::QCirc::add_qcirc(const QCirc& other)
   return *this;
 }
 
-/** = example =
-  * qc.add_random(5, 10, {{"X", 1},
-  *                       {"H", 1},
-  *                       {"Sdg", 1},
-  *                       {"CX", 3},
-  *                       {"CZ", 2},
-  *                       {"RZ(1/4)", 1},});
-  */
 Sharqit::QCirc& Sharqit::QCirc::add_random(const uint32_t qubit_num, const uint32_t qgate_num,
-				       const nlohmann::json& probs)
+					   const nlohmann::json& probs)
 {
   if (qubit_num == 0 || qgate_num == 0) {
     throw std::runtime_error("qubit_num is zero, or qgate_num is zero.");
@@ -330,9 +322,9 @@ Sharqit::QCirc& Sharqit::QCirc::add_random(const uint32_t qubit_num, const uint3
 
   for (uint32_t i = 0; i < qgate_num; ++i) {
     /* prob_idx */
+    double r = uni(engine);
     uint32_t prob_idx = 0;
     for (uint32_t j = 0; j < prob_list_num; ++j) {
-      double r = uni(engine);
       if (r < prob_list[j]) {
 	prob_idx = j;
 	break;
@@ -349,6 +341,20 @@ Sharqit::QCirc& Sharqit::QCirc::add_random(const uint32_t qubit_num, const uint3
     add_qgate(kind, qid, phase);
   }
   return *this;
+}
+
+Sharqit::QCirc& Sharqit::QCirc::add_random_str(const uint32_t qubit_num, const uint32_t qgate_num,
+					       const std::string probs)
+{
+  std::vector<std::string> args = Sharqit::split(probs, ',');
+  nlohmann::json probs_json;
+  for (uint32_t i = 0; i < args.size(); ++i) {
+    std::vector<std::string> key_value = Sharqit::split(args[i], ':');
+    std::string gate_str = key_value[0];
+    std::string prob_str = key_value[1];
+    probs_json[gate_str] = atof(prob_str.c_str());
+  }
+  return add_random(qubit_num, qgate_num, probs_json);
 }
 
 Sharqit::QCirc Sharqit::QCirc::reverse() const

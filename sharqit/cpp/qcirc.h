@@ -203,11 +203,22 @@ namespace Sharqit {
      * @brief add a random quantum circuit to the quantum circuit
      * @param [in] qubit_num number of qubits of the quantum circuit
      * @param [in] qgate_num number of quantum gates in the quantum circuit
-     * @param [in] probs probability of each quantum gate
+     * @param [in] probs string of probability of each quantum gate
      * @return reference of the QCirc after adding the quantum circuit
-     * @note example of probs: @n {{"X", 4},{"T", 5},{"CX", 3}} @n {{"H", 0.3},{"S", 0.2},{"RZ(1/4)", 0.4}}
+     * @note example of probs: @n {{"X", 4},{"T", 5},{"CX", 3}} @n {{"H", 0.3},{"S", 0.2},{"RZ(1/4)", 0.4}} @n
+     *       usage: @n qc.add_random(5, 100, {{"X", 1},{"H", 1},{"Sdg", 1},{"CX", 3},{"CZ", 2},{"RZ(1/4)", 1}});
      */
     QCirc& add_random(const uint32_t qubit_num, const uint32_t qgate_num, const nlohmann::json& probs);
+    /**
+     * @brief add a random quantum circuit to the quantum circuit
+     * @param [in] qubit_num number of qubits of the quantum circuit
+     * @param [in] qgate_num number of quantum gates in the quantum circuit
+     * @param [in] probs probability of each quantum gate
+     * @return reference of the QCirc after adding the quantum circuit
+     * @note example of probs: @n "X:4,T:5,CX:3" @n "H:0.3,S:0.2,RZ(1/4):0.4" @n
+     *       usage: @n qc.add_random(5, 100, "H:2,T:3,RZ(1/2):5");
+     */
+    QCirc& add_random_str(const uint32_t qubit_num, const uint32_t qgate_num, const std::string probs);
     /**
      * @brief get a reverse ordered quantum circuit from the quantum circuit
      * @return reverse ordered quantum circuit
