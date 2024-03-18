@@ -167,7 +167,7 @@ Sample code converting from qasm file is [here](benchmarks/qasm_to_sqc.py).
 
 ## Benchmarks
 
-Processing time, T-count, 2Q-count, Gate-count of 'sharqit' are compared with [PyZX](https://github.com/Quantomatic/pyzx). The 'zx' means the metohd using ZXCalculus, the 'pp' means the method using PhasePolynomial. The operating environment is Intel Core i5-3320M CPU @2.60GHz, 16GB RAM.
+Processing time, T-count, 2Q-count, Gate-count of 'sharqit' are compared with [PyZX](https://github.com/Quantomatic/pyzx). The 'zx' means the metohd using ZXCalculus, the 'pp' means the method using PhasePolynomial. The operating environment is 13th Gen Intel(R) Core(TM) i7-1355U @5GHz, 16GB RAM.
 
 ![benchmarks](/benchmarks/plot.png)
 

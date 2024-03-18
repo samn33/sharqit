@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.2.1] - 2024-xx-xx
+### Added
+- add_random method to python-sdk
+### Fixed
+- QCirc::add_random function - bug of random gate generation
+
 ## [0.2.0] - 2024-03-14
 ### Added
 - python-sdk
