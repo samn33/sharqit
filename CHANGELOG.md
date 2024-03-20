@@ -3,6 +3,7 @@
 ## [0.2.1] - 2024-xx-xx
 ### Added
 - add_random method to python-sdk
+- Dockerfile
 ### Fixed
 - QCirc::add_random function - bug of random gate generation
 
