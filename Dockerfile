@@ -61,6 +61,6 @@ RUN python3 setup.py install --user
 WORKDIR $HOME/sharqit/tests/py
 RUN ./test.sh
 
-WORKDIR $HOME/sharqit
+WORKDIR $HOME
 
 CMD ["/bin/bash"]
