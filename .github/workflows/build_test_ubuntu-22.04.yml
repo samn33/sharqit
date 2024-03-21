@@ -30,6 +30,9 @@ jobs:
     - name: nlohmann-json3-dev
       run: |
         sudo apt install graphviz
+    - name: nanobind
+      run: |
+        pip install nanobind
     - name: build_test
       run: |
         echo $GITHUB_WORKSPACE
@@ -46,3 +49,8 @@ jobs:
         ls -al
         make
         ./test_sharqit
+    - name: build_test_py
+      run: |
+        python3 setup.py install --user
+        cd tests/py
+        ./test.sh
