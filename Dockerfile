@@ -53,6 +53,7 @@ RUN make && make install
 
 WORKDIR $HOME/sharqit/tests/cpp
 ENV LD_LIBRARY_PATH = $LD_LIBRARY_PATH:$HOME/lib
+ENV PATH = $PATH:$HOME/bin
 RUN make && ./test_sharqit
 
 WORKDIR $HOME/sharqit
