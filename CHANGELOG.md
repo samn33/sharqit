@@ -2,14 +2,15 @@
 
 ## [0.2.1] - 2024-xx-xx
 ### Added
-- add_random method to python-sdk
+- python sdk: add_random, add_qgate, get_qgate, and get_qgates methods to QCirc class
+- python sdk: QGate class, QGateKind enumeration
 - Dockerfile
 ### Fixed
-- QCirc::add_random function - bug of random gate generation
+- c++ sdk: add_random function of QCirc class - bug of random gate generation
 
 ## [0.2.0] - 2024-03-14
 ### Added
-- python-sdk
+- python sdk
 ### Changed
 - project name: sharq -> sharqit
 - command name: sharq -> sharqit
