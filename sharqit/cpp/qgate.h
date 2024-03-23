@@ -74,6 +74,8 @@ namespace Sharqit {
     std::vector<uint32_t> qid() const { return qid_; }
     //! getter of the phase_
     Phase phase() const { return phase_; }
+    //! getter of the phase_
+    Phase get_phase() const { return phase_; }
     //! getter of the op_
     std::vector<std::vector<std::complex<double>>> op() const { return op_; }
     //! setter of the kind_
