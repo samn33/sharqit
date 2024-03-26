@@ -8,7 +8,8 @@ Quantum Circuit Optimizer
 - Support two types of gate-count reduction methods:
 	- 1) using ZX-calculus
 	- 2) using Phase Polynomial
-- Provide SDK for both C++ and Python.
+- Implemented in C++ language
+- Provide SDK for both C++ and Python and command line tool.
 
 ## Install
 
@@ -18,13 +19,13 @@ Install the following softwares first.
 	$ sudo apt install graphviz
 	$ sudo apt install libeigen3-dev
 
-For Python SDK, need to install the folloing package.
+For Python package, need to install the folloing package.
 
     $ pip install nanobind
 
-### C++ SDK
+### Command line tool and C++ library
 
-Install sharqit command, sharqit library and related hedder files as follows,
+Install command line tool, C++ library and related hedder files as follows,
 
     $ git clone https://github.com/samn33/sharqit.git
     $ mkdir -p ~/lib ~/bin ~/include/sharqit
@@ -37,9 +38,9 @@ Add following lines to your ~/.bashrc. (If you are using another shell, replace 
     export LD_LIBRARY_PATH="${HOME}/lib:$LD_LIBRARY_PATH"
     export PATH="${HOME}/bin:$PATH"
 
-### Python SDK
+### Python package
 
-Install sharqit package as follows,
+Install python package as follows,
 
     $ git clone https://github.com/samn33/sharqit.git
     $ cd sharqit
@@ -48,20 +49,18 @@ Install sharqit package as follows,
 
 ## Uninstall
 
-### Python SDK
-
-    $ pip uninstall sharqit
-
-### C++ SDK
+### Command line tool and C++ library
 
     $ make uninstall
+
+### Python package
+
+    $ pip uninstall sharqit
 
 
 ## Usage
 
-### C++ SDK
-
-#### sharqit command
+### command line tool
 
 Prepare the quantum circuit you want to optimize as follows.
 
@@ -91,7 +90,7 @@ Print help message.
 
     $ sharqit --help
 
-#### sharqit library
+### C++ library
 
 An example of C++ code that uses the sharqit c++ library.
 
@@ -129,14 +128,12 @@ Execute a.out.
     q[0] --X--
     q[1] --*--
 
-### Python API
-
-#### sharqit package
+### Python package
 
 An example of Python code that uses the sharqit package.
 
     $ cat sample.py
-    from sharqit import Phase, QCirc, Optimizer
+    from sharqit import QCirc, Optimizer
     
     qc_in = QCirc()
     qc_in.t(1)
@@ -167,7 +164,7 @@ Sample code converting from qasm file is [here](benchmarks/qasm_to_sqc.py).
 
 ## Benchmarks
 
-Processing time, T-count, 2Q-count, Gate-count of 'sharqit' are compared with [PyZX](https://github.com/Quantomatic/pyzx). The 'zx' means the metohd using ZXCalculus, the 'pp' means the method using PhasePolynomial. The operating environment is Intel Core i5-3320M CPU @2.60GHz, 16GB RAM.
+Processing time, T-count, 2Q-count, Gate-count of 'sharqit' are compared with [PyZX](https://github.com/Quantomatic/pyzx). The 'zx' means the metohd using ZXCalculus, the 'pp' means the method using PhasePolynomial. The operating environment is 13th Gen Intel(R) Core(TM) i7-1355U @5GHz, 16GB RAM.
 
 ![benchmarks](/benchmarks/plot.png)
 

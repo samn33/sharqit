@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['s_714',['S',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606aa50d26dcac7e8e45fa761ed8729427d2',1,'Sharqit']]],
-  ['sdg_715',['Sdg',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606aeae4b27806814f1585134aa336538ddb',1,'Sharqit']]]
+  ['s_739',['S',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606aa50d26dcac7e8e45fa761ed8729427d2',1,'Sharqit']]],
+  ['sdg_740',['Sdg',['../qgate_8h.html#a43707d5dc6e1e36b8c4f5e640fd5f606aeae4b27806814f1585134aa336538ddb',1,'Sharqit']]]
 ];

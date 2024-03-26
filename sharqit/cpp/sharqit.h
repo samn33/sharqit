@@ -17,7 +17,7 @@
 #include "optimizer.h"
 
 namespace Sharqit {
-  constexpr char VERSION[] = "v0.2.0"; //!< versoin of sharq
+  constexpr char VERSION[] = "v0.2.1"; //!< versoin of sharq
 }
 
 #endif

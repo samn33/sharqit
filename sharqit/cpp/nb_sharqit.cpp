@@ -6,15 +6,24 @@
 #include <nanobind/nanobind.h>
 #include <nanobind/operators.h>
 #include <nanobind/stl/string.h>
+#include <nanobind/stl/vector.h>
+#include <nanobind/stl/tuple.h>
+#include <nanobind/stl/map.h>
+#include <nanobind/stl/pair.h>
+#include <nanobind/stl/set.h>
+#include <nanobind/stl/list.h>
+
 namespace nb = nanobind;
 
 #include "sharqit.h"
 
 NB_MODULE(sharqit_base, m) {
   nb::class_<Sharqit::Phase>(m, "Phase")
+    .def(nb::init<const int32_t>())
     .def(nb::init<const int32_t, const int32_t>())
     .def(nb::init<const std::string&>())
-    .def("to_string", &Sharqit::Phase::to_string, nb::arg("pi_str") = true)
+    .def("to_string", &Sharqit::Phase::to_string, nb::arg("pi_str") = false)
+    .def("__str__", &Sharqit::Phase::to_string, nb::arg("pi_str") = false)
     .def(nb::self + nb::self)
     .def(nb::self - nb::self)
     .def(nb::self += nb::self)
@@ -25,9 +34,41 @@ NB_MODULE(sharqit_base, m) {
     .def(nb::self * int())
     .def(nb::self / int())
     ;
+  nb::enum_<Sharqit::QGateKind>(m, "QGateKind")
+    .value("X", Sharqit::QGateKind::X)
+    .value("Z", Sharqit::QGateKind::Z)
+    .value("S", Sharqit::QGateKind::S)
+    .value("Sdg", Sharqit::QGateKind::Sdg)
+    .value("T", Sharqit::QGateKind::T)
+    .value("Tdg", Sharqit::QGateKind::Tdg)
+    .value("H", Sharqit::QGateKind::H)
+    .value("RZ", Sharqit::QGateKind::RZ)
+    .value("CX", Sharqit::QGateKind::CX)
+    .value("CZ", Sharqit::QGateKind::CZ)
+    .value("Id", Sharqit::QGateKind::Id)
+    .value("Id2", Sharqit::QGateKind::Id2)
+    .export_values();
+  nb::class_<Sharqit::QGate>(m, "QGate")
+    .def(nb::init<const Sharqit::QGateKind, const std::vector<uint32_t>&>())
+    .def(nb::init<const Sharqit::QGateKind, const std::vector<uint32_t>&, const Sharqit::Phase&>())
+    .def(nb::init<const std::string&>())
+    .def("to_string", &Sharqit::QGate::to_string, nb::arg("pi_str") = false)
+    .def("__str__", &Sharqit::QGate::to_string, nb::arg("pi_str") = false)
+    .def("name", &Sharqit::QGate::name, nb::arg("pi_str") = false)
+    .def_prop_rw("kind",
+		 [](Sharqit::QGate& qgate) { return qgate.kind() ; },
+		 [](Sharqit::QGate& qgate, Sharqit::QGateKind kind) { qgate.kind(kind) ; })
+    .def_prop_rw("qid",
+		 [](Sharqit::QGate& qgate) { return qgate.qid() ; },
+		 [](Sharqit::QGate& qgate, std::vector<uint32_t>& qid) { qgate.qid(qid) ; })
+    .def_prop_rw("phase",
+		 [](Sharqit::QGate& qgate) { return qgate.phase() ; },
+		 [](Sharqit::QGate& qgate, Sharqit::Phase& phase) { qgate.phase(phase) ; })
+     ;
   nb::class_<Sharqit::QCirc>(m, "QCirc")
     .def(nb::init<>())
     .def("to_string", &Sharqit::QCirc::to_string, nb::arg("width") = 100)
+    .def("__str__", &Sharqit::QCirc::to_string, nb::arg("width") = 100)
     .def("show", &Sharqit::QCirc::show, nb::arg("width") = 100)
     .def("print_stats", &Sharqit::QCirc::print_stats)
     .def("is_equal", &Sharqit::QCirc::is_equal)
@@ -80,7 +121,14 @@ NB_MODULE(sharqit_base, m) {
     .def("twoq_count", &Sharqit::QCirc::twoq_count)
     .def("gate_count", &Sharqit::QCirc::gate_count)
     .def("depth", &Sharqit::QCirc::depth)
-    .def("qubit_num", &Sharqit::QCirc::get_qubit_num)
+    .def("qubit_num", [](Sharqit::QCirc& qc) { return qc.qubit_num(); })
+    .def("add_random", &Sharqit::QCirc::add_random_str)
+    .def("add_qgate", nb::overload_cast<const std::string&>(&Sharqit::QCirc::add_qgate))
+    .def("add_qgate", nb::overload_cast<const Sharqit::QGate&>(&Sharqit::QCirc::add_qgate))
+    .def("add_qgate", nb::overload_cast<const Sharqit::QGateKind, const std::vector<uint32_t>&,
+	 const Sharqit::Phase&>(&Sharqit::QCirc::add_qgate))
+    .def("get_qgate", &Sharqit::QCirc::get_qgate)
+    .def("get_qgates", &Sharqit::QCirc::get_qgates)
     ;
   nb::class_<Sharqit::Optimizer>(m, "Optimizer")
     .def(nb::init<>())

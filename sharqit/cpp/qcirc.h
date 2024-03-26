@@ -194,6 +194,12 @@ namespace Sharqit {
      */
     QCirc& add_qgate(const QGate& qgate);
     /**
+     * @brief add a quantum gate to the quantum circuit
+     * @param [in] qgate_str string of quantum gate (ex. "X 0", "CX 0 1", "RZ(1/4) 1")
+     * @return reference of the QCirc after adding the quantum gate
+     */
+    QCirc& add_qgate(const std::string& qgate_str) { return add_qgate(Sharqit::QGate(qgate_str)); }
+    /**
      * @brief add a quantum circuit to the quantum circuit
      * @param [in] other QCirc object you want to add
      * @return reference of the QCirc after adding the quantum circuit
@@ -203,11 +209,33 @@ namespace Sharqit {
      * @brief add a random quantum circuit to the quantum circuit
      * @param [in] qubit_num number of qubits of the quantum circuit
      * @param [in] qgate_num number of quantum gates in the quantum circuit
-     * @param [in] probs probability of each quantum gate
+     * @param [in] probs string of probability of each quantum gate
      * @return reference of the QCirc after adding the quantum circuit
-     * @note example of probs: @n {{"X", 4},{"T", 5},{"CX", 3}} @n {{"H", 0.3},{"S", 0.2},{"RZ(1/4)", 0.4}}
+     * @note example of probs: @n {{"X", 4},{"T", 5},{"CX", 3}} @n {{"H", 0.3},{"S", 0.2},{"RZ(1/4)", 0.4}} @n
+     *       usage: @n qc.add_random(5, 100, {{"X", 1},{"H", 1},{"Sdg", 1},{"CX", 3},{"CZ", 2},{"RZ(1/4)", 1}});
      */
     QCirc& add_random(const uint32_t qubit_num, const uint32_t qgate_num, const nlohmann::json& probs);
+    /**
+     * @brief add a random quantum circuit to the quantum circuit
+     * @param [in] qubit_num number of qubits of the quantum circuit
+     * @param [in] qgate_num number of quantum gates in the quantum circuit
+     * @param [in] probs probability of each quantum gate
+     * @return reference of the QCirc after adding the quantum circuit
+     * @note example of probs: @n "X:4,T:5,CX:3" @n "H:0.3,S:0.2,RZ(1/4):0.4" @n
+     *       usage: @n qc.add_random(5, 100, "H:2,T:3,RZ(1/2):5");
+     */
+    QCirc& add_random_str(const uint32_t qubit_num, const uint32_t qgate_num, const std::string probs);
+    /**
+     * @brief get a quantum gate
+     * @param [in] i position of quantum gate 
+     * @return QGate object
+     */
+    Sharqit::QGate get_qgate(const uint32_t i) const { return qgates_[i]; }
+    /**
+     * @brief get a list of quantum gates
+     * @return vector of the QGate objects
+     */
+    std::vector<Sharqit::QGate> get_qgates() const { return qgates_; }
     /**
      * @brief get a reverse ordered quantum circuit from the quantum circuit
      * @return reverse ordered quantum circuit

@@ -1,0 +1,3 @@
+#!/bin/bash
+rm -rf build/ dist/ sharqit.egg-info/
+pip uninstall sharqit
