@@ -1,12 +1,12 @@
 # Change Log
 
-## [0.2.1] - 2024-xx-xx
+## [0.2.1] - 2024-03-26
 ### Added
-- python sdk: add_random, add_qgate, get_qgate, and get_qgates methods to QCirc class
-- python sdk: QGate class, QGateKind enumeration
+- python package: add_random, add_qgate, get_qgate, and get_qgates methods to QCirc class
+- python package: QGate class, QGateKind enumeration
 - Dockerfile
 ### Fixed
-- c++ sdk: add_random function of QCirc class - bug of random gate generation
+- c++ library: add_random function of QCirc class - bug of random gate generation
 
 ## [0.2.0] - 2024-03-14
 ### Added
